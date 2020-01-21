@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+<meta charset="ISO-8859-1">
+    <title>Controle de Producao</title>
+	<style>
+select {
+	border-color: #000066;
+    box-shadow: 5px 0px 9px #FFFF00;
+    font-family: Verdana,Tahoma,sans-serif;
+    font-size: 20px;
+    background-color: #XX9999;
+    max-width: 500px;
+	border-radius:1em;
+}
+h1 {
+    margin-bottom: 20px;
+    margin-left: 20px;
+    color: #66FFFF;
+    text-shadow: 5px 5px 5px black;
+}
+ 
+input, text {
+	width:100px;
+	font-size: 10px;
+    padding: 10px;
+    color: black;
+    margin-left: 20px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border: 1px solid;
+    border-radius:1em;
+}
+ 
+input:hover, textarea :hover, input:focus, textarea:focus {
+    border-color: #000066;
+    box-shadow: 5px 0px 9px #FFFF00;
+    background-color: #66FFFF;
+    color: black;
+    font-weight: bold;
+}
+ 
+submit, input {
+    background-color: #66FFFF;
+    height: 15px;
+    width: 60px;
+    font-weight: bold;
+    border-radius: 5px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border: 1px solid;
+    color: black;
+}
+ 
+textarea {
+    width: 400px;
+    height: 120px;
+    line-height: 20px;
+    max-width: 400px;
+}
+ 
+table {
+    margin-left: 20px;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+label {
+    margin-left: 20px;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+ 
+form {
+    font-family:courier,arial,helvetica;
+    font-size: 14px;
+    background-color: #CCCCCC;
+	background-size: contain;
+	background-size: 90%;
+	background-size: 3em;
+	background-size: auto 1em;
+	background-size: 60% 25%;
+}
+input.parada{
+	width:500px;
+	font-size: 10px;
+    padding: 10px;
+    color: black;
+    margin-left: 20px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border: 1px solid;
+    border-radius:1em;
+}
+    </style>
+</head>
+<body style="height:100%; width:97%;">
+
+<form id='metas_form' method='GET' action='resultado.html'>
+
+<script>
+var maquina = 'maquina';
+var maquinas = [];
+var metas = ["<input id='meta0' placeholder='meta'></input>", "<input id='meta1' placeholder='meta'></input>", "<input id='meta2' placeholder='meta'></input>",
+"<input id='meta3' placeholder='meta'></input>", "<input id='meta4' placeholder='meta'></input>", "<input id='meta5' placeholder='meta'></input>","<input id='meta6' placeholder='meta'></input>",
+"<input id='meta7' placeholder='meta'></input>","<input id='meta8' placeholder='meta'></input>","<input id='meta9' placeholder='meta'></input>","<input id='meta10' placeholder='meta'></input>",
+"<input id='meta11' placeholder='meta'></input>","<input id='meta12' placeholder='meta'></input>","<input id='meta13' placeholder='meta'></input>","<input id='meta14' placeholder='meta'></input>",
+"<input id='meta15' placeholder='meta'></input>"];
+var telhaCiclo = ["<input id='tc0' placeholder='Telha p/Ciclo'></input>", "<input id='tc1' placeholder='Telha p/Ciclo'></input>", "<input  id='tc2' placeholder='Telha p/Ciclo'></input>",
+	"<input  id='tc3' placeholder='Telha p/Ciclo'></input>", "<input  id='tc4' placeholder='Telha p/Ciclo'></input>", "<input  id='tc5' placeholder='Telha p/Ciclo'></input>","<input  id='tc6' placeholder='Telha p/Ciclo'></input>",
+	"<input  id='tc7' placeholder='Telha p/Ciclo'></input>","<input id='tc8' placeholder='Telha p/Ciclo'></input>","<input  id='tc9' placeholder='Telha p/Ciclo'></input>","<input  id='tc10' placeholder='Telha p/Ciclo'></input>",
+	"<input  id='tc11' placeholder='Telha p/Ciclo'></input>","<input  id='tc12' placeholder='Telha p/Ciclo'></input>","<input  id='tc13' placeholder='Telha p/Ciclo'></input>","<input  id='tc14' placeholder='Telha p/Ciclo'></input>",
+	"<input  id='tc15' placeholder='Telha p/Ciclo'></input>"];
+var ciclos = ["<input id='pd0' placeholder='Ciclos'></input>", "<input id='pd1' placeholder='Ciclos'></input>", "<input  id='pd2' placeholder='Ciclos'></input>",
+	"<input  id='pd3' placeholder='Ciclos'></input>", "<input  id='pd4' placeholder='Ciclos'></input>", "<input  id='pd5' placeholder='Ciclos'></input>","<input  id='pd6' placeholder='Ciclos'></input>",
+	"<input  id='pd7' placeholder='Ciclos'></input>","<input id='pd8' placeholder='Ciclos'></input>","<input  id='pd9' placeholder='Ciclos'></input>","<input  id='pd10' placeholder='Ciclos'></input>",
+	"<input  id='pd11' placeholder='Ciclos'></input>","<input  id='pd12' placeholder='Ciclos'></input>","<input  id='pd13' placeholder='Ciclos'></input>","<input  id='pd14' placeholder='Ciclos'></input>",
+	"<input  id='pd15' placeholder='Ciclos'></input>"];
+var paradas = ["<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //' id='p0' ></input>", "<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='p1'></input>", "<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='p2'></input>",
+	"<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='p3'></input>", "<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='p4'></input>", "<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='pd5'></input>","<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='p6'></input>",
+	"<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='p7'></input>","<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //' id='p8'></input>","<input  class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //' id='p9'></input>","<input  class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //' id='p10'></input>",
+	"<input  id='p11' class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>","<input  id='pd12' class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>","<input  id='p13' class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>","<input  id='p14'  class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>",
+	"<input  id='p15' class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>"];
+
+
+	for(var i = 0; i<16; i++){
+		if((!localStorage.getItem(maquina+i)) && (i<10)){
+			alert("Primeiramente selecione, ao lado, o vao de maquinas");
+		}else{
+			var maq = localStorage.getItem(maquina+i);
+			maquinas.push(maq);
+		}
+		document.write("<label>"+maquinas[i]+"</label>");
+		document.write(metas[i]);
+		document.write(telhaCiclo[i]);
+		document.write(ciclos[i]);
+		document.write(paradas[i]);
+		document.write("<br>");
+	}
+	function Maquina(){
+		var meta;
+		var telhaPorCiclo;
+		var pecaPorTelha;
+		var realizada;
+	}
+	Maquina.prototype.init = function(m, tCiclo, pt){
+		this.meta = mm;
+		this.telhaPorCiclo = tCiclo;
+		this.pecaPorTelha = pt;
+	}
+	Maquina.prototype.setProducao = function(pd){
+		this.producao = pd;
+		return this.producao;
+	}
+	Maquina.prototype.getProducaoEmPeca = function(pdr){
+		var peca;
+		if(pecaPorTelha!=null){
+			peca = pdr*this.pecaPorTelha;
+		}else{
+			peca = pdr*3.75;	
+		}
+		return peca;
+	}
+	Maquina.prototype.calculaIrog = function(){
+		var irog = ((producao/meta)*100);
+		return irog;
+	}
+	function getId(){
+		alert(document.getElementById('meta0').textContent);
+	}
+</script>
+</form>
+
+</body>
+</html>
