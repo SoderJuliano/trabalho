@@ -45,7 +45,7 @@ h1 {
  
 input, text, button {
 	width:80px;
-	font-size: 13px;
+	font-size: 17px;
     padding: 10px;
     color: black;
     margin-left: 20px;
@@ -68,6 +68,7 @@ input:hover, textarea :hover, input:focus, textarea:focus {
     height: 40px;
     width: 100px;
     font-weight: bold;
+    font-size:17px;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -109,6 +110,7 @@ label {
 		var matrizReferencia = ["",""];
 		var arrayParadas = [];
 		var matrizSet;
+		var opSet;
 		var paradasMaq0=[];
 		var paradasMaq1=[];
 		var paradasMaq2=[];
@@ -161,6 +163,16 @@ label {
 					}
 				}
 			}
+		}
+		function pegaOpLocaLStorage(maquina){
+			var m0 = maquina+"_op";
+			var numero = localStorage.getItem(m0);
+			if(numero==null){
+				this.opSet = 1
+			}else{
+				this.opSet = 0;	
+			}
+			return numero;
 		}
 		function pegaMatrizLS(maquina){
 			var m0 = maquina+"_matriz";
@@ -217,8 +229,8 @@ label {
 			}
 		}
 		function init(){
-			arrayParadas = [paradasMaq0, paradasMaq1,paradasMaq2,paradasMaq3,paradasMaq4,paradasMaq5,paradasMaq6,paradasMaq7,paradasMaq8,paradasMaq9,paradasMaq10,paradasMaq11,
-			paradasMaq12,paradasMaq13,paradasMaq14,paradasMaq15];
+			/*arrayParadas = [paradasMaq0, paradasMaq1,paradasMaq2,paradasMaq3,paradasMaq4,paradasMaq5,paradasMaq6,paradasMaq7,paradasMaq8,paradasMaq9,paradasMaq10,paradasMaq11,
+			paradasMaq12,paradasMaq13,paradasMaq14,paradasMaq15];*/
 			
 			if((vao==null) || (vao=="undefined") || (vao="")){ 
 				this.vao = localStorage.getItem("vao");
@@ -232,7 +244,9 @@ label {
 					this.preparador ="nome";
 				}
 			}
-				
+			for(var i =0; i<16; i++){
+				sessionStorage.setItem('maquina'+i, buscarPre(this.vao, i));
+			}	
 		}
 		function selecao(){
 			this.vao = document.getElementById("linha").value;
@@ -664,16 +678,20 @@ label {
 				
 				pegaMatrizLS(buscarMaquina(getVao(), 0));
 				salvarNumeroDaMaquina(buscarMaquina(getVao(), 0), 0);
-				document.write("<label id='maquina0' onclick='novaJanelaParada();'>"+buscarMaquina(getVao(), 0)+"</label>"); //alert("getVao "+getVao());
+				document.write("<label id='maquina0' onclick='novaJanelaParada();'>"+buscarMaquina(getVao(), 0)+"</label>"); 
 				
 				if(this.matrizSet == 1){
-					document.write("<label><input type='text'id='matriz0' placeholder='"+this.matrizReferencia[0]+"'</label>");//alert("valor vão no get "+ vao);
+					document.write("<label><input type='text'id='matriz0' placeholder='"+this.matrizReferencia[0]+"'</label>");
 					document.write("<label><input type='int'  id='referencia0' placeholder='"+this.matrizReferencia[1]+"'></input></label>");
 				}else{
-					document.write("<label><input type='text'id='matriz0' value='"+this.matrizReferencia[0]+"'</label>");//alert("valor vão no get "+ vao);
+					document.write("<label><input type='text'id='matriz0' value='"+this.matrizReferencia[0]+"'</label>");
 					document.write("<label><input type='int'  id='referencia0' value='"+this.matrizReferencia[1]+"'></input></label>");
 				}
-				document.write("<label><input type='int' placeholder='OP' id='op0'></input></label>");
+				if(this.opSet == 1){
+					document.write("<label><input type='int' placeholder='OP' id='op0'></input></label>");
+				}else{
+					document.write("<label><input type='int' placeholder='OP' id='op0' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 0))+"'></input></label>");
+				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt0'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz0'></input></label>");
 				document.write("<label><input type='text' placeholder='material' id='material0'></input></label>");
