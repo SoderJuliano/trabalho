@@ -113,10 +113,11 @@ label {
 		//alert("PREPARADORES nos Cookies---> "+re);
 		var vao;
 		var preparador;
-		var matrizReferencia = ["",""];
+		var matrizReferencia;
 		var arrayParadas = [];
 		var matrizSet;
 		var opSet;
+		var qntSet;
 		var paradasMaq0=[];
 		var paradasMaq1=[];
 		var paradasMaq2=[];
@@ -170,7 +171,17 @@ label {
 				}
 			}
 		}
-		function pegaOpLocaLStorage(maquina){
+		function pegarQuantidade(maquina){
+			var m = maquina+"_qnt";
+			var qnt = localStorage.getItem(m);
+			if(qnt==null){
+				this.qntSet=1;
+			}else{
+				this.qntSet=0;
+			}
+			return qnt;
+		}
+		function pegarOpLocaLStorage(maquina){
 			var m0 = maquina+"_op";
 			var numero = localStorage.getItem(m0);
 			if(numero==null){
@@ -183,7 +194,7 @@ label {
 		function pegaMatrizLS(maquina){
 			var m0 = maquina+"_matriz";
 			var numero = localStorage.getItem(m0);
-			if(numero==null){
+			if((numero==null)|| (numero=="")){
 				this.matrizReferencia = ["matriz "+maquina, "referencia"];
 				this.matrizSet = 1;
 			}else{
@@ -672,55 +683,59 @@ label {
 			if(this.vao == 4){
 				
 			}else{
-				
-				//maquina 0
-				document.write("<label>Nome </label><input type='text' id='nomeid' value='"+preparador+"' name='nome' />");
+				document.write("<table>");
+				document.write("<th colspan='2'>Nome <input type='text' id='nomeid' value='"+preparador+"' name='nome' /></th>");
 				if(vao!=null){
-					document.write('<label>Selecione a Linha</label><select onchange="selecao();"id="linha" ><option value="'+this.vao+'">'+this.vao+'</option><option value="2" >2</option><option value="3" >3</option></select>');
+					document.write('<th colspan="6" >Selecione a Linha<select onchange="selecao();"id="linha" ><option value="'+this.vao+'">'+this.vao+'</option><option value="2" >2</option><option value="3" >3</option></select></th>');
 				}else{
-					document.write('<label>Selecione a Linha</label><select onchange="selecao();"id="linha" ><option value="0" ></option><option value="2" >2</option><option value="3" >3</option></select>');
+					document.write('<th>Selecione a Linha<select onchange="selecao();"id="linha" ><option value="0" ></option><option value="2" >2</option><option value="3" >3</option></select></th>');
 				}
-				document.write("<label class='labelMetas' onclick='Metas();'>EDITAR METAS</label><br><br>");
-				
+				document.write("<h1><th class='labelMetas' onclick='Metas();'>EDITAR METAS</th></h1><br><br>");
+				document.write("</table>");
 				pegaMatrizLS(buscarMaquina(getVao(), 0));
 				salvarNumeroDaMaquina(buscarMaquina(getVao(), 0), 0);
 				document.write("<table>");
 				document.write("<th id='maquina0' onclick='novaJanelaParada();'>"+buscarMaquina(getVao(), 0)+"</th>"); 
-				pegaMatrizLS('proxima0', 0);
-				localStorage.setItem('proxima0','proxima0');
 				document.write("<th id='proxima0' onclick='novaJanelaParada();'>"+buscarPre(getVao(), 0)+"</th>");
 				
 				document.write("<tr>");
 				if(this.matrizSet == 1){
-					document.write("<td><input type='text'id='matriz0' placeholder='"+this.matrizReferencia[0]+"'</td>");
+					document.write("<td><input type='text'id='matriz0' placeholder='"+this.matrizReferencia[0]+"'></input></td>");
 					document.write("<td><input type='int'  id='referencia0' placeholder='"+this.matrizReferencia[1]+"'></input></td>");
 				}else{
-					document.write("<td><input type='text'id='matriz0' value='"+this.matrizReferencia[0]+"'</td>");
+					document.write("<td><input type='text'id='matriz0' value='"+this.matrizReferencia[0]+"'></input></td>");
 					document.write("<td><input type='int'  id='referencia0' value='"+this.matrizReferencia[1]+"'></input></td>");
 				}
 				if(this.opSet == 1){
 					document.write("<td><input type='int' placeholder='OP' id='op0'></input></td>");
 				}else{
-					document.write("<td><input type='int' placeholder='OP' id='op0' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 0))+"'></input></td>");
+					document.write("<td><input type='int' placeholder='OP' id='op0' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 0))+"'></input></td>");
 				}
-				document.write("<td><input type='int' placeholder='quantidade' id='qnt0'></input></td>");
+				if(this.qntSet == 1){
+					document.write("<td><input type='int' placeholder='quantidade' id='qnt0'></input></td>");
+				}else{
+					document.write("<td><input type='int' value='"+pegarQuantidade(buscarMaquina(getVao(), 0))+"' id='qnt0'></input></td>");
+				}
+				
 				document.write("<td><input type='int' placeholder='produzido' id='qnt_pdz0'></input></td>");
 				document.write("<td><input type='text' placeholder='material' id='material0'></input></td>");
 				document.write("<td><input type='int' placeholder='peso' id='peso0'></input></td><br>");
 				document.write("</tr>");
 				document.write("<tr>");
 				// próxima ordem0
+				pegaMatrizLS('proxima0', 0);
+				localStorage.setItem('proxima0','proxima0');
 				if(this.matrizSet == 1){
-					document.write("<td><input class='proximaCinza' type='text'id='proximaMatriz0' placeholder='"+this.matrizReferencia[0]+"'</td>");//alert("valor vão no get "+ vao);
+					document.write("<td><input class='proximaCinza' type='text'id='proximaMatriz0' placeholder='"+this.matrizReferencia[0]+"'</input></td>");
 					document.write("<td><input class='proximaCinza' type='int'  id='proximaReferencia0' placeholder='"+this.matrizReferencia[1]+"'></input></td>");
 				}else{
-					document.write("<td><input class='proximaCinza' type='text'id='proximaMatriz0' value='"+this.matrizReferencia[0]+"'</td>");//alert("valor vão no get "+ vao);
+					document.write("<td><input class='proximaCinza' type='text'id='proximaMatriz0' value='"+this.matrizReferencia[0]+"'</input></td>");
 					document.write("<td><input class='proximaCinza' type='int'  id='proximaReferencia0' value='"+this.matrizReferencia[1]+"'></input></td>");
 				}
 				if(this.opSet == 1){
 					document.write("<td><input type='int' placeholder='OP' id='proximaOp0'></input></td>");
 				}else{
-					document.write("<td><input type='int' placeholder='OP' id='proximaOp0' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 0))+"'></input></td>");
+					document.write("<td><input type='int' placeholder='OP' id='proximaOp0' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 0))+"'></input></td>");
 				}
 				document.write("<td><input class='proximaCinza' type='int' placeholder='quantidade' id='proximaQnt0'></input></td>");
 				document.write("<td><input class='proximaCinza' type='int' placeholder='produzido' id='proximaQnt_pdz0'></input></td>");
@@ -728,48 +743,52 @@ label {
 				document.write("<td><input class='proximaCinza' type='int' placeholder='peso' id='proximaPeso0'></input></td>");
 				document.write("</tr>");
 				document.write("</table>");
-				document.write("<br><br>");
+				document.write("<br>");
 				//maquina 1
 				
 				pegaMatrizLS(buscarMaquina(getVao(), 1));
 				salvarNumeroDaMaquina(buscarMaquina(getVao(), 1), 1);
-				document.write("<label id='maquina1' onclick='novaJanelaParada();'>"+buscarMaquina(getVao(), 1)+"</label>"); //alert("getVao "+getVao());
-					
-				if(this.matrizSet == 1){
-					document.write("<label><input type='text'id='matriz1' placeholder='"+this.matrizReferencia[0]+"'</label>");//alert("valor vão no get "+ vao);
-					document.write("<label><input type='int'  id='referencia1' placeholder='"+this.matrizReferencia[1]+"'></input></label>");
-				}else{
-					document.write("<label><input type='text'id='matriz1' value='"+this.matrizReferencia[0]+"'</label>");//alert("valor vão no get "+ vao);
-					document.write("<label><input type='int'  id='referencia1' value='"+this.matrizReferencia[1]+"'></input></label>");
-				}
-				if(this.opSet == 1){
-					document.write("<label><input type='int' placeholder='OP' id='op1'></input></label>");
-				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op1' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
-				}
-				document.write("<label><input type='int' placeholder='quantidade' id='qnt1'></input></label>");
-				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz1'></input></label>");
-				document.write("<label><input type='text' placeholder='material' id='material1'></input></label>");
-				document.write("<label><input type='int' placeholder='peso' id='peso1'></input></label><br>");
-				
-				//proxima ordem1
+				document.write("<table>");
+				document.write("<th id='maquina1' onclick='novaJanelaParada();'>"+buscarMaquina(getVao(), 1)+"</th>"); 
+
 				pegaMatrizLS('proxima1', 0);
 				localStorage.setItem('proxima1','proxima1');
-				document.write("<label id='proxima1' onclick='novaJanelaParada();'>"+buscarPre(getVao(), 1)+"</label>"); 
-				
+				document.write("<th id='proxima1' onclick='novaJanelaParada();'>"+buscarPre(getVao(), 1)+"</th>"); 
+				document.write("<tr>");	
 				if(this.matrizSet == 1){
-					document.write("<label><input class='proximaCinza' type='text'id='proximaMatriz1' placeholder='"+this.matrizReferencia[0]+"'</label>");//alert("valor vão no get "+ vao);
-					document.write("<label><input class='proximaCinza' type='int'  id='proximaReferencia1' placeholder='"+this.matrizReferencia[1]+"'></input></label>");
+					document.write("<td><input type='text'id='matriz1' placeholder='"+this.matrizReferencia[0]+"'</input></td>");
+					document.write("<td><input type='int'  id='referencia1' placeholder='"+this.matrizReferencia[1]+"'></input></td>");
 				}else{
-					document.write("<label><input class='proximaCinza' type='text'id='proximaMatriz1' value='"+this.matrizReferencia[0]+"'</label>");//alert("valor vão no get "+ vao);
-					document.write("<label><input class='proximaCinza' type='int'  id='proximaReferencia1' value='"+this.matrizReferencia[1]+"'></input></label>");
+					document.write("<td><input type='text'id='matriz1' value='"+this.matrizReferencia[0]+"'</input></td>");
+					document.write("<td><input type='int'  id='referencia1' value='"+this.matrizReferencia[1]+"'></input></td>");
 				}
-				document.write("<label><input class='proximaCinza' type='int' proximaCinza placeholder='OP' id='proximaOp1'></input></label>");
-				document.write("<label><input class='proximaCinza' type='int' proximaCinza placeholder='quantidade' id='proximaQnt1'></input></label>");
-				document.write("<label><input class='proximaCinza' type='int' proximaCinza placeholder='produzido' id='proximaQnt_pdz1'></input></label>");
-				document.write("<label><input class='proximaCinza' type='text' proximaCinza placeholder='material' id='proximaMaterial1'></input></label>");
-				document.write("<label><input class='proximaCinza' type='int' proximaCinza placeholder='peso' id='proximaPeso1'></input></label>");
+				if(this.opSet == 1){
+					document.write("<td><input type='int' placeholder='OP' id='op1'></input></td>");
+				}else{
+					document.write("<td><input type='int' placeholder='OP' id='op1' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></td>");
+				}
+				document.write("<td><input type='int' placeholder='quantidade' id='qnt1'></input></td>");
+				document.write("<td><input type='int' placeholder='produzido' id='qnt_pdz1'></input></td>");
+				document.write("<td><input type='text' placeholder='material' id='material1'></input></td>");
+				document.write("<td><input type='int' placeholder='peso' id='peso1'></input></td><br>");
 				
+				//proxima ordem1
+				document.write("</tr>");	
+				document.write("<tr>");	
+				if(this.matrizSet == 1){
+					document.write("<td><input class='proximaCinza' type='text'id='proximaMatriz1' placeholder='"+this.matrizReferencia[0]+"'</td>");//alert("valor vão no get "+ vao);
+					document.write("<td><input class='proximaCinza' type='int'  id='proximaReferencia1' placeholder='"+this.matrizReferencia[1]+"'></input></td>");
+				}else{
+					document.write("<td><input class='proximaCinza' type='text'id='proximaMatriz1' value='"+this.matrizReferencia[0]+"'</td>");//alert("valor vão no get "+ vao);
+					document.write("<td><input class='proximaCinza' type='int'  id='proximaReferencia1' value='"+this.matrizReferencia[1]+"'></input></td>");
+				}
+				document.write("<td><input class='proximaCinza' type='int' proximaCinza placeholder='OP' id='proximaOp1'></input></td>");
+				document.write("<td><input class='proximaCinza' type='int' proximaCinza placeholder='quantidade' id='proximaQnt1'></input></td>");
+				document.write("<td><input class='proximaCinza' type='int' proximaCinza placeholder='produzido' id='proximaQnt_pdz1'></input></td>");
+				document.write("<td><input class='proximaCinza' type='text' proximaCinza placeholder='material' id='proximaMaterial1'></input></td>");
+				document.write("<td><input class='proximaCinza' type='int' proximaCinza placeholder='peso' id='proximaPeso1'></input></td>");
+				document.write("</tr>");
+				document.write("</table>");
 				document.write("<br><br>");
 				//maquina 2
 				pegaMatrizLS(buscarMaquina(getVao(), 2));
@@ -786,7 +805,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op2'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op2' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op2' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt2'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz2'></input></label>");
@@ -827,7 +846,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op3'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op3' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op3' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt3'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz3'></input></label>");
@@ -868,7 +887,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op4'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op4' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op4' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt4'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz4'></input></label>");
@@ -909,7 +928,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op5'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op5' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op5' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt5'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz5'></input></label>");
@@ -951,7 +970,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op6'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op6' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op6' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt6'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz6'></input></label>");
@@ -992,7 +1011,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op7'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op7' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op7' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt7'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz7'></input></label>");
@@ -1033,7 +1052,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op8'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op8' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op8' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt8'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz8'></input></label>");
@@ -1075,7 +1094,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op9'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op9' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op9' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt9'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz9'></input></label>");
@@ -1116,7 +1135,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op10'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op10' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op10' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt10'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz10'></input></label>");
@@ -1157,7 +1176,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op11'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op11' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op11' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt11'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz11'></input></label>");
@@ -1198,7 +1217,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op12'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op12' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op12' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt12'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz12'></input></label>");
@@ -1239,7 +1258,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op13'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op13' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op13' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt13'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz13'></input></label>");
@@ -1280,7 +1299,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op14'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op14' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op14' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt14'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz14'></input></label>");
@@ -1321,7 +1340,7 @@ label {
 				if(this.opSet == 1){
 					document.write("<label><input type='int' placeholder='OP' id='op15'></input></label>");
 				}else{
-					document.write("<label><input type='int' placeholder='OP' id='op15' value='"+pegaOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
+					document.write("<label><input type='int' placeholder='OP' id='op15' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></label>");
 				}
 				document.write("<label><input type='int' placeholder='quantidade' id='qnt15'></input></label>");
 				document.write("<label><input type='int' placeholder='produzido' id='qnt_pdz15'></input></label>");
