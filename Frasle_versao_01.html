@@ -118,6 +118,8 @@ label {
 		var matrizSet;
 		var opSet;
 		var qntSet;
+		var matSet;
+		var peSet;
 		var paradasMaq0=[];
 		var paradasMaq1=[];
 		var paradasMaq2=[];
@@ -170,6 +172,26 @@ label {
 					}
 				}
 			}
+		}
+		function pegarPesoLocalStorage(maquina){
+			var m = maquina+"_peso";
+			var peso = localStorage.getItem(m);
+			if(peso==null){
+				this.matSet=1;
+			}else{
+				this.matSet=0;
+			}
+			return peso;
+		}
+		function pegarMaterialLocalStorage(maquina){
+			var m = maquina+"_material";
+			var material = localStorage.getItem(m);
+			if(material==null){
+				this.matSet=1;
+			}else{
+				this.matSet=0;
+			}
+			return material;
 		}
 		function pegarQuantidade(maquina){
 			var m = maquina+"_qnt";
@@ -714,12 +736,19 @@ label {
 				if(this.qntSet == 1){
 					document.write("<td><input type='int' placeholder='quantidade' id='qnt0'></input></td>");
 				}else{
-					document.write("<td><input type='int' value='"+pegarQuantidade(buscarMaquina(getVao(), 0))+"' id='qnt0'></input></td>");
+					document.write("<td><input type='int' placeholder='quantidade' value='"+pegarQuantidade(buscarMaquina(getVao(), 0))+"' id='qnt0'></input></td>");
 				}
-				
 				document.write("<td><input type='int' placeholder='produzido' id='qnt_pdz0'></input></td>");
-				document.write("<td><input type='text' placeholder='material' id='material0'></input></td>");
-				document.write("<td><input type='int' placeholder='peso' id='peso0'></input></td><br>");
+				if(this.matSet == 1){
+					document.write("<td><input type='text' placeholder='material' id='material0'></input></td>");
+				}else{
+					document.write("<td><input type='text' placeholder='material' id='material0' value='"+pegarMaterialLocalStorage(buscarMaquina(getVao(), 0))+"'></input></td>");
+				}
+				if(this.peSet == 1){
+					document.write("<td><input type='int' placeholder='peso' id='peso0'></input></td><br>");
+				}else{
+					document.write("<td><input type='int' placeholder='peso' id='peso0' value='"+pegarPesoLocalStorage(buscarMaquina(getVao(), 0))+"'></input></td><br>");
+				}
 				document.write("</tr>");
 				document.write("<tr>");
 				// próxima ordem0
@@ -733,14 +762,25 @@ label {
 					document.write("<td><input class='proximaCinza' type='int'  id='proximaReferencia0' value='"+this.matrizReferencia[1]+"'></input></td>");
 				}
 				if(this.opSet == 1){
-					document.write("<td><input type='int' placeholder='OP' id='proximaOp0'></input></td>");
+					document.write("<td><input  class='proximaCinza' type='int' placeholder='OP' id='proximaOp0'></input></td>");
 				}else{
-					document.write("<td><input type='int' placeholder='OP' id='proximaOp0' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 0))+"'></input></td>");
+					document.write("<td><input  class='proximaCinza' type='int' placeholder='OP' id='proximaOp0' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 0))+"'></input></td>");
+				}if(this.qntSet == 1){
+					document.write("<td><input  class='proximaCinza' type='int' placeholder='quantidade' id='proximaQnt0'></input></td>");
+				}else{
+					document.write("<td><input  class='proximaCinza' type='int' placeholder='quantidade' value='"+pegarQuantidade('proxima0')+"' id='proximaQnt0'></input></td>");
 				}
-				document.write("<td><input class='proximaCinza' type='int' placeholder='quantidade' id='proximaQnt0'></input></td>");
 				document.write("<td><input class='proximaCinza' type='int' placeholder='produzido' id='proximaQnt_pdz0'></input></td>");
-				document.write("<td><input class='proximaCinza' type='text' placeholder='material' id='proximaMaterial0'></input></td>");
-				document.write("<td><input class='proximaCinza' type='int' placeholder='peso' id='proximaPeso0'></input></td>");
+				if(this.matSet == 1){
+					document.write("<td><input class='proximaCinza' type='text' placeholder='material' id='proximaMaterial0'></input></td>");
+				}else{
+					document.write("<td><input class='proximaCinza' type='text' placeholder='material' id='proximaMaterial0' value='"+pegarMaterialLocalStorage('proxima0')+"'></input></td>");
+				}
+				if(this.peSet == 1){
+					document.write("<td><input class='proximaCinza' type='int' placeholder='peso' id='proximaPeso0'></input></td>");
+				}else{
+					document.write("<td><input class='proximaCinza' type='int' placeholder='peso' id='proximaPeso0' value='"+pegarPesoLocalStorage('proxima0')+"'></input></td>");
+				}
 				document.write("</tr>");
 				document.write("</table>");
 				document.write("<br>");
@@ -750,16 +790,14 @@ label {
 				salvarNumeroDaMaquina(buscarMaquina(getVao(), 1), 1);
 				document.write("<table>");
 				document.write("<th id='maquina1' onclick='novaJanelaParada();'>"+buscarMaquina(getVao(), 1)+"</th>"); 
-
-				pegaMatrizLS('proxima1', 0);
-				localStorage.setItem('proxima1','proxima1');
-				document.write("<th id='proxima1' onclick='novaJanelaParada();'>"+buscarPre(getVao(), 1)+"</th>"); 
-				document.write("<tr>");	
+				document.write("<th id='proxima1' onclick='novaJanelaParada();'>"+buscarPre(getVao(), 1)+"</th>");
+				
+				document.write("<tr>");
 				if(this.matrizSet == 1){
-					document.write("<td><input type='text'id='matriz1' placeholder='"+this.matrizReferencia[0]+"'</input></td>");
+					document.write("<td><input type='text'id='matriz1' placeholder='"+this.matrizReferencia[0]+"'></input></td>");
 					document.write("<td><input type='int'  id='referencia1' placeholder='"+this.matrizReferencia[1]+"'></input></td>");
 				}else{
-					document.write("<td><input type='text'id='matriz1' value='"+this.matrizReferencia[0]+"'</input></td>");
+					document.write("<td><input type='text' id='matriz1' value='"+this.matrizReferencia[0]+"'></input></td>");
 					document.write("<td><input type='int'  id='referencia1' value='"+this.matrizReferencia[1]+"'></input></td>");
 				}
 				if(this.opSet == 1){
@@ -767,29 +805,57 @@ label {
 				}else{
 					document.write("<td><input type='int' placeholder='OP' id='op1' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 1))+"'></input></td>");
 				}
-				document.write("<td><input type='int' placeholder='quantidade' id='qnt1'></input></td>");
+				if(this.qntSet == 1){
+					document.write("<td><input type='int' placeholder='quantidade' id='qnt1'></input></td>");
+				}else{
+					document.write("<td><input type='int' placeholder='quantidade' value='"+pegarQuantidade(buscarMaquina(getVao(), 1))+"' id='qnt1'></input></td>");
+				}
 				document.write("<td><input type='int' placeholder='produzido' id='qnt_pdz1'></input></td>");
-				document.write("<td><input type='text' placeholder='material' id='material1'></input></td>");
-				document.write("<td><input type='int' placeholder='peso' id='peso1'></input></td><br>");
-				
-				//proxima ordem1
-				document.write("</tr>");	
-				document.write("<tr>");	
+				if(this.matSet == 1){
+					document.write("<td><input type='text' placeholder='material' id='material1'></input></td>");
+				}else{
+					document.write("<td><input type='text' placeholder='material' id='material1' value='"+pegarMaterialLocalStorage(buscarMaquina(getVao(), 1))+"'></input></td>");
+				}
+				if(this.peSet == 1){
+					document.write("<td><input type='int' placeholder='peso' id='peso1'></input></td><br>");
+				}else{
+					document.write("<td><input type='int' placeholder='peso' id='peso1' value='"+pegarPesoLocalStorage(buscarMaquina(getVao(), 1))+"'></input></td><br>");
+				}
+				document.write("</tr>");
+				document.write("<tr>");
+				// próxima ordem0
+				pegaMatrizLS('proxima1', 0);
+				localStorage.setItem('proxima1','proxima1');
 				if(this.matrizSet == 1){
-					document.write("<td><input class='proximaCinza' type='text'id='proximaMatriz1' placeholder='"+this.matrizReferencia[0]+"'</td>");//alert("valor vão no get "+ vao);
+					document.write("<td><input class='proximaCinza' type='text'id='proximaMatriz1' placeholder='"+this.matrizReferencia[0]+"'</input></td>");
 					document.write("<td><input class='proximaCinza' type='int'  id='proximaReferencia1' placeholder='"+this.matrizReferencia[1]+"'></input></td>");
 				}else{
-					document.write("<td><input class='proximaCinza' type='text'id='proximaMatriz1' value='"+this.matrizReferencia[0]+"'</td>");//alert("valor vão no get "+ vao);
+					document.write("<td><input class='proximaCinza' type='text'id='proximaMatriz1' value='"+this.matrizReferencia[0]+"'</input></td>");
 					document.write("<td><input class='proximaCinza' type='int'  id='proximaReferencia1' value='"+this.matrizReferencia[1]+"'></input></td>");
 				}
-				document.write("<td><input class='proximaCinza' type='int' proximaCinza placeholder='OP' id='proximaOp1'></input></td>");
-				document.write("<td><input class='proximaCinza' type='int' proximaCinza placeholder='quantidade' id='proximaQnt1'></input></td>");
-				document.write("<td><input class='proximaCinza' type='int' proximaCinza placeholder='produzido' id='proximaQnt_pdz1'></input></td>");
-				document.write("<td><input class='proximaCinza' type='text' proximaCinza placeholder='material' id='proximaMaterial1'></input></td>");
-				document.write("<td><input class='proximaCinza' type='int' proximaCinza placeholder='peso' id='proximaPeso1'></input></td>");
+				if(this.opSet == 1){
+					document.write("<td><input  class='proximaCinza' type='int' placeholder='OP' id='proximaOp1'></input></td>");
+				}else{
+					document.write("<td><input  class='proximaCinza' type='int' placeholder='OP' id='proximaOp1' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), 0))+"'></input></td>");
+				}if(this.qntSet == 1){
+					document.write("<td><input  class='proximaCinza' type='int' placeholder='quantidade' id='proximaQnt1'></input></td>");
+				}else{
+					document.write("<td><input  class='proximaCinza' type='int' placeholder='quantidade' value='"+pegarQuantidade('proxima1')+"' id='proximaQnt0'></input></td>");
+				}
+				document.write("<td><input class='proximaCinza' type='int' placeholder='produzido' id='proximaQnt_pdz1'></input></td>");
+				if(this.matSet == 1){
+					document.write("<td><input class='proximaCinza' type='text' placeholder='material' id='proximaMaterial1'></input></td>");
+				}else{
+					document.write("<td><input class='proximaCinza' type='text' placeholder='material' id='proximaMaterial1' value='"+pegarMaterialLocalStorage('proxima1')+"'></input></td>");
+				}
+				if(this.peSet == 1){
+					document.write("<td><input class='proximaCinza' type='int' placeholder='peso' id='proximaPeso1'></input></td>");
+				}else{
+					document.write("<td><input class='proximaCinza' type='int' placeholder='peso' id='proximaPeso1' value='"+pegarPesoLocalStorage('proxima1')+"'></input></td>");
+				}
 				document.write("</tr>");
 				document.write("</table>");
-				document.write("<br><br>");
+				document.write("<br>");
 				//maquina 2
 				pegaMatrizLS(buscarMaquina(getVao(), 2));
 				salvarNumeroDaMaquina(buscarMaquina(getVao(), 2), 2);
