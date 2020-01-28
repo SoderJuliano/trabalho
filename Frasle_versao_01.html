@@ -108,8 +108,10 @@ label {
 	<script>
 	
 		var re = document.cookie;
-		var array = re.split(";");
-		var resposta = array[0].split("=");
+                if(re!=null){
+                    var array = re.split(";");
+                    var resposta = array[0].split("=");
+                }
 		//alert("PREPARADORES nos Cookies---> "+re);
 		var vao;
 		var preparador;
@@ -117,7 +119,8 @@ label {
 		var arrayParadas = [];
 		var matrizSet;
 		var opSet;
-		var qntSet;
+		var qntSet=1;
+                var mat;
 		var paradasMaq0=[];
 		var paradasMaq1=[];
 		var paradasMaq2=[];
@@ -170,6 +173,16 @@ label {
 					}
 				}
 			}
+		}
+                function pegarMaterialLocalStorage(maquina){
+			var m = maquina+"_material";
+			var ma = localStorage.getItem(m);
+			if(ma==null){
+				this.mat=1;
+			}else{
+				this.mat=0;
+			}
+			return ma;
 		}
 		function pegarQuantidade(maquina){
 			var m = maquina+"_qnt";
@@ -716,8 +729,12 @@ label {
 				}else{
 					document.write("<td><input type='int' value='"+pegarQuantidade(buscarMaquina(getVao(), 0))+"' id='qnt0'></input></td>");
 				}
-				
 				document.write("<td><input type='int' placeholder='produzido' id='qnt_pdz0'></input></td>");
+                                if(this.mat == 1){
+					document.write("<td><input type='text' placeholder='material' id='material0'></input></td>");
+				}else{
+					document.write("<td><input type='text' value='"+pegarMaterialLocalStorage(buscarMaquina(getVao(), 0))+"' id='material0'></input></td>");
+				}
 				document.write("<td><input type='text' placeholder='material' id='material0'></input></td>");
 				document.write("<td><input type='int' placeholder='peso' id='peso0'></input></td><br>");
 				document.write("</tr>");
