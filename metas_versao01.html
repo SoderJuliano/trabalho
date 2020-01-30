@@ -4,6 +4,31 @@
 <meta charset="ISO-8859-1">
     <title>Controle de Producao</title>
 	<style>
+  table
+        {
+            width: 250px;
+            font: 17px Calibri;
+        }
+        table, th, td 
+        {
+            border: solid 1px #DDD;
+            border-collapse: collapse;
+            padding: 3px 6px;
+            text-align: center;
+            color: #191970;
+        }
+		body {
+    padding: 0;
+    margin: 0;
+    background-color:#00CED1;
+}
+ 
+form {
+    font-family: Verdana,Tahoma,sans-serif;
+    font-size: 15px;
+    background-color: #98FB98;
+    max-width: 1100px;
+}
 select {
 	border-color: #000066;
     box-shadow: 5px 0px 9px #FFFF00;
@@ -20,16 +45,17 @@ h1 {
     text-shadow: 5px 5px 5px black;
 }
  
-.input, text {
-	width:100px;
-	font-size: 10px;
+input, text, button {
+	width:80px;
+	font-size: 17px;
     padding: 10px;
     color: black;
     margin-left: 20px;
     -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
+    -moz-border-radius: 15px;
     border: 1px solid;
     border-radius:1em;
+    text-align: center;
 }
  
 input:hover, textarea :hover, input:focus, textarea:focus {
@@ -38,20 +64,29 @@ input:hover, textarea :hover, input:focus, textarea:focus {
     background-color: #66FFFF;
     color: black;
     font-weight: bold;
+    text-align: center;
 }
  
-submit, input {
+.submit input {
     background-color: #66FFFF;
-    height: 15px;
-    width: 60px;
+    height: 40px;
+    width: 100px;
     font-weight: bold;
+    font-size:17px;
     border-radius: 5px;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
     border: 1px solid;
     color: black;
 }
- 
+input.proximaCinza {
+background-color: #c8c8c8;
+}
+.labelMetas{
+	color: black;
+    font-weight: bold;
+    font-size: 20px;
+}
 textarea {
     width: 400px;
     height: 120px;
@@ -61,37 +96,13 @@ textarea {
  
 table {
     margin-left: 20px;
-    color: #FFFFFF;
+    color: #191970;;
     font-weight: bold;
 }
 label {
     margin-left: 20px;
-    color: #FFFFFF;
-    font-weight: bold;
-}
- 
-form {
-    font-family:courier,arial,helvetica;
-    font-size: 14px;
-    background-color: #CCCCCC;
-	background-size: contain;
-	background-size: 90%;
-	background-size: 3em;
-	background-size: auto 1em;
-	background-size: 60% 25%;
-}
-input.parada{
-	width:500px;
-	font-size: 10px;
-    padding: 10px;
-    color: black;
-    margin-left: 20px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border: 1px solid;
-    border-radius:1em;
-}
-    </style>
+    color: #191970;
+    font-weight: bold;    </style>
 </head>
 <body style="height:100%; width:97%;">
 
@@ -140,22 +151,30 @@ var bt = ["<button id='bt1'; action='aplicar()'>Aplicar</button>"];
 	document.write(bt);
 	function aplicar(){
 		for(var i = 0; i<metas.legenth; i++){
-			var m = new Maquina();
-			this.listaMaquina.push(m);
-			meta = document.getElementById("meta"+[i]).textContent;
-			producao = document.getElementById("pd"+[i]).textContent;
-			telaCiclo = document.getElementById("tc"+[i]).textContent;
+			var nM = maquinas[i]; // nM= numero Maquina
+			var m = new Maquina(nM); // objeto Maquina
+			
+			m.meta = document.getElementById("meta"+[i]).textContent;
+			var ciclos = document.getElementById("pd"+[i]).textContent;
+			m.telaCiclo = document.getElementById("tc"+[i]).textContent;
 			var ponto = meta.split();
+			
 			if(meta==ponto.includes(',')){
-				
+				alert("utilizar '.' ao invés de ','");	
+				break;
+			}else{
+				m.init(meta, telhaCiclo, this.pecaPorTelha);
+				m.setProducao(telhaCiclo*ciclos);
 			}
-			m.init(meta, 0, telhaCiclo);
+			
+			this.listaMaquina.push(m);
 		}
 	}
-	function Maquina(){
+	function Maquina(numero){
+		var numero = numero;
 		var meta;
 		var telhaPorCiclo;
-		var pecaPorTelha;
+		var pecaPorTelha = 3.75;
 		var realizada;
 	}
 	Maquina.prototype.init = function(m, tCiclo, pt){
