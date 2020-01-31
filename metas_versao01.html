@@ -4,8 +4,7 @@
 <meta charset="ISO-8859-1">
     <title>Controle de Producao</title>
 	<style>
-  table
-        {
+  table{
             width: 250px;
             font: 17px Calibri;
         }
@@ -38,7 +37,7 @@ select {
     max-width: 500px;
 	border-radius:1em;
 }
-h1 {
+h1, nav {
     margin-bottom: 20px;
     margin-left: 20px;
     color: #66FFFF;
@@ -106,7 +105,7 @@ label {
 </head>
 <body style="height:100%; width:97%;">
 
-<form id='metas_form' method='GET' action='resultado.html'>
+<form id='metas_form' >
 
 <script>
 var maquina = "maquina";
@@ -132,8 +131,10 @@ var paradas = ["<input class='parada' placeholder='ex. parada 1 // parada 2 // p
 	"<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='p7'></input>","<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //' id='p8'></input>","<input  class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //' id='p9'></input>","<input  class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //' id='p10'></input>",
 	"<input  id='p11' class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>","<input  id='pd12' class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>","<input  id='p13' class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>","<input  id='p14'  class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>",
 	"<input  id='p15' class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>"];
-var bt = ["<button id='bt1'; action='aplicar()'>Aplicar</button>"];
+var bt = ["<button id='bt1'; onclick='aplicar()'>Aplicar</button>"];
 
+	document.write("<nav> <a href='/html/'>Tirar a Producao</a></nav>"); 
+	
 	for(var i = 0; i<16; i++){
 		if((!localStorage.getItem(maquina+i)) && (i<10)){
 			alert("Primeiramente selecione, ao lado, o vao de maquinas");
@@ -144,34 +145,24 @@ var bt = ["<button id='bt1'; action='aplicar()'>Aplicar</button>"];
 		document.write("<label>"+maquinas[i]+"</label>");
 		document.write(metas[i]);
 		document.write(telhaCiclo[i]);
-		document.write(ciclos[i]);
 		document.write(paradas[i]);
 		document.write("<br>");
 	}
 	document.write(bt);
 	function aplicar(){
-		for(var i = 0; i<metas.legenth; i++){
+		for(var i = 0; i<maquinas.length; i++){
 			var nM = maquinas[i]; // nM= numero Maquina
 			var m = new Maquina(nM); // objeto Maquina
-			
-			m.meta = document.getElementById("meta"+[i]).textContent;
-			var ciclos = document.getElementById("pd"+[i]).textContent;
+			var t = "meta"+[i];
+			meta = document.getElementById(t).value;
+			alert(meta);
 			m.telaCiclo = document.getElementById("tc"+[i]).textContent;
 			var ponto = meta.split();
-			
-			if(meta==ponto.includes(',')){
-				alert("utilizar '.' ao invés de ','");	
-				break;
-			}else{
-				m.init(meta, telhaCiclo, this.pecaPorTelha);
-				m.setProducao(telhaCiclo*ciclos);
-			}
-			
 			this.listaMaquina.push(m);
 		}
 	}
-	function Maquina(numero){
-		var numero = numero;
+	function Maquina(n){
+		var numero = n;
 		var meta;
 		var telhaPorCiclo;
 		var pecaPorTelha = 3.75;
@@ -199,8 +190,8 @@ var bt = ["<button id='bt1'; action='aplicar()'>Aplicar</button>"];
 		var irog = ((producao/meta)*100);
 		return irog;
 	}
-	function getId(){
-		alert(document.getElementById('meta0').textContent);
+	Maquina.prototype.getNumero = function(){
+		return numero;
 	}
 </script>
 </form>

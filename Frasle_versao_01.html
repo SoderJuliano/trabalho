@@ -17,12 +17,12 @@
             text-align: center;
             color: #191970;
         }
-		body {
+body {
     padding: 0;
     margin: 0;
     background-color:#00CED1;
 }
- 
+
 form {
     font-family: Verdana,Tahoma,sans-serif;
     font-size: 15px;
@@ -38,11 +38,14 @@ select {
     max-width: 500px;
 	border-radius:1em;
 }
-h1 {
+h1, nav {
     margin-bottom: 20px;
     margin-left: 20px;
     color: #66FFFF;
-    text-shadow: 5px 5px 5px black;
+    text-shadow: 3px 3px 3px black;
+  	text-align: center;
+ 	border-bottom: 1px solid #555;
+ 	font-size: 20px;
 }
  
 input, text, button {
@@ -106,6 +109,10 @@ label {
     margin-left: 20px;
     color: #191970;
     font-weight: bold;
+}
+nav a:hover {
+  background-color: #555;
+  color: white;
 }
     </style>
 </head>
@@ -697,15 +704,16 @@ label {
 		}
 		
 	</script>
-		<form name="meu_form" method="GET" action="trabalho_versao_01.html">
- 	<div class="cabecalho" style="background-image: url('https://wrautopecas.com.br/site/wp-content/uploads/2016/01/logotipo-frasle-300x200.png');">
-        <h1>Producao</h1>
-		<label>Linha & Preparador</label>
-		<p class="nome">
-	
+<nav>
+ 	
+    <a href='/html/'>Tirar a Producao</a> | <a heref=''>Producao</a> | <a href=''>Linha & Preparador</a> |
+
+</nav>	
+	<p class="nome">
+	<form name="meu_form" method="GET" action="trabalho_versao_01.html">
 <script>
+document.write("<div class='cabecalho' style='background-image: url('https://wrautopecas.com.br/site/wp-content/uploads/2016/01/logotipo-frasle-300x200.png');'>");		
 			init();
-				
 			if(this.vao == 4){
 				
 			}else{
