@@ -16,6 +16,13 @@
             text-align: center;
             color: #191970;
         }
+.tableR{
+	 		border: solid 1px #DDD;
+            border-collapse: collapse;
+            padding: 3px 6px;
+            text-align: center;
+            color: #191970;
+}
 		body {
     padding: 0;
     margin: 0;
@@ -103,27 +110,23 @@ label {
     color: #191970;
     font-weight: bold;    </style>
 </head>
-<body style="height:100%; width:90%;">
-
+<body style="height:100%; width:100%;">
+<div id="metas">
 <form id='metas_form' >
 
 <script>
 document.write("<br>");
-var bt = ["<button onclick='aplicar()'>Aplicar</button>"];
+var bt = ["<button><p id='relatorio'>Relatório de producao</p></button>"];
 var maquina = "maquina";
 var maquinas = [];
 var listaMaquinas = [];
 var metas = [];
 var telhaCiclo = [];
-
-var paradas = ["<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //' id='p0' ></input>", "<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='p1'></input>", "<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='p2'></input>",
-	"<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='p3'></input>", "<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='p4'></input>", "<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='pd5'></input>","<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='p6'></input>",
-	"<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'  id='p7'></input>","<input class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //' id='p8'></input>","<input  class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //' id='p9'></input>","<input  class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //' id='p10'></input>",
-	"<input  id='p11' class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>","<input  id='pd12' class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>","<input  id='p13' class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>","<input  id='p14'  class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>",
-	"<input  id='p15' class='parada' placeholder='ex. parada 1 // parada 2 // parada 3 //'></input>"];
 var cargasOP = [];
 var cargasTurno = [];
-
+var listaProducao = [];
+var turno = ['<label>Turno <select onchange="turno();"id="turno" ><option value="1">1/2<option value="3" >3</option></select></label><br><br>'];
+document.write(turno);
 	for(var i = 0; i <16; i++){
 		if((!localStorage.getItem(maquina+i)) && (i<10)){
 			alert("Primeiramente selecione, ao lado, o vao de maquinas");
@@ -145,7 +148,6 @@ var cargasTurno = [];
 			cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"'></input>");
 			telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo'></input>");
 		}
-		
 		document.write("<label>"+maquinas[i]+"</label>");
 		document.write(metas[i]);
 		document.write(telhaCiclo[i]);
@@ -156,7 +158,7 @@ var cargasTurno = [];
 	}
 	document.write("<br>");
 	document.write(bt);
-	
+document.write("</div>");
 	function verificarLS(maquina){
 		var ma = maquina+"_metas";
 		if(localStorage.getItem(maquinas[i]+"_metas")!=null){
@@ -166,8 +168,8 @@ var cargasTurno = [];
 		}
 	}
 	function novaJanelaProducao(){
-			window.open('producao.html', 'janela', 'width=795, height=590, top=100, left=699, scrollbars=no, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
-		}
+		window.open('producao.html', 'janela', 'width=795, height=590, top=100, left=699, scrollbars=no, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
+	}
 	function verificarPeca(numero){
 		var ref = localStorage.getItem(numero+"_referencia");
 		var lista4 = ['2240', '4707', '4515', '4709'];
@@ -195,9 +197,17 @@ var cargasTurno = [];
 			var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
 			localStorage.setItem(m.numero+"_metas", mm);
 			var p = new Producao(m.numero, m.getProducaoTelhas(), m.getProducaoEmPeca());
-			//p.calculaQuilos();
+			p.calculaQuilos();
+			quantidadeOp(m.numero, m.realizadaOP, m.telhaPorCiclo);
 			listaMaquinas.push(m);
+			listaProducao.push(p);
 		}
+		resultado(listaMaquinas, listaProducao);
+	}
+	function quantidadeOp(maquina, ciclos, telhaPorCiclo){
+			var produzido = ciclos*telhaPorCiclo;
+			localStorage.setItem(maquina+"_qntFeita", produzido);
+			window.location.reload()
 	}
 	function recuperarObject(numero){
 		var m = new Maquina(numero);
@@ -235,8 +245,8 @@ var cargasTurno = [];
 		var peso = localStorage.getItem(qlos);
 		return this.producaoQuilos = ((peso*this.proucaoTelhas)/1000);
 	}
-	function Maquina(n){
-		this.numero = n;
+	function Maquina(n){ // recebe o número da máquina
+		this.numero = n; 
 		this.meta;
 		this.telhaPorCiclo;
 		this.pecaPorTelha = 3.75;
@@ -254,7 +264,7 @@ var cargasTurno = [];
 		if(this.pecaPorTelha!=null){
 			peca = pdr*this.pecaPorTelha;
 		}else{
-			peca = pdr*3.75;	
+			peca = pdr*3.75;
 		}
 		return peca;
 	}
@@ -262,6 +272,24 @@ var cargasTurno = [];
 		var irg = ((producao/meta)*100);
 		this.irog = irg;
 		return irg;
+	}
+	document.getElementById("relatorio").onclick = function() {myFunction()};
+
+	function myFunction() {
+	  document.getElementById("metas").innerHTML = aplicar();
+	}
+	function resultado(maquinas, p){
+		document.write("<table style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>");
+		document.write("<th>maquina</th><th>telhas</th><th>peças</th><th>quilos</th>");
+		for(var i = 0; i< maquinas.length; i++){
+			document.write("<tr>");
+			document.write("<td>"+maquinas[i].numero+"</td>");
+			document.write("<td>"+p[i].proucaoTelhas+" T</td>");
+			document.write("<td>"+p[i].producaoPecas+" Pcs</td>");
+			document.write("<td>"+p[i].producaoQuilos+" kg.</td>");
+			document.write("</tr>");
+		}
+		document.write("</table>");
 	}
 </script>
 </form>
