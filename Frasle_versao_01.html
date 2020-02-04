@@ -342,7 +342,7 @@ nav a:hover {
 			window.open('janelaPerda.html', 'janela', 'width=795, height=590, top=100, left=699, scrollbars=no, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
 		}
 		function Metas(){
-			window.open('metas_versao01.html', 'janela', 'width=795, height=590, top=100, left=699, scrollbars=yes, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=yes' );
+			window.open('metas_versao01.html', 'janela', 'width=795, height=860, top=100, left=699, scrollbars=yes, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=yes' );
 		}
 		function salvarMatrizLS(matriz, ref){
 			localStorage.setItem(matriz, ref);
@@ -354,7 +354,6 @@ nav a:hover {
 			localStorage.setItem("maquina"+i, maquina);
 		}
 		function salvarOP(maquina, op){
-			alert("salvar maquina "+maquina+" op  "+op);
 			localStorage.setItem(maquina+"_op", op);
 		}
 		function salvarQnt(maquina, qnt){ //para usar no for do set inicial
