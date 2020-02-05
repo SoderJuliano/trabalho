@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+<meta charset="ISO-8859-1">
+    <title>Controle de Producao</title>
+	<style>
+  table{
+            width: 250px;
+            font: 12px Calibri;
+        }
+        table, th, td 
+        {
+            border: solid 1px #DDD;
+            border-collapse: collapse;
+            padding: 3px 6px;
+            text-align: center;
+            color: #191970;
+        }
+.tableR{
+	 		border: solid 1px #DDD;
+            border-collapse: collapse;
+            padding: 3px 6px;
+            text-align: center;
+            color: #191970;
+}
+		body {
+    padding: 0;
+    margin: 0;
+    background-color:#00CED1;
+}
+ 
+form {
+    font-family: Verdana,Tahoma,sans-serif;
+    font-size: 12px;
+    background-color: #98FB98;
+    max-width: 1100px;
+}
+select {
+	border-color: #000066;
+    box-shadow: 5px 0px 9px #FFFF00;
+    font-family: Verdana,Tahoma,sans-serif;
+    font-size: 12px;
+    background-color: #XX9999;
+    max-width: 500px;
+	border-radius:1em;
+}
+h1, nav {
+    margin-bottom: 20px;
+    margin-left: 20px;
+    color: #66FFFF;
+    text-shadow: 5px 5px 5px black;
+}
+ 
+input, text, button {
+	width:80px;
+	font-size: 12px;
+    padding: 10px;
+    color: black;
+    margin-left: 20px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 15px;
+    border: 1px solid;
+    border-radius:1em;
+    text-align: center;
+}
+ 
+input:hover, textarea :hover, input:focus, textarea:focus {
+    border-color: #000066;
+    box-shadow: 5px 0px 9px #FFFF00;
+    background-color: #66FFFF;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+}
+ 
+.submit input {
+    background-color: #66FFFF;
+    height: 40px;
+    width: 100px;
+    font-weight: bold;
+    font-size:17px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border: 1px solid;
+    color: black;
+}
+input.proximaCinza {
+background-color: #c8c8c8;
+}
+.labelMetas{
+	color: black;
+    font-weight: bold;
+    font-size: 14px;
+}
+textarea {
+    width: 400px;
+    height: 120px;
+    line-height: 20px;
+    max-width: 400px;
+}
+ 
+table {
+    margin-left: 20px;
+    color: #191970;;
+    font-weight: bold;
+}
+label {
+    margin-left: 20px;
+    color: #191970;
+    font-weight: bold;    </style>
+</head>
+<body style="height:100%; width:100%;">
+<div id="metas">
+<form id='metas_form' >
+
+<script>
+document.write("<br>");
+var bt = ["<button><p id='relatorio'>Relatório de producao</p></button>"];
+var maquina = "maquina";
+var maquinas = [];
+var listaMaquinas = [];
+var metas = [];
+var telhaCiclo = [];
+var cargasOP = [];
+var cargasTurno = [];
+var listaProducao = [];
+var turno = ['<label>Turno <select onchange="turno();"id="turno" ><option value="1">1/2<option value="3" >3</option></select></label><br><br>'];
+document.write(turno);
+	for(var i = 0; i <16; i++){
+		if((!localStorage.getItem(maquina+i)) && (i<10)){
+			alert("Primeiramente selecione, ao lado, o vao de maquinas");
+		}else{
+			var maq = localStorage.getItem(maquina+i);
+			maquinas.push(maq);
+		}
+		if(localStorage.getItem(maquinas[i]+"_metas")!=null){
+			var ob = recuperarObject(maquinas[i]);
+		}
+		if(verificarLS(maquinas[i])==true){
+			metas.push("<input type='int' id='meta"+i+"' placeholder='meta' value='"+ob.meta+"'></input>");
+			cargasOP.push("<input type='int' placeholder='cargas/OP' id='cOp"+i+"' value='"+ob.realizadaOP+"'></input>");
+			cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"' value='"+ob.realizadaTurno+"'></input>");
+			telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo' value='"+ob.telhaPorCiclo+"'></input>");
+		}else{
+			metas.push("<input type='int' id='meta"+i+"' placeholder='meta'></input>");
+			cargasOP.push("<input type='int' placeholder='cargas/OP' id='cOp"+i+"'></input>");
+			cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"'></input>");
+			telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo'></input>");
+		}
+		document.write("<label>"+maquinas[i]+"</label>");
+		document.write(metas[i]);
+		document.write(telhaCiclo[i]);
+		document.write(cargasOP[i]);
+		document.write(cargasTurno[i]);
+		document.write("<br>");
+		
+	}
+	document.write("<br>");
+	document.write(bt);
+document.write("</div>");
+	function verificarLS(maquina){
+		var ma = maquina+"_metas";
+		if(localStorage.getItem(maquinas[i]+"_metas")!=null){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	function novaJanelaProducao(){
+		window.open('producao.html', 'janela', 'width=795, height=590, top=100, left=699, scrollbars=no, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
+	}
+	function verificarPeca(numero){
+		var ref = localStorage.getItem(numero+"_referencia");
+		var lista4 = ['2240', '4707', '4515', '4709'];
+		var retorno;
+		var arrey = ref.split("-");
+		for(var i=0;i<lista4.length;i++){
+			if(lista4[i]==arrey[0]){
+				retorno = 4;
+			}else{
+				retorno = 3;
+			}
+		}
+		return retorno;
+	}
+	function turno(){
+		var t = document.getElementById("turno").value;
+		sessionStorage.setItem("turno", t);
+	}
+	function aplicar(){
+		for(var i = 0; i<maquinas.length; i++){
+			var nM = maquinas[i]; // nM= numero Maquina
+			var m = new Maquina(nM); // objeto Maquina
+			var t = "meta"+[i];
+			m.meta = document.getElementById(t).value; 
+			m.telhaPorCiclo = document.getElementById("tc"+[i]).value;
+			m.realizadaOP = document.getElementById("cOp"+[i]).value;
+			m.realizadaTurno = document.getElementById("cT"+[i]).value;
+			m.pecaPorTelha = verificarPeca(m.numero);
+			var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
+			var p = new Producao(m.numero, m.getProducaoTelhas(), m.getProducaoEmPeca());
+			p.calculaQuilos();
+			quantidadeOp(m.numero, m.realizadaOP, m.telhaPorCiclo);
+			listaMaquinas.push(m);
+			listaProducao.push(p);
+			p.calculaIrog(m.meta);
+			localStorage.setItem(m.numero+"_metas"+p.turno, mm);
+			var pp = "maquina:"+p.maquina+";proucaoTelhas:"+p.proucaoTelhas";producaoPecas:"+p.producaoPecas+";producaoQuilos:"+p.producaoQuilos+";irog:"+p.irog;
+		}
+		resultado(listaMaquinas, listaProducao);
+	}
+	function quantidadeOp(maquina, ciclos, telhaPorCiclo){
+			var produzido = ciclos*telhaPorCiclo;
+			localStorage.setItem(maquina+"_qntFeita", produzido);
+			window.location.reload()
+	}
+	function recuperarObject(numero){
+		var m = new Maquina(numero);
+		var n = numero+"_metas";
+		var objeto = localStorage.getItem(n);
+		var array1 = objeto.split(";");
+		for(var i = 0; i< array1.length;i++){
+			var array2 = array1[i].split(":");
+			if(i==0){
+				m.telhaPorCiclo = array2[1];
+			}
+			if(i==1){
+				m.meta = array2[1];
+			}
+			if(i==2){
+				m.pecaPorTelha = array2[1];
+			}
+			if(i==3){
+				m.realizadaOP = array2[1];
+			}
+			if(i==4){
+				m.realizadaTurno = array2[1];
+			}
+		}
+		return m;
+	}
+	function Producao(maquina, telhas, pecas){
+		this.maquina = maquina;
+		this.proucaoTelhas = telhas;
+		this.producaoPecas = pecas;
+		this.producaoQuilos;
+		this.irog = 0;
+		this.turno = sessionStorage.getItem("turno");
+	}
+	Producao.prototype.calculaQuilos = function(){
+		var qlos = this.maquina+"_peso";
+		var peso = localStorage.getItem(qlos);
+		return this.producaoQuilos = ((peso*this.proucaoTelhas)/1000);
+	}
+	function Maquina(n){ // recebe o número da máquina
+		this.numero = n; 
+		this.meta;
+		this.telhaPorCiclo;
+		this.pecaPorTelha = 3.75;
+		this.realizadaOP;
+		this.realizadaTurno;
+	}
+	Maquina.prototype.getProducaoTelhas = function(){
+		return this.telhaPorCiclo*this.realizadaTurno;
+	}
+	Maquina.prototype.getProducaoEmPeca = function(){
+		var peca;
+		var pdr = this.getProducaoTelhas();
+		if(this.pecaPorTelha!=null){
+			peca = pdr*this.pecaPorTelha;
+		}else{
+			peca = pdr*3.75;
+		}
+		return peca;
+	}
+	
+	Producao.prototype.calculaIrog = function(meta){
+		var irg;
+		if(meta!=null){
+			irg = ((this.proucaoTelhas/meta)*100);
+		}
+		var arredondado = parseFloat(irg.toFixed(2));
+		this.irog = arredondado;
+		return arredondado;
+	}
+	document.getElementById("relatorio").onclick = function() {myFunction()};
+
+	function myFunction() {
+	  document.getElementById("metas").innerHTML = aplicar();
+	}
+	function resultado(maquinas, p){
+		document.write("<table style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>");
+		document.write("<th>maquina</th><th>telhas</th><th>Irog</th><th>peças</th><th>quilos</th>");
+		for(var i = 0; i< maquinas.length; i++){
+			document.write("<tr style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>");
+			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+maquinas[i].numero+"</td>");
+			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+p[i].proucaoTelhas+" T</td>");
+			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+p[i].irog+"%</td>");
+			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+p[i].producaoPecas+" Pcs</td>");
+			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+p[i].producaoQuilos+" kg.</td>");
+			document.write("</tr>");
+		}
+		document.write("</table>");
+	}
+</script>
+</form>
+
+</body>
+</html>
