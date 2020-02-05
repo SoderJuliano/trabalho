@@ -126,19 +126,18 @@ var telhaCiclo = [];
 var cargasOP = [];
 var cargasTurno = [];
 var listaProducao = [];
-var turno = ['<label>Turno <select onchange="turno();"id="turno" ><option value="1">1/2<option value="3" >3</option></select></label><br><br>'];
+var turno = ['<label>Turno <select onChange="turno();"id="turno" ><option value="1">1/2<option value="3" >3</option></select></label><br><br>'];
 document.write(turno);
+
 	for(var i = 0; i <16; i++){
-		if((!localStorage.getItem(maquina+i)) && (i<10)){
-			alert("Primeiramente selecione, ao lado, o vao de maquinas");
+		if(!localStorage.getItem(maquina+i)){
+			alert("Erro - Primeiramente selecione, ao lado, o vao de maquinas");
 		}else{
 			var maq = localStorage.getItem(maquina+i);
 			maquinas.push(maq);
 		}
-		if(localStorage.getItem(maquinas[i]+"_metas")!=null){
+		if(localStorage.getItem(maquinas[i]+"_metas"+getTurno())!=null){
 			var ob = recuperarObject(maquinas[i]);
-		}
-		if(verificarLS(maquinas[i])==true){
 			metas.push("<input type='int' id='meta"+i+"' placeholder='meta' value='"+ob.meta+"'></input>");
 			cargasOP.push("<input type='int' placeholder='cargas/OP' id='cOp"+i+"' value='"+ob.realizadaOP+"'></input>");
 			cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"' value='"+ob.realizadaTurno+"'></input>");
@@ -161,7 +160,7 @@ document.write(turno);
 	document.write(bt);
 document.write("</div>");
 	function verificarLS(maquina){
-		var ma = maquina+"_metas";
+		var ma = maquina+"_metas"+getTurno();
 		if(localStorage.getItem(maquinas[i]+"_metas")!=null){
 			return true;
 		}else{
@@ -193,33 +192,39 @@ document.write("</div>");
 		for(var i = 0; i<maquinas.length; i++){
 			var nM = maquinas[i]; // nM= numero Maquina
 			var m = new Maquina(nM); // objeto Maquina
-			var t = "meta"+[i];
-			m.meta = document.getElementById(t).value; 
-			m.telhaPorCiclo = document.getElementById("tc"+[i]).value;
-			m.realizadaOP = document.getElementById("cOp"+[i]).value;
-			m.realizadaTurno = document.getElementById("cT"+[i]).value;
-			m.pecaPorTelha = verificarPeca(m.numero);
-			var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
+			
+			m.meta = document.getElementById("meta"+[i]).value;  alert("meta:"+m.meta);
+			m.telhaPorCiclo = document.getElementById("tc"+[i]).value; alert("telhaCiclo:"+m.telhaPorCiclo);
+			m.realizadaOP = document.getElementById("cOp"+[i]).value; alert("realizadaOP"+m.realizadaOP);
+			m.realizadaTurno = document.getElementById("cT"+[i]).value; alert("Rturno"+m.realizadaTurno);
+			m.pecaPorTelha = verificarPeca(m.numero); alert(m.pecaPorTelha);
+			
 			var p = new Producao(m.numero, m.getProducaoTelhas(), m.getProducaoEmPeca());
-			p.calculaQuilos();
+			p.calculaQuilos(); alert("kg"+p.calculaQuilos());
+			p.calculaIrog(m.meta); alert("irog - "+p.irog);
 			quantidadeOp(m.numero, m.realizadaOP, m.telhaPorCiclo);
 			listaMaquinas.push(m);
 			listaProducao.push(p);
-			p.calculaIrog(m.meta); 
+			
+			var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
 			localStorage.setItem(m.numero+"_metas"+p.turno, mm);
 			var pp = "maquina:"+p.maquina+";proucaoTelhas:"+p.proucaoTelhas+";producaoPecas:"+p.producaoPecas+";producaoQuilos:"+p.producaoQuilos+";irog:"+p.irog;
-			localStorage.setItem(p.data+p.maquina+p.turno+"_producao", pp);
+			localStorage.setItem(p.data+"_data"+p.maquina+p.turno+"_producao", pp);
 		}
 		resultado(listaMaquinas, listaProducao);
 	}
 	function quantidadeOp(maquina, ciclos, telhaPorCiclo){
 			var produzido = ciclos*telhaPorCiclo;
 			localStorage.setItem(maquina+"_qntFeita", produzido);
-			window.location.reload()
+			//window.location.reload();
 	}
 	function recuperarObject(numero){
 		var m = new Maquina(numero);
-		var n = numero+"_metas";
+		var t = getTurno();
+		if(t==2){
+			t=1;
+		}
+		var n = numero+"_metas"+t;
 		var objeto = localStorage.getItem(n);
 		var array1 = objeto.split(";");
 		for(var i = 0; i< array1.length;i++){
@@ -245,8 +250,7 @@ document.write("</div>");
 	function getTurno(){
 		var t;
 		now = new Date();
-		horas = now.getHours()
-		alert(horas);
+		horas = now.getHours();
 		if((horas>6) && (horas<15)){
 			sessionStorage.setItem("turno", 1);
 			t = 1;

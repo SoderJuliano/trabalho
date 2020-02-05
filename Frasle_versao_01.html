@@ -170,6 +170,19 @@ nav a:hover {
 		var preVao2 = ["1587", "1628", "1882", "1588", "11202", "11203", "10094", "1636", "1622", "1599", "1881",
 			"1879", "1660", "1585", "10180", "11519"];
 		
+		setInterval(lookForChange, 15000);
+		
+		function lookForChange(){
+			for(var i=0;i<16;i++){
+				var pesoInput = "peso"+i;
+				var maquinaInput = "maquina"+i;
+				var maquina = document.getElementById(maquinaInput).textContent;
+				var peso = document.getElementById(pesoInput).value;
+				if (peso != localStorage.getItem(pesoInput)) {
+			    	localStorage.setItem(maquina+"_peso", peso);
+			    }
+			}
+		}
 		function buscarIndice(maquina, vao){
 			if(vao == 2){
 				for(var i = 0; i<listaMaquinas2; i++){
@@ -701,7 +714,6 @@ nav a:hover {
 			salvarPeso('proxima15', document.getElementById('proximaPeso15').value);
 			
 		}
-		
 	</script>
 <nav>
  	
@@ -757,9 +769,9 @@ document.write("<div class='cabecalho' style='background-image: url('https://wra
 					document.write("<td><input type='text' placeholder='material' id='material0' value='"+pegarMaterialLocalStorage(buscarMaquina(getVao(), 0))+"'></input></td>");
 				}
 				if(this.peSet == 1){
-					document.write("<td><input type='int' placeholder='peso' id='peso0'></input></td><br>");
+					document.write("<td><input onChange='salvarPeso(document.getElementById('maquina0').textContent, document.getElementById('peso0').value)' type='int' placeholder='peso' id='peso0'></input></td><br>");
 				}else{
-					document.write("<td><input type='int' placeholder='peso' id='peso0' value='"+pegarPesoLocalStorage(buscarMaquina(getVao(), 0))+"'></input></td><br>");
+					document.write("<td><input onChange='salvarPeso(document.getElementById('maquina0').textContent, document.getElementById('peso0').value)' type='int' placeholder='peso' id='peso0' value='"+pegarPesoLocalStorage(buscarMaquina(getVao(), 0))+"'></input></td><br>");
 				}
 				document.write("</tr>");
 				document.write("<tr>");
