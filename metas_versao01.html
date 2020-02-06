@@ -4,26 +4,7 @@
 <meta charset="ISO-8859-1">
     <title>Controle de Producao</title>
 	<style>
-  table{
-            width: 250px;
-            font: 12px Calibri;
-        }
-        table, th, td 
-        {
-            border: solid 1px #DDD;
-            border-collapse: collapse;
-            padding: 3px 6px;
-            text-align: center;
-            color: #191970;
-        }
-.tableR{
-	 		border: solid 1px #DDD;
-            border-collapse: collapse;
-            padding: 3px 6px;
-            text-align: center;
-            color: #191970;
-}
-		body {
+body {
     padding: 0;
     margin: 0;
     background-color:#00CED1;
@@ -104,19 +85,29 @@ table {
     margin-left: 20px;
     color: #191970;;
     font-weight: bold;
+    position: fixed;
+  	top: 1%;
+  	width: 8em;
+ 	margin-top: +2.5em;
 }
 label {
     margin-left: 20px;
     color: #191970;
-    font-weight: bold;    
+    font-weight: bold;  
+} 
+button{
+	 position: fixed;
+  	top: 80%;
+  	width: 8em;
+ 	margin-top: +5.5em;
+}
 </style>
 </head>
 <body style="height:100%; width:100%;">
 <div id="metas">
 <form id='metas_form' >
-
+<!-- type="text/javascript" src="js/meu-arquivo.js"> -->
 <script>
-document.write("<br>");
 var bt = ["<button><p id='relatorio'>Relatório de producao</p></button>"];
 var maquina = "maquina";
 var maquinas = [];
@@ -126,36 +117,40 @@ var telhaCiclo = [];
 var cargasOP = [];
 var cargasTurno = [];
 var listaProducao = [];
-var turno = ['<label>Turno <select onChange="turno();"id="turno" ><option value="1">1/2<option value="3" >3</option></select></label><br><br>'];
-document.write(turno);
 
+document.write("<table style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>");
+document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas feita OP</th><th>cargas feita turno</th>");
 	for(var i = 0; i <16; i++){
-		if(!localStorage.getItem(maquina+i)){
-			alert("Erro - Primeiramente selecione, ao lado, o vao de maquinas");
-		}else{
-			var maq = localStorage.getItem(maquina+i);
-			maquinas.push(maq);
-		}
-		if(localStorage.getItem(maquinas[i]+"_metas"+getTurno())!=null){
-			var ob = recuperarObject(maquinas[i]);
-			metas.push("<input type='int' id='meta"+i+"' placeholder='meta' value='"+ob.meta+"'></input>");
-			cargasOP.push("<input type='int' placeholder='cargas/OP' id='cOp"+i+"' value='"+ob.realizadaOP+"'></input>");
-			cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"' value='"+ob.realizadaTurno+"'></input>");
-			telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo' value='"+ob.telhaPorCiclo+"'></input>");
-		}else{
-			metas.push("<input type='int' id='meta"+i+"' placeholder='meta'></input>");
-			cargasOP.push("<input type='int' placeholder='cargas/OP' id='cOp"+i+"'></input>");
-			cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"'></input>");
-			telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo'></input>");
-		}
-		document.write("<label>"+maquinas[i]+"</label>");
-		document.write(metas[i]);
-		document.write(telhaCiclo[i]);
-		document.write(cargasOP[i]);
-		document.write(cargasTurno[i]);
-		document.write("<br>");
-		
+			if(!localStorage.getItem(maquina+i)){
+				alert("Erro - Primeiramente selecione, ao lado, o vao de maquinas");
+			}else{
+				var maq = localStorage.getItem(maquina+i);
+				maquinas.push(maq);
+			}
+			if(localStorage.getItem(maquinas[i]+"_metas"+getTurno())!=null){
+				var ob = recuperarObject(maquinas[i]);
+				metas.push("<input type='int' id='meta"+i+"' placeholder='meta' value='"+ob.meta+"'></input>");
+				cargasOP.push("<input type='int' placeholder='cargas/OP' id='cOp"+i+"' value='"+ob.realizadaOP+"'></input>");
+				cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"' value='"+ob.realizadaTurno+"'></input>");
+				telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo' value='"+ob.telhaPorCiclo+"'></input>");
+			}else{
+				metas.push("<input type='int' id='meta"+i+"' placeholder='meta'></input>");
+				cargasOP.push("<input type='int' placeholder='cargas/OP' id='cOp"+i+"'></input>");
+				cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"'></input>");
+				telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo'></input>");
+			}
+			
+			document.write("<tr>");
+			document.write("<td><label>"+maquinas[i]+"</label></td>");
+			document.write("<td>"+metas[i]+"</td>");
+			document.write("<td>"+telhaCiclo[i]+"</td>");
+			document.write("<td>"+cargasOP[i]+"</td>");
+			document.write("<td>"+cargasTurno[i]+"</td>");
+			document.write("</tr>");
+			document.write("<br>");
+			
 	}
+	document.write("</table>");
 	document.write("<br>");
 	document.write(bt);
 document.write("</div>");
@@ -189,6 +184,7 @@ document.write("</div>");
 		sessionStorage.setItem("turno", t);
 	}
 	function aplicar(){
+		alert("aplicar");
 		for(var i = 0; i<maquinas.length; i++){
 			var nM = maquinas[i]; // nM= numero Maquina
 			var m = new Maquina(nM); // objeto Maquina
