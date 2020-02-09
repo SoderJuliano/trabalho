@@ -2,18 +2,30 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<<<<<<< HEAD
+    <script type="text/javascript" src="classes.js"></script>
+	<title>Controle de Producao</title>
+	<script type="text/javascript" src="js/teste.js"></script>
+=======
     <title>Controle de Producao</title>
+>>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 	<style>
 body {
     padding: 0;
     margin: 0;
+<<<<<<< HEAD
+=======
     background-color:#00CED1;
+>>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 }
  
 form {
     font-family: Verdana,Tahoma,sans-serif;
     font-size: 12px;
+<<<<<<< HEAD
+=======
     background-color: #98FB98;
+>>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
     max-width: 1100px;
 }
 select {
@@ -103,11 +115,18 @@ button{
 }
 </style>
 </head>
+<<<<<<< HEAD
+<body style="height:100%; width:100%;"> 
+<form id='metas_form' >
+<script>
+
+=======
 <body style="height:100%; width:100%;">
 <div id="metas">
 <form id='metas_form' >
 <!-- type="text/javascript" src="js/meu-arquivo.js"> -->
 <script>
+>>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 var bt = ["<button><p id='relatorio'>Relatório de producao</p></button>"];
 var maquina = "maquina";
 var maquinas = [];
@@ -117,14 +136,33 @@ var telhaCiclo = [];
 var cargasOP = [];
 var cargasTurno = [];
 var listaProducao = [];
+<<<<<<< HEAD
+var somasTelhas=0;
+var somasMetas=0;
+var somasPecas=0;
+var contMetas=0;
+var somasQuilos=0;
 
+setInterval(diaHoraTurno, 1000);
+function diaHoraTurno(){
+  document.getElementById("hora").innerHTML = getDiaDaSemana()+". "+getHours()+" turno: "+getTurno();
+ return getDiaDaSemana()+". "+getHours()+" turno: "+getTurno();
+}
+document.write("<p id='hora'></p>");
+=======
+
+>>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 document.write("<table style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>");
 document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas feita OP</th><th>cargas feita turno</th>");
 	for(var i = 0; i <16; i++){
 			if(!localStorage.getItem(maquina+i)){
 				alert("Erro - Primeiramente selecione, ao lado, o vao de maquinas");
 			}else{
+<<<<<<< HEAD
+				var maq = localStorage.getItem(maquina+i);  
+=======
 				var maq = localStorage.getItem(maquina+i);
+>>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 				maquinas.push(maq);
 			}
 			if(localStorage.getItem(maquinas[i]+"_metas"+getTurno())!=null){
@@ -134,12 +172,19 @@ document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas fei
 				cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"' value='"+ob.realizadaTurno+"'></input>");
 				telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo' value='"+ob.telhaPorCiclo+"'></input>");
 			}else{
+<<<<<<< HEAD
+				metas.push("<input type='int' id='meta"+i+"' placeholder='meta'></input>"); 
+=======
 				metas.push("<input type='int' id='meta"+i+"' placeholder='meta'></input>");
+>>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 				cargasOP.push("<input type='int' placeholder='cargas/OP' id='cOp"+i+"'></input>");
 				cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"'></input>");
 				telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo'></input>");
 			}
+<<<<<<< HEAD
+=======
 			
+>>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 			document.write("<tr>");
 			document.write("<td><label>"+maquinas[i]+"</label></td>");
 			document.write("<td>"+metas[i]+"</td>");
@@ -153,6 +198,9 @@ document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas fei
 	document.write("</table>");
 	document.write("<br>");
 	document.write(bt);
+<<<<<<< HEAD
+	
+=======
 document.write("</div>");
 	function verificarLS(maquina){
 		var ma = maquina+"_metas"+getTurno();
@@ -313,12 +361,31 @@ document.write("</div>");
 		this.irog = arredondado;
 		return arredondado;
 	}
+>>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 	document.getElementById("relatorio").onclick = function() {myFunction()};
 
 	function myFunction() {
 	  document.getElementById("metas").innerHTML = aplicar();
 	}
+<<<<<<< HEAD
+	function resultado(maquinas, p, somas, pecas, metas, cont, quilos){
+		
+		setInterval(lookForChange, 1500);
+		function lookForChange(){
+				var contact1 = document.getElementById("contatos1").value;
+				var contact2 = document.getElementById("contatos2").value;
+				var copia = document.getElementById("conn").value;
+				var array=[];
+				array.push(contact1);
+				array.push(contact2);
+				setContatos(2, array, copia);
+		}
+		
+		var contatos = [c0=['','',''], c1=['William', 'william.daros@fras-le.com', 'líder'], c2=['Rose', 'roselaine.silva@fras-le.com', 'assistente adiministrativo'], c3=['Marcio', 'marcio.branco@fras-le.com', 'analista']];
+		document.write("<div id='tabela'>");
+=======
 	function resultado(maquinas, p){
+>>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 		document.write("<table style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>");
 		document.write("<th>maquina</th><th>telhas</th><th>Irog</th><th>peças</th><th>quilos</th>");
 		for(var i = 0; i< maquinas.length; i++){
@@ -329,10 +396,45 @@ document.write("</div>");
 			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+p[i].producaoPecas+" Pcs</td>");
 			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+p[i].producaoQuilos+" kg.</td>");
 			document.write("</tr>");
+<<<<<<< HEAD
+			this.corpoDoEmail.push(+maquinas[i].numero+" --------- "+p[i].proucaoTelhas+"T ---------"+p[i].irog+"% ---------"+p[i].producaoPecas+"pcs ------ "+p[i].producaoQuilos+"kg.\n");
+		}
+		this.corpoDoEmail[0] = "MAQUINAS\t TELLHAS\t IROG\t\t PECAS\t KG\n"+this.corpoDoEmail[0];
+		this.corpoDoEmail.push("\nSoma telhas: "+somas);
+		this.corpoDoEmail.push("\nIrog da linha: "+(metas/cont));
+		this.corpoDoEmail.push("\nSoma pecas: "+pecas);
+		this.corpoDoEmail.push("\nKG: "+quilos);
+		document.write("<h3>Soma telhas: "+somas+"</h3>"); 
+		document.write("<h3>Soma peças: "+pecas+"</h3>");
+		document.write("<h3>Irog: "+(metas/cont)+"%</h3>");
+		document.write("<h3>Soma quilos: "+quilos+"kg</h3>");
+		document.write("</table>");
+		document.write("</div><br>");
+		document.write('<button onclick="sendMail(); return false">Enviar E-MAIL</button>');
+		document.write("<p> para: contato 1 <select id='contatos1'>");
+		for(var y=0;y<contatos.length;y++){
+			document.write("<option id='c1"+y+"' value='"+contatos[y][1]+"'> "+contatos[y][0]+": "+contatos[y][2]+"</option>");
+		}document.write("</select>");
+		document.write("2<select id='contatos2'></p>");
+		for(var y=0;y<contatos.length;y++){
+			document.write("<option id='c2"+y+"' value='"+contatos[y][1]+"'> "+contatos[y][0]+": "+contatos[y][2]+"</option>");
+		}document.write("</select>");
+		document.write("Em cópia: <select id='conn'></p>");
+		for(var y=0;y<contatos.length;y++){
+			document.write("<option id='c2"+y+"' value='"+contatos[y][1]+"'> "+contatos[y][0]+": "+contatos[y][2]+"</option>");
+		}document.write("</select>");
+		
+		//var ctt = "william.daros@fras-le.com";
+		//document.write("<a href='javascript:OpenOutlookNewEmail()' >email</a>");
+	}
+</script>
+
+=======
 		}
 		document.write("</table>");
 	}
 </script>
+>>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 </form>
 
 </body>

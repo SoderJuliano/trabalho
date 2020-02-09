@@ -3,108 +3,41 @@
 <head>
 <meta charset="ISO-8859-1">
     <title>Controle de Producao</title>
-	<style>
-        table
-        {
-            width: 250px;
-            font: 17px Calibri;
-        }
-        table, th, td 
-        {
-            border: solid 2px #DDD;
-            border-collapse: collapse;
-            padding: 3px 6px;
-            text-align: center;
-        }
-		body {
-    padding: 0;
-    margin: 0;
-}
- 
-form {
-    font-family: Verdana,Tahoma,sans-serif;
-    font-size: 15px;
-    background-color: #CC3300;
-    max-width: 1350px;
-}
-select {
-	border-color: #000066;
-    box-shadow: 5px 0px 9px #FFFF00;
-    font-family: Verdana,Tahoma,sans-serif;
-    font-size: 20px;
-    background-color: #XX9999;
-    max-width: 500px;
-	border-radius:1em;
-}
-h1 {
-    margin-bottom: 20px;
-    margin-left: 20px;
-    color: #66FFFF;
-    text-shadow: 5px 5px 5px black;
-}
- 
-input, text {
-	width:80px;
-	font-size: 13px;
-    padding: 10px;
-    color: black;
-    margin-left: 20px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 15px;
-    border: 1px solid;
-    border-radius:1em;
-}
- 
-input:hover, textarea :hover, input:focus, textarea:focus {
-    border-color: #000066;
-    box-shadow: 5px 0px 9px #FFFF00;
-    background-color: #66FFFF;
-    color: black;
-    font-weight: bold;
-}
- 
-.submit input {
-    background-color: #66FFFF;
-    height: 40px;
-    width: 100px;
-    font-weight: bold;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border: 1px solid;
-    color: black;
-}
- 
+      <style>
+        
 textarea {
     width: 400px;
     height: 120px;
     line-height: 20px;
     max-width: 400px;
 }
- 
-table {
-    margin-left: 20px;
-    color: #FFFFFF;
-    font-weight: bold;
-}
-label {
-    margin-left: 20px;
-    color: #FFFFFF;
-    font-weight: bold;
-}
-    </style>
-</head>
-<body style="height:100%; width:50%;">
-<textarea id="txtArea" rows="4" cols="50">
-
-</textarea>
-<input type=button onclick="javascript:window.close()" value="Fechar">
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-
-function salvarParadas(){
-	var paradas = document.getElementById("txtArea").textContent;
-	
-}
+$(document).ready(function(){
+  $("#bt1").click(function(){
+        $("#div1").fadeIn();
+        $("#div2").fadeIn("slow");
+        $("#div3").fadeIn(3000);
+  });
+  $("#bt2").click(function(){
+        $("#div1").fadeOut();
+        $("#div2").fadeOut("slow");
+        $("#div3").fadeOut(3000);
+  });
+});
 </script>
+</head>
+<body>
+<div id="div1" style="display:none;">
+      <p>paradas prensa:</p>
+      <textarea id="textArea" rows="20">
+      </textarea>
+</div><br>
+<div id="div2" style="width:80px;height:80px;display:none;background-color:green;"></div><br>
+<div id="div3" style="width:80px;height:80px;display:none;background-color:blue;"></div>
+
+<button id="bt1">aparecer</button>
+<button id="bt2">desaparecer</button>
 </body>
 </html>
