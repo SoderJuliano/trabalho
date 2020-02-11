@@ -2,30 +2,18 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<<<<<<< HEAD
     <script type="text/javascript" src="classes.js"></script>
 	<title>Controle de Producao</title>
 	<script type="text/javascript" src="js/teste.js"></script>
-=======
-    <title>Controle de Producao</title>
->>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 	<style>
 body {
     padding: 0;
     margin: 0;
-<<<<<<< HEAD
-=======
-    background-color:#00CED1;
->>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 }
  
 form {
     font-family: Verdana,Tahoma,sans-serif;
     font-size: 12px;
-<<<<<<< HEAD
-=======
-    background-color: #98FB98;
->>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
     max-width: 1100px;
 }
 select {
@@ -115,18 +103,10 @@ button{
 }
 </style>
 </head>
-<<<<<<< HEAD
 <body style="height:100%; width:100%;"> 
 <form id='metas_form' >
 <script>
 
-=======
-<body style="height:100%; width:100%;">
-<div id="metas">
-<form id='metas_form' >
-<!-- type="text/javascript" src="js/meu-arquivo.js"> -->
-<script>
->>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 var bt = ["<button><p id='relatorio'>Relatório de producao</p></button>"];
 var maquina = "maquina";
 var maquinas = [];
@@ -136,7 +116,6 @@ var telhaCiclo = [];
 var cargasOP = [];
 var cargasTurno = [];
 var listaProducao = [];
-<<<<<<< HEAD
 var somasTelhas=0;
 var somasMetas=0;
 var somasPecas=0;
@@ -149,20 +128,13 @@ function diaHoraTurno(){
  return getDiaDaSemana()+". "+getHours()+" turno: "+getTurno();
 }
 document.write("<p id='hora'></p>");
-=======
-
->>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 document.write("<table style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>");
 document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas feita OP</th><th>cargas feita turno</th>");
 	for(var i = 0; i <16; i++){
 			if(!localStorage.getItem(maquina+i)){
 				alert("Erro - Primeiramente selecione, ao lado, o vao de maquinas");
 			}else{
-<<<<<<< HEAD
 				var maq = localStorage.getItem(maquina+i);  
-=======
-				var maq = localStorage.getItem(maquina+i);
->>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 				maquinas.push(maq);
 			}
 			if(localStorage.getItem(maquinas[i]+"_metas"+getTurno())!=null){
@@ -172,19 +144,11 @@ document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas fei
 				cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"' value='"+ob.realizadaTurno+"'></input>");
 				telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo' value='"+ob.telhaPorCiclo+"'></input>");
 			}else{
-<<<<<<< HEAD
 				metas.push("<input type='int' id='meta"+i+"' placeholder='meta'></input>"); 
-=======
-				metas.push("<input type='int' id='meta"+i+"' placeholder='meta'></input>");
->>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 				cargasOP.push("<input type='int' placeholder='cargas/OP' id='cOp"+i+"'></input>");
 				cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"'></input>");
 				telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo'></input>");
 			}
-<<<<<<< HEAD
-=======
-			
->>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 			document.write("<tr>");
 			document.write("<td><label>"+maquinas[i]+"</label></td>");
 			document.write("<td>"+metas[i]+"</td>");
@@ -198,176 +162,12 @@ document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas fei
 	document.write("</table>");
 	document.write("<br>");
 	document.write(bt);
-<<<<<<< HEAD
 	
-=======
-document.write("</div>");
-	function verificarLS(maquina){
-		var ma = maquina+"_metas"+getTurno();
-		if(localStorage.getItem(maquinas[i]+"_metas")!=null){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	function novaJanelaProducao(){
-		window.open('producao.html', 'janela', 'width=795, height=590, top=100, left=699, scrollbars=no, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
-	}
-	function verificarPeca(numero){
-		var ref = localStorage.getItem(numero+"_referencia");
-		var lista4 = ['2240', '4707', '4515', '4709'];
-		var retorno;
-		var arrey = ref.split("-");
-		for(var i=0;i<lista4.length;i++){
-			if(lista4[i]==arrey[0]){
-				retorno = 4;
-			}else{
-				retorno = 3;
-			}
-		}
-		return retorno;
-	}
-	function turno(){
-		var t = document.getElementById("turno").value;
-		sessionStorage.setItem("turno", t);
-	}
-	function aplicar(){
-		alert("aplicar");
-		for(var i = 0; i<maquinas.length; i++){
-			var nM = maquinas[i]; // nM= numero Maquina
-			var m = new Maquina(nM); // objeto Maquina
-			
-			m.meta = document.getElementById("meta"+[i]).value;  alert("meta:"+m.meta);
-			m.telhaPorCiclo = document.getElementById("tc"+[i]).value; alert("telhaCiclo:"+m.telhaPorCiclo);
-			m.realizadaOP = document.getElementById("cOp"+[i]).value; alert("realizadaOP"+m.realizadaOP);
-			m.realizadaTurno = document.getElementById("cT"+[i]).value; alert("Rturno"+m.realizadaTurno);
-			m.pecaPorTelha = verificarPeca(m.numero); alert(m.pecaPorTelha);
-			
-			var p = new Producao(m.numero, m.getProducaoTelhas(), m.getProducaoEmPeca());
-			p.calculaQuilos(); alert("kg"+p.calculaQuilos());
-			p.calculaIrog(m.meta); alert("irog - "+p.irog);
-			quantidadeOp(m.numero, m.realizadaOP, m.telhaPorCiclo);
-			listaMaquinas.push(m);
-			listaProducao.push(p);
-			
-			var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
-			localStorage.setItem(m.numero+"_metas"+p.turno, mm);
-			var pp = "maquina:"+p.maquina+";proucaoTelhas:"+p.proucaoTelhas+";producaoPecas:"+p.producaoPecas+";producaoQuilos:"+p.producaoQuilos+";irog:"+p.irog;
-			localStorage.setItem(p.data+"_data"+p.maquina+p.turno+"_producao", pp);
-		}
-		resultado(listaMaquinas, listaProducao);
-	}
-	function quantidadeOp(maquina, ciclos, telhaPorCiclo){
-			var produzido = ciclos*telhaPorCiclo;
-			localStorage.setItem(maquina+"_qntFeita", produzido);
-			//window.location.reload();
-	}
-	function recuperarObject(numero){
-		var m = new Maquina(numero);
-		var t = getTurno();
-		if(t==2){
-			t=1;
-		}
-		var n = numero+"_metas"+t;
-		var objeto = localStorage.getItem(n);
-		var array1 = objeto.split(";");
-		for(var i = 0; i< array1.length;i++){
-			var array2 = array1[i].split(":");
-			if(i==0){
-				m.telhaPorCiclo = array2[1];
-			}
-			if(i==1){
-				m.meta = array2[1];
-			}
-			if(i==2){
-				m.pecaPorTelha = array2[1];
-			}
-			if(i==3){
-				m.realizadaOP = array2[1];
-			}
-			if(i==4){
-				m.realizadaTurno = array2[1];
-			}
-		}
-		return m;
-	}
-	function getTurno(){
-		var t;
-		now = new Date();
-		horas = now.getHours();
-		if((horas>6) && (horas<15)){
-			sessionStorage.setItem("turno", 1);
-			t = 1;
-		}else if((horas>15) && (horas<24)){
-			t = 2;
-			sessionStorage.setItem("turno", t);
-		}else{
-			t = 3;
-			sessionStorage.setItem("turno", t);
-		}
-		return t;
-	}
-	function Producao(maquina, telhas, pecas){
-		this.maquina = maquina;
-		this.proucaoTelhas = telhas;
-		this.producaoPecas = pecas;
-		this.producaoQuilos;
-		this.irog = 0;
-		this.turno = getTurno();
-		this.data = getData();
-	}
-	function getData(){
-			now = new Date();
-			d = now.getDate();
-			var m = 1;
-			m += now.getMonth();
-			y = now.getFullYear();
-			var dt = d+"/"+m+"/"+y;
-			return dt;
-	}
-	Producao.prototype.calculaQuilos = function(){
-		var qlos = this.maquina+"_peso";
-		var peso = localStorage.getItem(qlos);
-		return this.producaoQuilos = ((peso*this.proucaoTelhas)/1000);
-	}
-	function Maquina(n){ // recebe o número da máquina
-		this.numero = n; 
-		this.meta;
-		this.telhaPorCiclo;
-		this.pecaPorTelha = 3.75;
-		this.realizadaOP;
-		this.realizadaTurno;
-	}
-	Maquina.prototype.getProducaoTelhas = function(){
-		return this.telhaPorCiclo*this.realizadaTurno;
-	}
-	Maquina.prototype.getProducaoEmPeca = function(){
-		var peca;
-		var pdr = this.getProducaoTelhas();
-		if(this.pecaPorTelha!=null){
-			peca = pdr*this.pecaPorTelha;
-		}else{
-			peca = pdr*3.75;
-		}
-		return peca;
-	}
-	
-	Producao.prototype.calculaIrog = function(meta){
-		var irg;
-		if(meta!=null){
-			irg = ((this.proucaoTelhas/meta)*100);
-		}
-		var arredondado = parseFloat(irg.toFixed(2));
-		this.irog = arredondado;
-		return arredondado;
-	}
->>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 	document.getElementById("relatorio").onclick = function() {myFunction()};
 
 	function myFunction() {
 	  document.getElementById("metas").innerHTML = aplicar();
 	}
-<<<<<<< HEAD
 	function resultado(maquinas, p, somas, pecas, metas, cont, quilos){
 		
 		setInterval(lookForChange, 1500);
@@ -383,9 +183,6 @@ document.write("</div>");
 		
 		var contatos = [c0=['','',''], c1=['William', 'william.daros@fras-le.com', 'líder'], c2=['Rose', 'roselaine.silva@fras-le.com', 'assistente adiministrativo'], c3=['Marcio', 'marcio.branco@fras-le.com', 'analista']];
 		document.write("<div id='tabela'>");
-=======
-	function resultado(maquinas, p){
->>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 		document.write("<table style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>");
 		document.write("<th>maquina</th><th>telhas</th><th>Irog</th><th>peças</th><th>quilos</th>");
 		for(var i = 0; i< maquinas.length; i++){
@@ -396,7 +193,6 @@ document.write("</div>");
 			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+p[i].producaoPecas+" Pcs</td>");
 			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+p[i].producaoQuilos+" kg.</td>");
 			document.write("</tr>");
-<<<<<<< HEAD
 			this.corpoDoEmail.push(+maquinas[i].numero+" --------- "+p[i].proucaoTelhas+"T ---------"+p[i].irog+"% ---------"+p[i].producaoPecas+"pcs ------ "+p[i].producaoQuilos+"kg.\n");
 		}
 		this.corpoDoEmail[0] = "MAQUINAS\t TELLHAS\t IROG\t\t PECAS\t KG\n"+this.corpoDoEmail[0];
@@ -429,12 +225,6 @@ document.write("</div>");
 	}
 </script>
 
-=======
-		}
-		document.write("</table>");
-	}
-</script>
->>>>>>> dce15d72cd6b589ff032c67555af360a6a1f365e
 </form>
 
 </body>
