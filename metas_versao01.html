@@ -110,7 +110,6 @@ button{
 var bt = ["<button><p id='relatorio'>Relatório de producao</p></button>"];
 var maquina = "maquina";
 var maquinas = [];
-var listaMaquinas = [];
 var metas = [];
 var telhaCiclo = [];
 var cargasOP = [];
@@ -121,8 +120,37 @@ var somasMetas=0;
 var somasPecas=0;
 var contMetas=0;
 var somasQuilos=0;
-
+var listaMaquinas = [];
+setInterval(atualizar, 1000);
 setInterval(diaHoraTurno, 1000);
+function atualizar(){
+		for(var i=0;i<maquinas.length;i++){
+			var nM = maquinas[i]; 
+			var m = new Maquina(nM);
+			m.meta = document.getElementById("meta"+[i]).value;   
+			m.telhaPorCiclo = document.getElementById("tc"+[i]).value; 
+			m.realizadaOP = document.getElementById("cOp"+[i]).value; 
+			m.realizadaTurno = document.getElementById("cT"+[i]).value; 
+			m.pecaPorTelha = verificarPeca(m.numero);  
+			quantidadeOp(m.numero, m.realizadaOP, m.telhaPorCiclo);
+			var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
+			localStorage.setItem(m.numero+"_metas"+getTurno(), mm);
+	}
+}
+function atualizaObjeto(m){
+	m.meta = document.getElementById("meta"+[i]).value;  
+	m.telhaPorCiclo = document.getElementById("tc"+[i]).value; 
+	m.realizadaOP = document.getElementById("cOp"+[i]).value; 
+	m.realizadaTurno = document.getElementById("cT"+[i]).value; 
+	m.pecaPorTelha = verificarPeca(m.numero);
+	quantidadeOp(m.numero, m.realizadaOP, m.telhaPorCiclo);
+	if(m.meta>0){
+		contMetas++;
+		somasMetas += parseFloat(p.calculaIrog(m.meta));
+	}
+	var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
+	localStorage.setItem(m.numero+"_metas"+p.turno, mm);
+}
 function diaHoraTurno(){
   document.getElementById("hora").innerHTML = getDiaDaSemana()+". "+getHours()+" turno: "+getTurno();
  return getDiaDaSemana()+". "+getHours()+" turno: "+getTurno();

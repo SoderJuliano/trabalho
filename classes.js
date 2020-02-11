@@ -27,6 +27,8 @@ function verificarLS(maquina){
 		var t = document.getElementById("turno").value;
 		sessionStorage.setItem("turno", t);
 	}
+	
+	
 	function aplicar(){
 		for(var i = 0; i<maquinas.length; i++){
 			var nM = maquinas[i]; // nM= numero Maquina
@@ -100,8 +102,8 @@ function verificarLS(maquina){
 		var t;
 		now = new Date();
 		horas = now.getHours();
-		if(getDiaDaSemana()=='Sábado'){
-			if((horas>10) && (horas<15)){
+		if(getDiaDaSemana()=="Sabado"){
+			if((horas=>10) && (horas<15)){
 				sessionStorage.setItem("turno", 1);
 				t = 1;
 			}else if((horas>15) && (horas<24)){
@@ -112,10 +114,10 @@ function verificarLS(maquina){
 				sessionStorage.setItem("turno", t);
 			}
 		}else{
-			if((horas>6) && (horas<15)){
+			if((horas=>6) && (horas<15)){
 				sessionStorage.setItem("turno", 1);
 				t = 1;
-			}else if((horas>15) && (horas<24)){
+			}else if((horas=>15) && (horas<24)){
 				t = 2;
 				sessionStorage.setItem("turno", t);
 			}else{
@@ -153,7 +155,7 @@ function verificarLS(maquina){
 		return ht;
 	}
 	function getDiaDaSemana(){
-		var semana = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
+		var semana = ["Domingo", "Segunda-Feira", "Terca-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sabado"];
 		var d = new Date();
 		return semana[d.getDay()];
 	}

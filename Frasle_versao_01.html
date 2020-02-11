@@ -243,7 +243,7 @@ nav a:hover {
 				var proximaQnt = document.getElementById(poximaQntInput).value;
 				var proximaOp = document.getElementById(poximaOpInput).value; 
 				var proximaReferencia = document.getElementById(poximaReferenciaInput).value; 
-				var proximaMatriz = document.getElementById(poximaReferenciaInput).value;  
+				var proximaMatriz = document.getElementById(poximaMatrizInput).value;  
 				
 				if((proximaPeso != localStorage.getItem(proximaPesoInput)) && (proximaPeso!= "")){
 					localStorage.setItem(proxima+"_peso", proximaPeso);
@@ -254,10 +254,10 @@ nav a:hover {
 				if((proximaOp != localStorage.getItem(proxima+"_op")) && (proximaOp!= "")){
 					localStorage.setItem(proxima+"_op", proximaOp);
 				}
-				if((proximaReferencia != localStorage.getItem(poximaReferenciaInput)) && (proximaReferencia!= "")){
+				if(proximaReferencia != localStorage.getItem(poximaReferenciaInput)){
 					localStorage.setItem(proxima+"_referencia", proximaReferencia);
 				}
-				if((proximaMatriz != localStorage.getItem(poximaMatrizInput)) && (proximaMatriz!= "")){
+				if(proximaMatriz != localStorage.getItem(poximaMatrizInput)){
 					localStorage.setItem(proxima+"_matriz", proximaMatriz);
 				}
 			}
