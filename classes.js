@@ -31,6 +31,7 @@ function verificarLS(maquina){
 	
 	function aplicar(){
 		var contMetas = 0;
+		var somasMetas = 0;
 		for(var i = 0; i<maquinas.length; i++){
 			var nM = maquinas[i]; // nM= numero Maquina
 			var m = new Maquina(nM); // objeto Maquina
@@ -187,7 +188,14 @@ function verificarLS(maquina){
 		}
 		return peca;
 	}
-	
+	function calculaIrogTotal(telhas, meta){
+		var irg;// alert(telhas);
+		if(meta!=null){
+			irg = ((telhas/meta)*100);
+		}
+		var arredondado = parseFloat(irg.toFixed(2));
+		return arredondado;
+	}
 	Producao.prototype.calculaIrog = function(meta){
 		var irg;
 		if(meta!=null){
@@ -201,17 +209,14 @@ function verificarLS(maquina){
 		if(n==1){
 			this.contato1 = contatos[0];
 		}else if(n==2){
-			this.contato1 = contatos[0];
-			this.contato2 = contatos[1];
+			this.contato1 = contatos[0]+";"+contatos[1];
 		}else if(n==3){
-			this.contato1 = contatos[0];
-			this.contato2 = contatos[1];
-			this.contato3 = contatos[2];
+			this.contato1 =  contatos[0]+";"+contatos[1]+";"+contatos[2];
 		}else{
 			alert("inserir no máximo 3 contatos");
 		}
-		if(conn==null){
-			this.contatoCon = "";
+		if(conn==":"){
+			this.contatoCon = " ";
 		}
 		this.contatoCon = conn;
 	}
@@ -221,8 +226,8 @@ function verificarLS(maquina){
 	var contatoCon;
 	var corpoDoEmail= [];
 	function sendMail() {
-    var link = "mailto:"+contato1+";"+contato2
-             + "?cc="+contatoCon
+    var link = "mailto:"+contato1
+             + "?cc="+contatoCon+""+
              + "&subject=" + escape("producao")
              + "&body=" + escape(corpoDoEmail);
     window.location.href = link;

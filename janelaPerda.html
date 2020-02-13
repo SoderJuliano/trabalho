@@ -13,10 +13,19 @@ textarea {
 }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="classes.js"></script>
 <script>
+var myArray = [
+	  'Red',
+	  'Blue',
+	  'Green',
+	  'Yellow'
+	];
+var array = getMaquinas();
 $(document).ready(function(){
   $("#bt1").click(function(){
-        $("#div1").fadeIn();
+	  $("#div1").html( '<textarea id="textArea" rows="20">'+array[0]+'</textarea>');
+       $("#div1").fadeIn();
         $("#div2").fadeIn("slow");
         $("#div3").fadeIn(3000);
   });
@@ -26,14 +35,13 @@ $(document).ready(function(){
         $("#div3").fadeOut(3000);
   });
 });
+
 </script>
 </head>
 <body>
 <div id="div1" style="display:none;">
-      <p>paradas prensa:</p>
-      <textarea id="textArea" rows="20">
-      </textarea>
-</div><br>
+      <p>parada prensa:</p>
+    </div><br>
 <div id="div2" style="width:80px;height:80px;display:none;background-color:green;"></div><br>
 <div id="div3" style="width:80px;height:80px;display:none;background-color:blue;"></div>
 

@@ -123,6 +123,10 @@ var listaMaquinas = [];
 setInterval(atualizar, 1000);
 setInterval(diaHoraTurno, 1000);
 function atualizar(){
+	if(this.somasMetas>0){
+		this.somasMetas = 0;
+		this.contMetas = 0;
+	}
 		for(var i=0;i<maquinas.length;i++){
 			var nM = maquinas[i]; 
 			var m = new Maquina(nM);
@@ -136,7 +140,7 @@ function atualizar(){
 			localStorage.setItem(m.numero+"_metas"+getTurno(), mm);
 			if(m.meta>0){
 			this.contMetas++;
-			this.somasMetas += parseFloat(m.meta);
+			this.somasMetas += parseFloat(m.meta);// alert(this.somasMetas);
 			}
 		}
 }
@@ -215,13 +219,13 @@ document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas fei
 		}
 		this.corpoDoEmail[0] = "MAQUINAS\t TELLHAS\t IROG\t\t PECAS\t KG\n"+this.corpoDoEmail[0];
 		this.corpoDoEmail.push("\nSoma telhas: "+somas);
-		this.corpoDoEmail.push("\nIrog da linha: "+((somas/somasMetas)*100));
+		this.corpoDoEmail.push("\nIrog da linha: "+calculaIrogTotal(somas,somasMetas)+"%");
 		this.corpoDoEmail.push("\nSoma pecas: "+pecas);
 		this.corpoDoEmail.push("\nKG: "+quilos);
 		document.write("<h3>Meta: "+somasMetas+" telhas</h3>");
 		document.write("<h3>Realizado: "+somas+" telhas</h3>"); 
 		document.write("<h3>Soma peças: "+pecas+"</h3>");
-		document.write("<h3>Irog: "+((somas/somasMetas)*100)+"%</h3>"); alert("soma "+somas+" smetas "+somasMetas);
+		document.write("<h3>Irog: "+calculaIrogTotal(somas,somasMetas)+"%</h3>"); //alert("soma "+somas+" smetas "+somasMetas);
 		document.write("<h3>Soma quilos: "+quilos+"kg</h3>");
 		document.write("</table>");
 		document.write("</div><br>");
