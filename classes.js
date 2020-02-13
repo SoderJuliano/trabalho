@@ -30,6 +30,7 @@ function verificarLS(maquina){
 	
 	
 	function aplicar(){
+		var contMetas = 0;
 		for(var i = 0; i<maquinas.length; i++){
 			var nM = maquinas[i]; // nM= numero Maquina
 			var m = new Maquina(nM); // objeto Maquina
@@ -53,7 +54,7 @@ function verificarLS(maquina){
 				somasPecas += p.producaoPecas;
 			}
 			if(m.meta>0){
-				contMetas++;
+				this.contMetas++;
 				somasMetas += parseFloat(p.calculaIrog(m.meta));
 			}
 			if(p.producaoQuilos>0){
@@ -64,7 +65,7 @@ function verificarLS(maquina){
 			var pp = "maquina:"+p.maquina+";proucaoTelhas:"+p.proucaoTelhas+";producaoPecas:"+p.producaoPecas+";producaoQuilos:"+p.producaoQuilos+";irog:"+p.irog;
 			localStorage.setItem(p.data+"_data"+p.maquina+p.turno+"_producao", pp);
 		}
-		resultado(listaMaquinas, listaProducao, somasTelhas, somasPecas, somasMetas, contMetas, somasQuilos);
+		resultado(listaMaquinas, listaProducao, somasTelhas, somasPecas, somasMetas, this.contMetas, somasQuilos);
 	}
 	function quantidadeOp(maquina, ciclos, telhaPorCiclo){
 			var produzido = ciclos*telhaPorCiclo;
@@ -209,6 +210,9 @@ function verificarLS(maquina){
 		}else{
 			alert("inserir no máximo 3 contatos");
 		}
+		if(conn==null){
+			this.contatoCon = "";
+		}
 		this.contatoCon = conn;
 	}
 	var contato1;
@@ -217,28 +221,17 @@ function verificarLS(maquina){
 	var contatoCon;
 	var corpoDoEmail= [];
 	function sendMail() {
-    var link = "mailto:"+contato1
+    var link = "mailto:"+contato1+";"+contato2
              + "?cc="+contatoCon
              + "&subject=" + escape("producao")
              + "&body=" + escape(corpoDoEmail);
     window.location.href = link;
 }
-	/*function OpenOutlookNewEmail()
-            {
-                try
-                {
-                    var outlookApp = new ActiveXObject("Outlook.Application");
-                    var nameSpace = outlookApp.getNameSpace("MAPI");
-                    mailFolder = nameSpace.getDefaultFolder(6);
-                    mailItem = mailFolder.Items.add('IPM.Note.FormA');
-                    mailItem.Subject = "Me";
-                    mailItem.To = "me@me.com";
-                    mailItem.HTMLBody = "<b>ME</b>";
-                    mailItem.display(0);
-                }
-                catch (e)
-                {
-                    alert(e);
-                    // act on any error that you get
-                }
-    }*/
+// IA Inteliencia Artificial
+
+function IA(){
+	var	ultimaProducao =[];
+	var ultimaMeta = [];
+	
+	
+}

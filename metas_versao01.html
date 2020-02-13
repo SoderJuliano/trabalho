@@ -4,7 +4,6 @@
 <meta charset="ISO-8859-1">
     <script type="text/javascript" src="classes.js"></script>
 	<title>Controle de Producao</title>
-	<script type="text/javascript" src="js/teste.js"></script>
 	<style>
 body {
     padding: 0;
@@ -135,22 +134,13 @@ function atualizar(){
 			quantidadeOp(m.numero, m.realizadaOP, m.telhaPorCiclo);
 			var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
 			localStorage.setItem(m.numero+"_metas"+getTurno(), mm);
-	}
+			if(m.meta>0){
+			this.contMetas++;
+			this.somasMetas += parseFloat(m.meta);
+			}
+		}
 }
-function atualizaObjeto(m){
-	m.meta = document.getElementById("meta"+[i]).value;  
-	m.telhaPorCiclo = document.getElementById("tc"+[i]).value; 
-	m.realizadaOP = document.getElementById("cOp"+[i]).value; 
-	m.realizadaTurno = document.getElementById("cT"+[i]).value; 
-	m.pecaPorTelha = verificarPeca(m.numero);
-	quantidadeOp(m.numero, m.realizadaOP, m.telhaPorCiclo);
-	if(m.meta>0){
-		contMetas++;
-		somasMetas += parseFloat(p.calculaIrog(m.meta));
-	}
-	var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
-	localStorage.setItem(m.numero+"_metas"+p.turno, mm);
-}
+
 function diaHoraTurno(){
   document.getElementById("hora").innerHTML = getDiaDaSemana()+". "+getHours()+" turno: "+getTurno();
  return getDiaDaSemana()+". "+getHours()+" turno: "+getTurno();
@@ -225,12 +215,13 @@ document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas fei
 		}
 		this.corpoDoEmail[0] = "MAQUINAS\t TELLHAS\t IROG\t\t PECAS\t KG\n"+this.corpoDoEmail[0];
 		this.corpoDoEmail.push("\nSoma telhas: "+somas);
-		this.corpoDoEmail.push("\nIrog da linha: "+(metas/cont));
+		this.corpoDoEmail.push("\nIrog da linha: "+((somas/somasMetas)*100));
 		this.corpoDoEmail.push("\nSoma pecas: "+pecas);
 		this.corpoDoEmail.push("\nKG: "+quilos);
-		document.write("<h3>Soma telhas: "+somas+"</h3>"); 
+		document.write("<h3>Meta: "+somasMetas+" telhas</h3>");
+		document.write("<h3>Realizado: "+somas+" telhas</h3>"); 
 		document.write("<h3>Soma peças: "+pecas+"</h3>");
-		document.write("<h3>Irog: "+(metas/cont)+"%</h3>");
+		document.write("<h3>Irog: "+((somas/somasMetas)*100)+"%</h3>"); alert("soma "+somas+" smetas "+somasMetas);
 		document.write("<h3>Soma quilos: "+quilos+"kg</h3>");
 		document.write("</table>");
 		document.write("</div><br>");
@@ -247,9 +238,6 @@ document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas fei
 		for(var y=0;y<contatos.length;y++){
 			document.write("<option id='c2"+y+"' value='"+contatos[y][1]+"'> "+contatos[y][0]+": "+contatos[y][2]+"</option>");
 		}document.write("</select>");
-		
-		//var ctt = "william.daros@fras-le.com";
-		//document.write("<a href='javascript:OpenOutlookNewEmail()' >email</a>");
 	}
 </script>
 
