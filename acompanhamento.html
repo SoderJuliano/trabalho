@@ -1,0 +1,838 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Acompanhamento</title>
+<script type="text/javascript" src="classes.js"></script>
+ <style>
+        table
+        {
+            width: 300px;
+            font: 15px Calibri;
+        }
+        table, th, td 
+        {
+            border: solid 2px #DDD;
+            border-collapse: collapse;
+            padding: 2px 3px;
+            text-align: center;
+        }
+		td.maq {
+			font: 16px Calibri;
+			font-weight: 800;
+		}
+    </style>
+</head>
+<body>
+      <script>
+	  var preparador = localStorage.getItem("preparador");
+      var vao = localStorage.getItem("vao");
+      var maquina0 = localStorage.getItem("maquina0");
+	  var matriz0 = localStorage.getItem(maquina0+"_matriz");
+	  var op0 = localStorage.getItem(this.maquina0+"_op");
+	  var referencia0 = localStorage.getItem(maquina0+"_referencia");
+	  var quantidade0 = localStorage.getItem(maquina0+"_qnt");
+	  var produzido0 = localStorage.getItem(maquina0+"_qntFeita");
+	  var material0 = localStorage.getItem(maquina0+"_material");
+	  var peso0 = localStorage.getItem(maquina0+"_peso");
+	  
+      var maquina1 = localStorage.getItem("maquina1");
+	  var matriz1 = localStorage.getItem(maquina1+"_matriz");
+	  var op1 = localStorage.getItem(this.maquina1+"_op");
+	  var referencia1 = localStorage.getItem(maquina1+"_referencia");
+	  var quantidade1 = localStorage.getItem(maquina1+"_qnt");
+	  var produzido1 = localStorage.getItem(maquina1+"_qntFeita");
+	  var material1 = localStorage.getItem(maquina1+"_material");
+	  var peso1 = localStorage.getItem(maquina1+"_peso");
+	  
+      var maquina2 = localStorage.getItem("maquina2");
+	  var matriz2 = localStorage.getItem(maquina2+"_matriz");
+	  var op2 = localStorage.getItem(this.maquina2+"_op");
+	  var referencia2 = localStorage.getItem(maquina2+"_referencia");
+	  var quantidade2 = localStorage.getItem(maquina2+"_qnt");
+	  var produzido2 = localStorage.getItem(maquina2+"_qntFeita");
+	  var material2 = localStorage.getItem(maquina2+"_material");
+	  var peso2 = localStorage.getItem(maquina2+"_peso");
+	  
+      var maquina3 = localStorage.getItem("maquina3");
+	  var matriz3 = localStorage.getItem(maquina3+"_matriz");
+	  var op3 = localStorage.getItem(this.maquina3+"_op");
+	  var referencia3 = localStorage.getItem(maquina3+"_referencia");
+	  var quantidade3 = localStorage.getItem(maquina3+"_qnt");
+	  var produzido3 = localStorage.getItem(maquina3+"_qntFeita");
+	  var material3 = localStorage.getItem(maquina3+"_material");
+	  var peso3 = localStorage.getItem(maquina3+"_peso");
+	  
+      var maquina4 = localStorage.getItem("maquina4");
+	  var matriz4 = localStorage.getItem(maquina4+"_matriz");
+	  var op4 = localStorage.getItem(this.maquina4+"_op");
+	  var referencia4 = localStorage.getItem(maquina4+"_referencia");
+	  var quantidade4 = localStorage.getItem(maquina4+"_qnt");
+	  var produzido4 = localStorage.getItem(maquina4+"_qntFeita");
+	  var material4 = localStorage.getItem(maquina4+"_material");
+	  var peso4 = localStorage.getItem(maquina4+"_peso");
+	  
+      var maquina5 = localStorage.getItem("maquina5");
+	  var matriz5 = localStorage.getItem(maquina5+"_matriz");
+	  var op5 = localStorage.getItem(this.maquina5+"_op");
+	  var referencia5 = localStorage.getItem(maquina5+"_referencia");
+	  var quantidade5 = localStorage.getItem(maquina5+"_qnt");
+	  var produzido5 = localStorage.getItem(maquina5+"_qntFeita");
+	  var material5 = localStorage.getItem(maquina5+"_material");
+	  var peso5 = localStorage.getItem(maquina5+"_peso");
+	  
+      var maquina6 = localStorage.getItem("maquina6");
+	  var matriz6 = localStorage.getItem(maquina6+"_matriz");
+	  var op6 = localStorage.getItem(this.maquina6+"_op");
+	  var referencia6 = localStorage.getItem(maquina6+"_referencia");
+	  var quantidade6 = localStorage.getItem(maquina6+"_qnt");
+	  var produzido6 = localStorage.getItem(maquina6+"_qntFeita");
+	  var material6 = localStorage.getItem(maquina6+"_material");
+	  var peso6 = localStorage.getItem(maquina6+"_peso");
+	  
+      var maquina7 = localStorage.getItem("maquina7");
+	  var matriz7 = localStorage.getItem(maquina7+"_matriz");
+	  var op7 = localStorage.getItem(this.maquina7+"_op");
+	  var referencia7 = localStorage.getItem(maquina7+"_referencia");
+	  var quantidade7 = localStorage.getItem(maquina7+"_qnt");
+	  var produzido7 = localStorage.getItem(maquina7+"_qntFeita");
+	  var material7 = localStorage.getItem(maquina7+"_material");
+	  var peso7 = localStorage.getItem(maquina7+"_peso");
+	  
+      var maquina8 = localStorage.getItem("maquina8");
+	  var matriz8 = localStorage.getItem(maquina8+"_matriz");
+	  var op8 = localStorage.getItem(this.maquina8+"_op");
+	  var referencia8 = localStorage.getItem(maquina8+"_referencia");
+	  var quantidade8 = localStorage.getItem(maquina8+"_qnt");
+	  var produzido8 = localStorage.getItem(maquina8+"_qntFeita");
+	  var material8 = localStorage.getItem(maquina8+"_material");
+	  var peso8 = localStorage.getItem(maquina8+"_peso");
+	  
+      var maquina9 = localStorage.getItem("maquina9");
+	  var matriz9 = localStorage.getItem(maquina9+"_matriz");
+	  var op9 = localStorage.getItem(this.maquina9+"_op");
+	  var referencia9 = localStorage.getItem(maquina9+"_referencia");
+	  var quantidade9 = localStorage.getItem(maquina9+"_qnt");
+	  var produzido9 = localStorage.getItem(maquina9+"_qntFeita");
+	  var material9 = localStorage.getItem(maquina9+"_material");
+	  var peso9 = localStorage.getItem(maquina9+"_peso");
+	  
+      var maquina10 = localStorage.getItem("maquina10");
+	  var matriz10 = localStorage.getItem(maquina10+"_matriz");
+	  var op10 = localStorage.getItem(this.maquina10+"_op");
+	  var referencia10 = localStorage.getItem(maquina10+"_referencia");
+	  var quantidade10 = localStorage.getItem(maquina10+"_qnt");
+	  var produzido10 = localStorage.getItem(maquina10+"_qntFeita");
+	  var material10 = localStorage.getItem(maquina10+"_material");
+	  var peso10 = localStorage.getItem(maquina10+"_peso");
+	  
+      var maquina11 = localStorage.getItem("maquina11");
+	  var matriz11 = localStorage.getItem(maquina11+"_matriz");
+	  var op11 = localStorage.getItem(this.maquina11+"_op");
+	  var referencia11 = localStorage.getItem(maquina11+"_referencia");
+	  var quantidade11 = localStorage.getItem(maquina11+"_qnt");
+	  var produzido11 = localStorage.getItem(maquina11+"_qntFeita");
+	  var material11 = localStorage.getItem(maquina11+"_material");
+	  var peso11 = localStorage.getItem(maquina11+"_peso");
+	  
+      var maquina12 = localStorage.getItem("maquina12");
+	  var matriz12 = localStorage.getItem(maquina12+"_matriz");
+	  var op12 = localStorage.getItem(this.maquina12+"_op");
+	  var referencia12 = localStorage.getItem(maquina12+"_referencia");
+	  var quantidade12 = localStorage.getItem(maquina12+"_qnt");
+	  var produzido12 = localStorage.getItem(maquina12+"_qntFeita");
+	  var material12 = localStorage.getItem(maquina12+"_material");
+	  var peso12 = localStorage.getItem(maquina12+"_peso");
+	  
+      var maquina13 = localStorage.getItem("maquina13");
+	  var matriz13 = localStorage.getItem(maquina13+"_matriz");
+	  var op13 = localStorage.getItem(this.maquina13+"_op");
+	  var referencia13 = localStorage.getItem(maquina13+"_referencia");
+	  var quantidade13 = localStorage.getItem(maquina13+"_qnt");
+	  var produzido13 = localStorage.getItem(maquina13+"_qntFeita");
+	  var material13 = localStorage.getItem(maquina13+"_material");
+	  var peso13 = localStorage.getItem(maquina13+"_peso");
+	  
+      var maquina14 = localStorage.getItem("maquina14");
+	  var matriz14 = localStorage.getItem(maquina14+"_matriz");
+	  var op14 = localStorage.getItem(this.maquina14+"_op");
+	  var referencia14 = localStorage.getItem(maquina14+"_referencia");
+	  var quantidade14 = localStorage.getItem(maquina14+"_qnt");
+	  var produzido14 = localStorage.getItem(maquina14+"_qntFeita");
+	  var material14 = localStorage.getItem(maquina14+"_material");
+	  var peso14 = localStorage.getItem(maquina14+"_peso");
+	  
+      var maquina15 = localStorage.getItem("maquina15");
+	  var matriz15 = localStorage.getItem(maquina15+"_matriz");
+	  var op15 = localStorage.getItem(this.maquina15+"_op");
+	  var referencia15 = localStorage.getItem(maquina15+"_referencia");
+	  var quantidade15 = localStorage.getItem(maquina15+"_qnt");
+	  var produzido15 = localStorage.getItem(maquina15+"_qntFeita");
+	  var material15 = localStorage.getItem(maquina15+"_material");
+	  var peso15 = localStorage.getItem(maquina15+"_peso");
+
+	  var pre0 = sessionStorage.getItem("maquina0");
+      var proxima0 = localStorage.getItem("proxima0");
+	  var proximaMatriz0 = localStorage.getItem(proxima0+"_matriz");
+	  var proximaOp0 = localStorage.getItem(this.proxima0+"_op");
+	  var proximaReferencia0 = localStorage.getItem(proxima0+"_referencia");
+	  var proximaQuantidade0 = localStorage.getItem(proxima0+"_qnt");
+	  var proximaProduzido0 = localStorage.getItem(proxima0+"_qntFeita");
+	  var proximaMaterial0 = localStorage.getItem(proxima0+"_material");
+	  var proximaPeso0 = localStorage.getItem(proxima0+"_peso");
+	  
+	  var pre1 = sessionStorage.getItem("maquina1");
+	  var proxima1 = localStorage.getItem("proxima1");
+	  if(localStorage.getItem(proxima1+"_matriz")!=null){
+		var proximaMatriz1 = localStorage.getItem(proxima1+"_matriz");
+		var proximaReferencia1 = localStorage.getItem(proxima1+"_referencia");
+	  }else{
+		proximaMatriz1 = ' ';
+		proximaReferencia1 = ' ';
+	  }
+	  if(localStorage.getItem(this.proxima1+"_op")!=null){
+		var proximaOp1 = localStorage.getItem(this.proxima1+"_op");
+	  }else{
+		proximaOp1 = ' '; 
+	  }
+	  if(localStorage.getItem(proxima1+"_qnt")!=null){
+		var proximaQuantidade1 = localStorage.getItem(proxima1+"_qnt");
+	  }else{
+		proximaQuantidade1 = ' ';
+	  }	  
+	  if(localStorage.getItem(proxima1+"_qntFeita")!=null){
+		 var proximaProduzido1 = localStorage.getItem(proxima1+"_qntFeita");
+	  }else{
+		proximaProduzido1 = ' ';
+	  }
+		if(localStorage.getItem(proxima1+"_material")!=null){
+			var proximaMaterial1 = localStorage.getItem(proxima1+"_material");
+		}else{
+			proximaMaterial1= ' ';
+		}
+		if(localStorage.getItem(proxima1+"_peso")!=null){
+			var proximaPeso1 = localStorage.getItem(proxima1+"_peso");
+		}else{
+			proximaPeso1 = ' ';
+		}
+		
+		var pre2 = sessionStorage.getItem("maquina2");
+		var proxima2 = localStorage.getItem("proxima2");
+		if(localStorage.getItem(proxima2+"_matriz")!=null){
+			var proximaMatriz2 = localStorage.getItem(proxima2+"_matriz");
+			var proximaReferencia2 = localStorage.getItem(proxima2+"_referencia");
+		}else{
+			proximaMatriz2 = ' ';
+			proximaReferencia2 = ' ';
+		}
+		if(localStorage.getItem(this.proxima2+"_op")!=null){
+			var proximaOp2 = localStorage.getItem(this.proxima2+"_op");
+		}else{
+			proximaOp2 = ' '; 
+		}
+		if(localStorage.getItem(proxima2+"_qnt")!=null){
+			var proximaQuantidade2 = localStorage.getItem(proxima2+"_qnt");
+		}else{
+			proximaQuantidade2 = ' ';
+		}	  
+		if(localStorage.getItem(proxima2+"_qntFeita")!=null){
+			var proximaProduzido2 = localStorage.getItem(proxima2+"_qntFeita");
+		}else{
+			proximaProduzido2 = ' ';
+		}
+		if(localStorage.getItem(proxima2+"_material")!=null){
+			var proximaMaterial2 = localStorage.getItem(proxima2+"_material");
+		}else{
+			proximaMaterial2= ' ';
+		}
+		if(localStorage.getItem(proxima2+"_peso")!=null){
+			var proximaPeso2 = localStorage.getItem(proxima2+"_peso");
+		}else{
+			proximaPeso2 = ' ';
+		}
+		
+	  var pre3 = sessionStorage.getItem("maquina3");
+	  var proxima3 = localStorage.getItem("proxima3");
+	  var proximaMatriz3 = localStorage.getItem(proxima3+"_matriz");
+	  var proximaOp3 = localStorage.getItem(this.proxima3+"_op");
+	  var proximaReferencia3 = localStorage.getItem(proxima3+"_referencia");
+	  var proximaQuantidade3 = localStorage.getItem(proxima3+"_qnt");
+	  var proximaProduzido3 = localStorage.getItem(proxima3+"_qntFeita");
+	  var proximaMaterial3 = localStorage.getItem(proxima3+"_material");
+	  var proximaPeso3 = localStorage.getItem(proxima3+"_peso");
+	  
+	  var pre4 = sessionStorage.getItem("maquina4");
+	  var proxima4 = localStorage.getItem("proxima4");
+	  var proximaMatriz4 = localStorage.getItem(proxima4+"_matriz");
+	  var proximaOp4 = localStorage.getItem(this.proxima4+"_op");
+	  var proximaReferencia4 = localStorage.getItem(proxima4+"_referencia");
+	  var proximaQuantidade4 = localStorage.getItem(proxima4+"_qnt");
+	  var proximaProduzido4 = localStorage.getItem(proxima4+"_qntFeita");
+	  var proximaMaterial4 = localStorage.getItem(proxima4+"_material");
+	  var proximaPeso4 = localStorage.getItem(proxima4+"_peso");
+	  
+	  var pre5 = sessionStorage.getItem("maquina5");
+	  var proxima5 = localStorage.getItem("proxima5");
+	  var proximaMatriz5 = localStorage.getItem(proxima5+"_matriz");
+	  var proximaOp5 = localStorage.getItem(this.proxima5+"_op");
+	  var proximaReferencia5 = localStorage.getItem(proxima5+"_referencia");
+	  var proximaQuantidade5 = localStorage.getItem(proxima5+"_qnt");
+	  var proximaProduzido5 = localStorage.getItem(proxima5+"_qntFeita");
+	  var proximaMaterial5 = localStorage.getItem(proxima5+"_material");
+	  var proximaPeso5 = localStorage.getItem(proxima5+"_peso");
+	  
+	  var pre6 = sessionStorage.getItem("maquina6");
+	  var proxima6 = localStorage.getItem("proxima6");
+	  var proximaMatriz6 = localStorage.getItem(proxima6+"_matriz");
+	  var proximaOp6 = localStorage.getItem(this.proxima6+"_op");
+	  var proximaReferencia6 = localStorage.getItem(proxima6+"_referencia");
+	  var proximaQuantidade6 = localStorage.getItem(proxima6+"_qnt");
+	  var proximaProduzido6 = localStorage.getItem(proxima6+"_qntFeita");
+	  var proximaMaterial6 = localStorage.getItem(proxima6+"_material");
+	  var proximaPeso6 = localStorage.getItem(proxima6+"_peso");
+	  
+	  var pre7 = sessionStorage.getItem("maquina7");
+	  var proxima7 = localStorage.getItem("proxima7");
+	  var proximaMatriz7 = localStorage.getItem(proxima7+"_matriz");
+	  var proximaOp7 = localStorage.getItem(this.proxima7+"_op");
+	  var proximaReferencia7 = localStorage.getItem(proxima7+"_referencia");
+	  var proximaQuantidade7 = localStorage.getItem(proxima7+"_qnt");
+	  var proximaProduzido7 = localStorage.getItem(proxima7+"_qntFeita");
+	  var proximaMaterial7 = localStorage.getItem(proxima7+"_material");
+	  var proximaPeso7 = localStorage.getItem(proxima7+"_peso");
+	  
+	  var pre8 = sessionStorage.getItem("maquina8");
+	  var proxima8 = localStorage.getItem("proxima8");
+	  var proximaMatriz8 = localStorage.getItem(proxima8+"_matriz");
+	  var proximaOp8 = localStorage.getItem(this.proxima8+"_op");
+	  var proximaReferencia8 = localStorage.getItem(proxima8+"_referencia");
+	  var proximaQuantidade8 = localStorage.getItem(proxima8+"_qnt");
+	  var proximaProduzido8 = localStorage.getItem(proxima8+"_qntFeita");
+	  var proximaMaterial8 = localStorage.getItem(proxima8+"_material");
+	  var proximaPeso8 = localStorage.getItem(proxima8+"_peso");
+	  
+	  var pre9 = sessionStorage.getItem("maquina9");
+	  var proxima9 = localStorage.getItem("proxima9");
+	  var proximaMatriz9 = localStorage.getItem(proxima9+"_matriz");
+	  var proximaOp9 = localStorage.getItem(this.proxima9+"_op");
+	  var proximaReferencia9 = localStorage.getItem(proxima9+"_referencia");
+	  var proximaQuantidade9 = localStorage.getItem(proxima9+"_qnt");
+	  var proximaProduzido9 = localStorage.getItem(proxima9+"_qntFeita");
+	  var proximaMaterial9 = localStorage.getItem(proxima9+"_material");
+	  var proximaPeso9 = localStorage.getItem(proxima9+"_peso");
+	  
+	  var pre10 = sessionStorage.getItem("maquina10");
+	  var proxima10 = localStorage.getItem("proxima10");
+	  var proximaMatriz10 = localStorage.getItem(proxima10+"_matriz");
+	  var proximaOp10 = localStorage.getItem(this.proxima10+"_op");
+	  var proximaReferencia10 = localStorage.getItem(proxima10+"_referencia");
+	  var proximaQuantidade10 = localStorage.getItem(proxima10+"_qnt");
+	  var proximaProduzido10 = localStorage.getItem(proxima10+"_qntFeita");
+	  var proximaMaterial10 = localStorage.getItem(proxima10+"_material");
+	  var proximaPeso10 = localStorage.getItem(proxima10+"_peso");
+	  
+	  var pre11 = sessionStorage.getItem("maquina11");
+	  var proxima11 = localStorage.getItem("proxima11");
+	  var proximaMatriz11 = localStorage.getItem(proxima11+"_matriz");
+	  var proximaOp11 = localStorage.getItem(this.proxima11+"_op");
+	  var proximaReferencia11 = localStorage.getItem(proxima11+"_referencia");
+	  var proximaQuantidade11 = localStorage.getItem(proxima11+"_qnt");
+	  var proximaProduzido11 = localStorage.getItem(proxima11+"_qntFeita");
+	  var proximaMaterial11 = localStorage.getItem(proxima11+"_material");
+	  var proximaPeso11 = localStorage.getItem(proxima11+"_peso");
+	  
+	  var pre12 = sessionStorage.getItem("maquina12");
+	  var proxima12 = localStorage.getItem("proxima12");
+	  var proximaMatriz12 = localStorage.getItem(proxima12+"_matriz");
+	  var proximaOp12 = localStorage.getItem(this.proxima12+"_op");
+	  var proximaReferencia12 = localStorage.getItem(proxima12+"_referencia");
+	  var proximaQuantidade12 = localStorage.getItem(proxima12+"_qnt");
+	  var proximaProduzido12 = localStorage.getItem(proxima12+"_qntFeita");
+	  var proximaMaterial12 = localStorage.getItem(proxima12+"_material");
+	  var proximaPeso12 = localStorage.getItem(proxima12+"_peso");
+	  
+	  var pre13 = sessionStorage.getItem("maquina13");
+	  var proxima13 = localStorage.getItem("proxima13");
+	  var proximaMatriz13 = localStorage.getItem(proxima13+"_matriz");
+	  var proximaOp13 = localStorage.getItem(this.proxima13+"_op");
+	  var proximaReferencia13 = localStorage.getItem(proxima13+"_referencia");
+	  var proximaQuantidade13 = localStorage.getItem(proxima13+"_qnt");
+	  var proximaProduzido13 = localStorage.getItem(proxima13+"_qntFeita");
+	  var proximaMaterial13 = localStorage.getItem(proxima13+"_material");
+	  var proximaPeso13 = localStorage.getItem(proxima13+"_peso");
+	  
+	  var pre14 = sessionStorage.getItem("maquina14");
+	  var proxima14 = localStorage.getItem("proxima14");
+	  var proximaMatriz14 = localStorage.getItem(proxima14+"_matriz");
+	  var proximaOp14 = localStorage.getItem(this.proxima14+"_op");
+	  var proximaReferencia14 = localStorage.getItem(proxima14+"_referencia");
+	  var proximaQuantidade14 = localStorage.getItem(proxima14+"_qnt");
+	  var proximaProduzido14 = localStorage.getItem(proxima14+"_qntFeita");
+	  var proximaMaterial14 = localStorage.getItem(proxima14+"_material");
+	  var proximaPeso14 = localStorage.getItem(proxima14+"_peso");
+	  
+	  var pre15 = sessionStorage.getItem("maquina15");
+	  var proxima15 = localStorage.getItem("proxima15");
+	  var proximaMatriz15 = localStorage.getItem(proxima15+"_matriz");
+	  var proximaOp15 = localStorage.getItem(this.proxima15+"_op");
+	  var proximaReferencia15 = localStorage.getItem(proxima15+"_referencia");
+	  var proximaQuantidade15 = localStorage.getItem(proxima15+"_qnt");
+	  var proximaProduzido15 = localStorage.getItem(proxima15+"_qntFeita");
+	  var proximaMaterial15 = localStorage.getItem(proxima15+"_material");
+	  var proximaPeso15 = localStorage.getItem(proxima15+"_peso");
+
+	  
+	  //C:/Users/prensas-siblo-3/Desktop/juliano/frasle.png
+      </script>
+	  
+	   <div id="tabela">
+        <table> 
+			<tr>
+                <th colspan="2"><img style="max-width: 170px; max-height: 100px"  src="fra.jpg"></img></th>
+                <th colspan="5" >ACOMPANHAMENTO DE PRODUÇÃO PRENSAS SIBLO</th>
+                <th colspan="2">Digitalizado por Prensas Siblo T1, mod. 615</th>
+            </tr>
+            <tr>
+                <th>Prensa/Pré-Prensa</th>
+                <th>Matriz</th>
+                <th>Referencia</th>
+				<th>OP</th>
+				<th>Quantidade</th>
+				 <th>Produzido</th>
+				  <th>Material</th>
+				   <th>Peso</th>
+            </tr>
+            <tr>
+				<!-- linha primeira -->
+                <td class='maq'><script>document.write(maquina0)</script></td>
+                <td><script>document.write(matriz0)</script></td>
+                <td><script>document.write(referencia0)</script></td>
+				<td><script>document.write(op0)</script></td>
+				<td><script>document.write(quantidade0)</script></td>
+				<td><script>document.write(produzido0)</script></td>
+				<td><script>document.write(material0)</script></td>
+				<td><script>document.write(peso0)</script></td>
+				<!-- linha segunda -->
+            </tr>	
+			<tr>	
+				<!-- AGUARDANDO 0 -->
+                <td><script>document.write(pre0)</script></td>
+                <td><script>document.write(proximaMatriz0)</script></td>
+                <td><script>document.write(proximaReferencia0)</script></td>
+				<td><script>document.write(proximaOp0)</script></td>
+				<td><script>document.write(proximaQuantidade0)</script></td>
+				<td><script>document.write(proximaProduzido0)</script></td>
+				<td><script>document.write(proximaMaterial0)</script></td>
+				<td><script>document.write(proximaPeso0)</script></td>
+				<!-- linha segunda -->
+			</tr>	
+			<td></td>
+            <tr>
+				<!-- linha primeira -->
+                <td class='maq'><script>document.write(maquina1)</script></td>
+                <td><script>document.write(matriz1)</script></td>
+                <td><script>document.write(referencia1)</script></td>
+				<td><script>document.write(op1)</script></td>
+				<td><script>document.write(quantidade1)</script></td>
+				<td><script>document.write(produzido1)</script></td>
+				<td><script>document.write(material1)</script></td>
+				<td><script>document.write(peso1)</script></td>
+				<!-- linha segunda -->
+            </tr>
+			<tr>	
+				<!-- AGUARDANDO 1 -->
+                <td><script>document.write(pre1)</script></td>
+                <td><script>document.write(proximaMatriz1)</script></td>
+                <td><script>document.write(proximaReferencia1)</script></td>
+				<td><script>document.write(proximaOp1)</script></td>
+				<td><script>document.write(proximaQuantidade1)</script></td>
+				<td><script>document.write(proximaProduzido1)</script></td>
+				<td><script>document.write(proximaMaterial1)</script></td>
+				<td><script>document.write(proximaPeso1)</script></td>
+				<!-- linha segunda -->
+			</tr>	<tr><td></td></tr>
+			<tr>	
+				<!-- linha primeira -->
+                <td class='maq'><script>document.write(maquina2)</script></td>
+                <td><script>document.write(matriz2)</script></td>
+                <td><script>document.write(referencia2)</script></td>
+				<td><script>document.write(op2)</script></td>
+				<td><script>document.write(quantidade2)</script></td>
+				<td><script>document.write(produzido2)</script></td>
+				<td><script>document.write(material2)</script></td>
+				<td><script>document.write(peso2)</script></td>
+				<!-- linha segunda -->
+			</tr>
+			<tr>	
+				<!-- AGUARDANDO 2 -->
+                <td><script>document.write(pre2)</script></td>
+                <td><script>document.write(proximaMatriz2)</script></td>
+                <td><script>document.write(proximaReferencia2)</script></td>
+				<td><script>document.write(proximaOp2)</script></td>
+				<td><script>document.write(proximaQuantidade2)</script></td>
+				<td><script>document.write(proximaProduzido2)</script></td>
+				<td><script>document.write(proximaMaterial2)</script></td>
+				<td><script>document.write(proximaPeso2)</script></td>
+				<!-- linha segunda -->
+			</tr>			<tr><td></td></tr>	
+             <tr>
+				<!-- linha primeira -->
+                <td class='maq'><script>document.write(maquina3)</script></td>
+                <td><script>document.write(matriz3)</script></td>
+                <td><script>document.write(referencia3)</script></td>
+				<td><script>document.write(op3)</script></td>
+				<td><script>document.write(quantidade3)</script></td>
+				<td><script>document.write(produzido3)</script></td>
+				<td><script>document.write(material3)</script></td>
+				<td><script>document.write(peso3)</script></td>
+				<!-- linha segunda -->
+            </tr>
+			<tr>	
+				<!-- AGUARDANDO 3 -->
+                <td><script>document.write(pre3)</script></td>
+                <td><script>document.write(proximaMatriz3)</script></td>
+                <td><script>document.write(proximaReferencia3)</script></td>
+				<td><script>document.write(proximaOp3)</script></td>
+				<td><script>document.write(proximaQuantidade3)</script></td>
+				<td><script>document.write(proximaProduzido3)</script></td>
+				<td><script>document.write(proximaMaterial3)</script></td>
+				<td><script>document.write(proximaPeso3)</script></td>
+				<!-- linha segunda -->
+			</tr>		<tr><td></td></tr>
+			<tr>	
+				<!-- linha primeira 4 -->
+                <td class='maq'><script>document.write(maquina4)</script></td>
+                <td><script>document.write(matriz4)</script></td>
+                <td><script>document.write(referencia4)</script></td>
+				<td><script>document.write(op4)</script></td>
+				<td><script>document.write(quantidade4)</script></td>
+				<td><script>document.write(produzido4)</script></td>
+				<td><script>document.write(material4)</script></td>
+				<td><script>document.write(peso4)</script></td>
+				<!-- linha segunda -->
+			</tr>
+			<tr>	
+				<!-- AGUARDANDO 4 -->
+                <td><script>document.write(pre4)</script></td>
+                <td><script>document.write(proximaMatriz4)</script></td>
+                <td><script>document.write(proximaReferencia4)</script></td>
+				<td><script>document.write(proximaOp4)</script></td>
+				<td><script>document.write(proximaQuantidade4)</script></td>
+				<td><script>document.write(proximaProduzido4)</script></td>
+				<td><script>document.write(proximaMaterial4)</script></td>
+				<td><script>document.write(proximaPeso4)</script></td>
+				<!-- linha segunda -->
+			</tr>		<tr><td></td></tr>
+			 <tr>
+				<!-- linha primeira 5-->
+                <td class='maq'><script>document.write(maquina5)</script></td>
+                <td><script>document.write(matriz5)</script></td>
+                <td><script>document.write(referencia5)</script></td>
+				<td><script>document.write(op5)</script></td>
+				<td><script>document.write(quantidade5)</script></td>
+				<td><script>document.write(produzido5)</script></td>
+				<td><script>document.write(material5)</script></td>
+				<td><script>document.write(peso5)</script></td>
+				<!-- linha segunda -->
+            </tr>
+			<tr>	
+				<!-- AGUARDANDO 5 -->
+                <td><script>document.write(pre5)</script></td>
+                <td><script>document.write(proximaMatriz5)</script></td>
+                <td><script>document.write(proximaReferencia5)</script></td>
+				<td><script>document.write(proximaOp5)</script></td>
+				<td><script>document.write(proximaQuantidade5)</script></td>
+				<td><script>document.write(proximaProduzido5)</script></td>
+				<td><script>document.write(proximaMaterial5)</script></td>
+				<td><script>document.write(proximaPeso5)</script></td>
+				<!-- linha segunda -->
+			</tr>		<tr><td></td></tr>
+			<tr>	
+				<!-- linha primeira 6-->
+                <td class='maq'><script>document.write(maquina6)</script></td>
+                <td><script>document.write(matriz6)</script></td>
+                <td><script>document.write(referencia6)</script></td>
+				<td><script>document.write(op6)</script></td>
+				<td><script>document.write(quantidade6)</script></td>
+				<td><script>document.write(produzido6)</script></td>
+				<td><script>document.write(material6)</script></td>
+				<td><script>document.write(peso6)</script></td>
+				<!-- linha segunda -->
+			</tr>
+			<tr>	
+				<!-- AGUARDANDO 6 -->
+                <td><script>document.write(pre6)</script></td>
+                <td><script>document.write(proximaMatriz6)</script></td>
+                <td><script>document.write(proximaReferencia6)</script></td>
+				<td><script>document.write(proximaOp6)</script></td>
+				<td><script>document.write(proximaQuantidade6)</script></td>
+				<td><script>document.write(proximaProduzido6)</script></td>
+				<td><script>document.write(proximaMaterial6)</script></td>
+				<td><script>document.write(proximaPeso6)</script></td>
+				<!-- linha segunda -->
+			</tr>			<tr><td></td></tr>		
+			<tr>
+				<!-- linha primeira 7 -->
+                <td class='maq'><script>document.write(maquina7)</script></td>
+                <td><script>document.write(matriz7)</script></td>
+                <td><script>document.write(referencia7)</script></td>
+				<td><script>document.write(op7)</script></td>
+				<td><script>document.write(quantidade7)</script></td>
+				<td><script>document.write(produzido7)</script></td>
+				<td><script>document.write(material7)</script></td>
+				<td><script>document.write(peso7)</script></td>
+				<!-- linha segunda -->
+            </tr>
+			<tr>	
+				<!-- AGUARDANDO 7 -->
+                <td><script>document.write(pre7)</script></td>
+                <td><script>document.write(proximaMatriz7)</script></td>
+                <td><script>document.write(proximaReferencia7)</script></td>
+				<td><script>document.write(proximaOp7)</script></td>
+				<td><script>document.write(proximaQuantidade7)</script></td>
+				<td><script>document.write(proximaProduzido7)</script></td>
+				<td><script>document.write(proximaMaterial7)</script></td>
+				<td><script>document.write(proximaPeso7)</script></td>
+				<!-- linha segunda -->
+			</tr>		<tr><td></td></tr>
+			<tr>	
+				<!-- linha primeira -->
+                <td class='maq'><script>document.write(maquina8)</script></td>
+                <td><script>document.write(matriz8)</script></td>
+                <td><script>document.write(referencia8)</script></td>
+				<td><script>document.write(op8)</script></td>
+				<td><script>document.write(quantidade8)</script></td>
+				<td><script>document.write(produzido8)</script></td>
+				<td><script>document.write(material8)</script></td>
+				<td><script>document.write(peso8)</script></td>
+				<!-- linha segunda -->
+			</tr> 
+			<tr>	
+				<!-- AGUARDANDO 8 -->
+                <td><script>document.write(pre8)</script></td>
+                <td><script>document.write(proximaMatriz8)</script></td>
+                <td><script>document.write(proximaReferencia8)</script></td>
+				<td><script>document.write(proximaOp8)</script></td>
+				<td><script>document.write(proximaQuantidade8)</script></td>
+				<td><script>document.write(proximaProduzido8)</script></td>
+				<td><script>document.write(proximaMaterial8)</script></td>
+				<td><script>document.write(proximaPeso8)</script></td>
+				<!-- linha segunda -->
+			</tr>		<tr><td></td></tr>
+			<tr>
+				<!-- linha primeira -->
+                <td class='maq'><script>document.write(maquina9)</script></td>
+                <td><script>document.write(matriz9)</script></td>
+                <td><script>document.write(referencia9)</script></td>
+				<td><script>document.write(op9)</script></td>
+				<td><script>document.write(quantidade9)</script></td>
+				<td><script>document.write(produzido9)</script></td>
+				<td><script>document.write(material9)</script></td>
+				<td><script>document.write(peso9)</script></td>
+				<!-- linha segunda -->
+            </tr>
+			<tr>	
+				<!-- AGUARDANDO 9 -->
+                <td><script>document.write(pre9)</script></td>
+                <td><script>document.write(proximaMatriz9)</script></td>
+                <td><script>document.write(proximaReferencia9)</script></td>
+				<td><script>document.write(proximaOp9)</script></td>
+				<td><script>document.write(proximaQuantidade9)</script></td>
+				<td><script>document.write(proximaProduzido9)</script></td>
+				<td><script>document.write(proximaMaterial9)</script></td>
+				<td><script>document.write(proximaPeso9)</script></td>
+				<!-- linha segunda -->
+			</tr>		<tr><td></td></tr>
+			<tr>	
+				<!-- linha primeira -->
+                <td class='maq'><script>document.write(maquina10)</script></td>
+                <td><script>document.write(matriz10)</script></td>
+                <td><script>document.write(referencia10)</script></td>
+				<td><script>document.write(op10)</script></td>
+				<td><script>document.write(quantidade10)</script></td>
+				<td><script>document.write(produzido10)</script></td>
+				<td><script>document.write(material10)</script></td>
+				<td><script>document.write(peso10)</script></td>
+				<!-- linha segunda -->
+			</tr>
+				<tr>	
+				<!-- AGUARDANDO 10 -->
+                <td><script>document.write(pre10)</script></td>
+                <td><script>document.write(proximaMatriz10)</script></td>
+                <td><script>document.write(proximaReferencia10)</script></td>
+				<td><script>document.write(proximaOp10)</script></td>
+				<td><script>document.write(proximaQuantidade10)</script></td>
+				<td><script>document.write(proximaProduzido10)</script></td>
+				<td><script>document.write(proximaMaterial10)</script></td>
+				<td><script>document.write(proximaPeso10)</script></td>
+				<!-- linha segunda -->
+			</tr>		<tr><td></td></tr>
+			 <tr>
+				<!-- linha primeira -->
+                <td class='maq'><script>document.write(maquina11)</script></td>
+                <td><script>document.write(matriz11)</script></td>
+                <td><script>document.write(referencia11)</script></td>
+				<td><script>document.write(op11)</script></td>
+				<td><script>document.write(quantidade11)</script></td>
+				<td><script>document.write(produzido11)</script></td>
+				<td><script>document.write(material11)</script></td>
+				<td><script>document.write(peso11)</script></td>
+				<!-- linha segunda -->
+            </tr>
+			<tr>	
+				<!-- AGUARDANDO 11 -->
+                <td><script>document.write(pre11)</script></td>
+                <td><script>document.write(proximaMatriz11)</script></td>
+                <td><script>document.write(proximaReferencia11)</script></td>
+				<td><script>document.write(proximaOp11)</script></td>
+				<td><script>document.write(proximaQuantidade11)</script></td>
+				<td><script>document.write(proximaProduzido11)</script></td>
+				<td><script>document.write(proximaMaterial11)</script></td>
+				<td><script>document.write(proximaPeso11)</script></td>
+				<!-- linha segunda -->
+			</tr>		<tr><td></td></tr>
+			<tr>	
+				<!-- linha primeira -->
+                <td class='maq'><script>document.write(maquina12)</script></td>
+                <td><script>document.write(matriz12)</script></td>
+                <td><script>document.write(referencia12)</script></td>
+				<td><script>document.write(op12)</script></td>
+				<td><script>document.write(quantidade12)</script></td>
+				<td><script>document.write(produzido12)</script></td>
+				<td><script>document.write(material12)</script></td>
+				<td><script>document.write(peso12)</script></td>
+				<!-- linha segunda -->
+			</tr>	
+			<tr>	
+				<!-- AGUARDANDO 12 -->
+                <td><script>document.write(pre12)</script></td>
+                <td><script>document.write(proximaMatriz12)</script></td>
+                <td><script>document.write(proximaReferencia12)</script></td>
+				<td><script>document.write(proximaOp12)</script></td>
+				<td><script>document.write(proximaQuantidade12)</script></td>
+				<td><script>document.write(proximaProduzido12)</script></td>
+				<td><script>document.write(proximaMaterial12)</script></td>
+				<td><script>document.write(proximaPeso12)</script></td>
+				<!-- linha segunda -->
+			</tr>		<tr><td></td></tr>
+			 <tr>
+				<!-- linha primeira -->
+                <td class='maq'><script>document.write(maquina13)</script></td>
+                <td><script>document.write(matriz13)</script></td>
+                <td><script>document.write(referencia13)</script></td>
+				<td><script>document.write(op13)</script></td>
+				<td><script>document.write(quantidade13)</script></td>
+				<td><script>document.write(produzido13)</script></td>
+				<td><script>document.write(material13)</script></td>
+				<td><script>document.write(peso13)</script></td>
+				<!-- linha segunda -->
+            </tr>
+			<tr>	
+				<!-- AGUARDANDO 13 -->
+                <td><script>document.write(pre13)</script></td>
+                <td><script>document.write(proximaMatriz13)</script></td>
+                <td><script>document.write(proximaReferencia13)</script></td>
+				<td><script>document.write(proximaOp13)</script></td>
+				<td><script>document.write(proximaQuantidade13)</script></td>
+				<td><script>document.write(proximaProduzido13)</script></td>
+				<td><script>document.write(proximaMaterial13)</script></td>
+				<td><script>document.write(proximaPeso13)</script></td>
+				<!-- linha segunda -->
+			</tr>		<tr><td></td></tr>
+			<tr>	
+				<!-- linha primeira -->
+                <td class='maq'><script>document.write(maquina14)</script></td>
+                <td><script>document.write(matriz14)</script></td>
+                <td><script>document.write(referencia14)</script></td>
+				<td><script>document.write(op14)</script></td>
+				<td><script>document.write(quantidade14)</script></td>
+				<td><script>document.write(produzido14)</script></td>
+				<td><script>document.write(material14)</script></td>
+				<td><script>document.write(peso14)</script></td>
+				<!-- linha segunda -->
+			</tr>
+			<tr>	
+				<!-- AGUARDANDO 14 -->
+                <td><script>document.write(pre14)</script></td>
+                <td><script>document.write(proximaMatriz14)</script></td>
+                <td><script>document.write(proximaReferencia14)</script></td>
+				<td><script>document.write(proximaOp14)</script></td>
+				<td><script>document.write(proximaQuantidade14)</script></td>
+				<td><script>document.write(proximaProduzido14)</script></td>
+				<td><script>document.write(proximaMaterial14)</script></td>
+				<td><script>document.write(proximaPeso14)</script></td>
+				<!-- linha segunda -->
+			</tr>				<tr><td></td></tr>
+			 <tr>
+				<!-- linha primeira -->
+                <td class='maq'><script>document.write(maquina15)</script></td>
+                <td><script>document.write(matriz15)</script></td>
+                <td><script>document.write(referencia15)</script></td>
+				<td><script>document.write(op15)</script></td>
+				<td><script>document.write(quantidade15)</script></td>
+				<td><script>document.write(produzido15)</script></td>
+				<td><script>document.write(material15)</script></td>
+				<td><script>document.write(peso15)</script></td>
+				<!-- linha segunda -->
+            </tr>
+			</tr>
+		<tr>	
+				<!-- linha primeira -->
+                <td><script>document.write(pre15)</script></td>
+                <td><script>document.write(proximaMatriz15)</script></td>
+                <td><script>document.write(proximaReferencia15)</script></td>
+				<td><script>document.write(proximaOp15)</script></td>
+				<td><script>document.write(proximaQuantidade15)</script></td>
+				<td><script>document.write(proximaProduzido15)</script></td>
+				<td><script>document.write(proximaMaterial15)</script></td>
+				<td><script>document.write(proximaPeso15)</script></td>
+				<!-- linha segunda -->
+			</tr>
+			<script>
+		function getData(){
+			now = new Date();
+			d = now.getDate();
+			var m = 1;
+			m += now.getMonth();
+			y = now.getFullYear();
+			var dt = d+"/"+m+"/"+y;
+			return document.write("Data: "+ dt);
+		}
+		</script>
+			<tr>	
+				<!-- linha primeira -->
+                <td colspan="3"><script>getData()</script></td>
+                <td colspan="3"><script>document.write(preparador)</script></td>
+				<td colspan="3"><script>document.write("TURNO "+getTurno())</script></td>
+                
+				<!-- linha segunda -->
+			</tr>
+        </table>
+    </div>
+	 <p>
+        <input type="button" value="Criar PDF" id="btnImprimir" onclick="CriaPDF()" />
+    </p>
+	<script>
+    function CriaPDF() {
+        var minhaTabela = document.getElementById('tabela').innerHTML;
+        var style = "<style>";
+        style = style + "table {width: 100%;font: 20px Calibri;}";
+        style = style + "table, th, td {border: solid 2px #DDD; border-collapse: collapse;";
+        style = style + "padding: 2px 3px;text-align: center;}";
+        style = style + "</style>";
+        // CRIA UM OBJETO WINDOW
+        var win = window.open('', '', 'height=700,width=800');
+        win.document.write('<html><head>');
+        win.document.write('<title>Acompanhamento</title>');   // <title> CABEÃ‡ALHO DO PDF.
+        win.document.write(style);                                     // INCLUI UM ESTILO NA TAB HEAD
+        win.document.write('</head>');
+        win.document.write('<body>');
+        win.document.write(minhaTabela);                          // O CONTEUDO DA TABELA DENTRO DA TAG BODY
+        win.document.write('</body></html>');
+        win.document.close(); 	                                         // FECHA A JANELA
+        win.print();                                                            // IMPRIME O CONTEUDO
+    }
+</script>
+
+</body>
+</html>

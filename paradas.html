@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+<meta charset="ISO-8859-1">
+    <script type="text/javascript" src="classes.js"></script>
+	<title>Controle de Producao</title>
+<style>
+body {
+    padding: 10;
+    margin: 10;
+}
+form {
+    font-family: Verdana,Tahoma,sans-serif;
+    font-size: 12px;
+    max-width: 1100px;
+}
+select {
+	border-color: #000066;
+    box-shadow: 5px 0px 9px #FFFF00;
+    font-family: Verdana,Tahoma,sans-serif;
+    font-size: 12px;
+    background-color: #XX9999;
+    max-width: 500px;
+	border-radius:1em;
+}
+h1, nav {
+    margin-bottom: 20px;
+    margin-left: 20px;
+    color: #66FFFF;
+    text-shadow: 5px 5px 5px black;
+}
+ 
+input, text, button {
+	width:80px;
+	font-size: 12px;
+    padding: 10px;
+    color: black;
+    margin-left: 20px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 15px;
+    border: 1px solid;
+    border-radius:1em;
+    text-align: center;
+}
+ 
+input:hover, textarea :hover, input:focus, textarea:focus {
+    border-color: #000066;
+    box-shadow: 5px 0px 9px #FFFF00;
+    background-color: #66FFFF;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+}
+ 
+.submit input {
+    background-color: #66FFFF;
+    height: 40px;
+    width: 100px;
+    font-weight: bold;
+    font-size:17px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border: 1px solid;
+    color: black;
+}
+input.proximaCinza {
+background-color: #c8c8c8;
+}
+.labelMetas{
+	color: black;
+    font-weight: bold;
+    font-size: 14px;
+}
+textarea {
+    width: 400px;
+    height: 120px;
+    line-height: 20px;
+    max-width: 400px;
+}
+ 
+table {
+    margin-left: 20px;
+    color: #191970;;
+    font-weight: bold;
+    position: fixed;
+  	top: 1%;
+  	width: 8em;
+ 	margin-top: +2.5em;
+}
+label {
+    margin-left: 20px;
+    color: #191970;
+    font-weight: bold;  
+} 
+
+</style>
+</head>
+<script>
+var paradas = [];
+var paradasHoras = [];
+var NParadas = [];
+function limparParadas(){
+	
+}
+function setParada(){
+	var descricao = document.getElementById("textArea").value;
+	if(NParadas.length>0){ 
+		if(descricao.split("//").length>1){ 
+			var d = descricao.split("//");
+			for(var a=0;a<d.length;a++){
+				var pa = new Parada();
+				pa.maquina = sessionStorage.getItem("parada");
+				pa.descricao = d[a];
+				pa.hora = getHoras();
+				NParadas.push(pa);
+			}
+		}else{
+			var pa = new Parada();
+			pa.maquina = sessionStorage.getItem("parada");
+			pa.descricao = descricao;
+			pa.hora = getHoras();
+			NParadas.push(pa);
+		}
+		var descricaoTotal = "";
+		var horasTotal = "";
+		for(var i=0;i<NParadas.length;i++){
+			if(this.NParadas[i].descricao!=null){
+				this.descricaoTotal +=  "Motivo: "+this.NParadas[i].descricao+"//";
+			}
+			if(this.NParadas[i].hora!=null){
+				this.horasTotal += "parada registrada as: "+this.NParadas[i].hora+"//";
+			}
+		}
+		localStorage.setItem("parada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), this.descricaoTotal);
+		localStorage.setItem("Horaparada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), this.horasTotal); 
+	}else{
+		if(descricao.split("//").length>1){
+		var n = descricao.split("//"); 
+		var h;
+		if(localStorage.getItem("Horaparada:"+sessionStorage.getItem("parada")+";turno:"+getTurno()+";dia:"+getData())!=null){
+			this.h = "parada registrada as: "+getHoras();
+			this.n = "";
+		}else{
+			var h = localStorage.getItem("Horaparada:"+sessionStorage.getItem("parada")+";turno:"+getTurno()+";dia:"+getData());
+		}
+		for(var i=0;i<n.length;i++){
+			this.h = this.h+"//"+"parada registrada as: "+getHoras();   
+			this.n = this.n+"Motivo: "+n[i]+"//"; 
+		}
+		localStorage.setItem("parada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), this.n);
+		localStorage.setItem("Horaparada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), this.h);
+	}else{
+		localStorage.setItem("Horaparada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), "parada registrada as: "+getHoras()+"//");
+		localStorage.setItem("parada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), "Motivo: "+descricao+"//");
+	}
+	}
+}
+function getParada(){
+	var key = "parada:"+sessionStorage.getItem("parada")+";turno:"+getTurno()+";dia:"+getData();
+	var key2 = "Horaparada:"+sessionStorage.getItem("parada")+";turno:"+getTurno()+";dia:"+getData();
+	if(localStorage.getItem(key)!=null){
+		this.paradas = localStorage.getItem(key).split("//");
+	}
+	if(localStorage.getItem(key2)!=null){
+		this.paradasHoras = localStorage.getItem(key2).split("//");
+	}
+	listarParadas();
+}
+function listarParadas(){
+	for(var i = 0; i<this.paradas.length; i++){
+		p = new Parada();
+		p.maquina = sessionStorage.getItem("parada");
+		p.hora = this.paradasHoras[i];
+		p.descricao = paradas[i];
+		this.NParadas[i] = p; 
+	}
+	for(var x = 0; x<this.NParadas.length; x++){
+		var n = parseInt(x+1);
+		if((this.NParadas[x].descricao!=null) && this.NParadas[x].hora!=null){
+			document.write("<p>parada:"+n+" "+this.NParadas[x].hora+" "+this.NParadas[x].descricao+"</p>");
+		}
+	}
+}
+</script>
+<body style="height:100%; width:100%;"> 
+<form>
+<script>
+getParada();
+var maquina = sessionStorage.getItem("parada");
+		document.write("<p>"+maquina+" :</p>");
+</script>		
+		<textarea id="textArea" placeholder="escreva aqui a parada da maquina ou paradas delimitando // entre uma e outra. Se for so 1 parada nao precisa o //" rows="20"></textarea><br><br>
+		<button onclick="setParada()">Salvar Parada</button>
+</form>
+
+
+</body>
+</html>
