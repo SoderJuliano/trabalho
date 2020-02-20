@@ -210,12 +210,12 @@ document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas fei
 		for(var i = 0; i< maquinas.length; i++){
 			document.write("<tr style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>");
 			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+maquinas[i].numero+"</td>");
-			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+p[i].proucaoTelhas+" T</td>");
+			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+p[i].producaoTelhas+" T</td>");
 			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+p[i].irog+"%</td>");
 			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+p[i].producaoPecas+" Pcs</td>");
 			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>"+p[i].producaoQuilos+" kg.</td>");
 			document.write("</tr>");
-			this.corpoDoEmail.push(+maquinas[i].numero+" --------- "+p[i].proucaoTelhas+"T ---------"+p[i].irog+"% ---------"+p[i].producaoPecas+"pcs ------ "+p[i].producaoQuilos+"kg.\n");
+			this.corpoDoEmail.push(+maquinas[i].numero+" --------- "+p[i].producaoTelhas+"T ---------"+p[i].irog+"% ---------"+p[i].producaoPecas+"pcs ------ "+p[i].producaoQuilos+"kg.\n");
 		}
 		this.corpoDoEmail[0] = "MAQUINAS\t TELLHAS\t IROG\t\t PECAS\t KG\n"+this.corpoDoEmail[0];
 		this.corpoDoEmail.push("\nSoma telhas: "+somas);
@@ -224,7 +224,7 @@ document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas fei
 		this.corpoDoEmail.push("\nKG: "+quilos);
 		document.write("<h3>Meta: "+somasMetas+" telhas</h3>");
 		document.write("<h3>Realizado: "+somas+" telhas</h3>"); 
-		document.write("<h3>Soma peças: "+pecas+"</h3>");
+		document.write("<h3>Soma peças: "+pecas+" pcs</h3>");
 		document.write("<h3>Irog: "+calculaIrogTotal(somas,somasMetas)+"%</h3>"); //alert("soma "+somas+" smetas "+somasMetas);
 		document.write("<h3>Soma quilos: "+quilos+"kg</h3>");
 		document.write("</table>");

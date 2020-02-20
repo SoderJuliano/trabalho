@@ -40,19 +40,23 @@ function verificarLS(maquina){
 			m.telhaPorCiclo = document.getElementById("tc"+[i]).value; 
 			m.realizadaOP = document.getElementById("cOp"+[i]).value; 
 			m.realizadaTurno = document.getElementById("cT"+[i]).value; 
-			m.pecaPorTelha = verificarPeca(m.numero); 
-			
-			var p = new Producao(m.numero, m.getProducaoTelhas(), m.getProducaoEmPeca());
+			m.pecaPorTelha = verificarPeca(m.numero);
+			var p = new Producao();
+			p.maquina = m.numero;
+			p.producaoTelhas = m.getProducaoTelhas();
+			p.producaoPecas = m.getProducaoEmPeca();
+			p.data = getData(); 
+			p.turno = getTurno();
 			p.calculaQuilos();
 			p.calculaIrog(m.meta); 
 			quantidadeOp(m.numero, m.realizadaOP, m.telhaPorCiclo);
 			listaMaquinas.push(m);
 			listaProducao.push(p);
-			if(p.proucaoTelhas>0){ 
-				somasTelhas += p.proucaoTelhas;
-			}
+			if(p.producaoTelhas>0){ 
+				somasTelhas += p.producaoTelhas;
+			}	
 			if(p.producaoPecas>0){ 
-				somasPecas += p.producaoPecas;
+				somasPecas += p.producaoPecas; 
 			}
 			if(m.meta>0){
 				this.contMetas++;
@@ -60,11 +64,11 @@ function verificarLS(maquina){
 			}
 			if(p.producaoQuilos>0){
 				somasQuilos += p.producaoQuilos;
-			}
+			} 
 			var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
 			localStorage.setItem(m.numero+"_metas"+p.turno, mm);
-			var pp = "maquina:"+p.maquina+";proucaoTelhas:"+p.proucaoTelhas+";producaoPecas:"+p.producaoPecas+";producaoQuilos:"+p.producaoQuilos+";irog:"+p.irog;
-			localStorage.setItem(p.data+"_data"+p.maquina+p.turno+"_producao", pp);
+			var pp = "maquina:"+p.maquina+";producaoTelhas:"+p.producaoTelhas+";producaoPecas:"+p.producaoPecas+";producaoQuilos:"+p.producaoQuilos+";irog:"+p.irog;
+			localStorage.setItem(p.data+"_data"+p.maquina+p.turno+"_producao"+p.turno, pp);
 		}
 		resultado(listaMaquinas, listaProducao, somasTelhas, somasPecas, somasMetas, this.contMetas, somasQuilos);
 	}
@@ -137,14 +141,14 @@ function verificarLS(maquina){
 	this.turno;
 	this.hora;
 }
-	function Producao(maquina, telhas, pecas){
-		this.maquina = maquina;
-		this.proucaoTelhas = telhas;
-		this.producaoPecas = pecas;
+	function Producao(){
+		this.maquina;
+		this.producaoTelhas;
+		this.producaoPecas;
 		this.producaoQuilos;
 		this.irog = 0;
-		this.turno = getTurno();
-		this.data = getData();
+		this.turno; 
+		this.data;
 		this.parada;
 	}
 	function getData(){
@@ -181,7 +185,7 @@ function verificarLS(maquina){
 	Producao.prototype.calculaQuilos = function(){
 		var qlos = this.maquina+"_peso";
 		var peso = localStorage.getItem(qlos);
-		return this.producaoQuilos = ((peso*this.proucaoTelhas)/1000);
+		return this.producaoQuilos = ((peso*this.producaoTelhas)/1000);
 	}
 	function Maquina(n){ // recebe o número da máquina
 		this.numero = n; 
@@ -215,7 +219,7 @@ function verificarLS(maquina){
 	Producao.prototype.calculaIrog = function(meta){
 		var irg;
 		if(meta!=null){
-			irg = ((this.proucaoTelhas/meta)*100);
+			irg = ((this.producaoTelhas/meta)*100);
 		}
 		var arredondado = parseFloat(irg.toFixed(2));
 		this.irog = arredondado;
@@ -478,10 +482,10 @@ function Producao(){
 			paradasMaq12,paradasMaq13,paradasMaq14,paradasMaq15];*/
 			//alert("Bem vindo "+localStorage.getItem("preparador")+" do vão "+localStorage.getItem("vao"));
 			if((vao==null) || (vao=="undefined") || (vao="")){ 
-				this.vao = localStorage.getItem("vao");
+				this.vao = localStorage.getItem("vao"); 
 			}
 			if(localStorage.getItem("preparador")==null){
-				this.preparador = "preparador";
+				this.preparador = " ";
 			}else{
 				this.preparador = localStorage.getItem("preparador");
 			}
@@ -490,6 +494,18 @@ function Producao(){
 			}
 // aqui carrega toda a página
 			pagina();
+		}
+		function selecao(){
+			alert(document.getElementById("linha").value);
+			this.vao = document.getElementById("linha").value;  
+			var preparador = document.getElementById("nomeid").value;
+			localStorage.setItem("preparador", preparador);
+			localStorage.setItem("vao", this.vao); 
+			vaoSet = 0;
+			window.location.href = 'index.html';
+			for(var i =0; i<16; i++){
+				sessionStorage.setItem('maquina'+i, buscarPre(this.vao, i));
+			}
 		}
 		function pagina(){
 		document.write("<form name='meu_form' method='GET' action='programa.html'>");
@@ -500,9 +516,9 @@ function Producao(){
 				document.write("<table>");
 				document.write("<th colspan='2'>Nome <input type='text' id='nomeid' value='"+preparador+"' name='nome' /></th>");
 				if(vao!=null){
-					document.write('<th colspan="6" >Selecione a Linha<select onchange="selecao();"id="linha " ><option value="'+this.vao+'">'+this.vao+'</option><option value="2" >2</option><option value="3" >3</option></select></th>');
+					document.write('<th colspan="6" >Selecione a Linha<select onchange="selecao();"id="linha" ><option value="'+this.vao+'">'+this.vao+'</option><option value="2" >2</option><option value="3" >3</option></select></th>');
 				}else{
-					document.write('<th>Selecione a Linha<select onchange="selecao();"id="linha " ><option value="0" ></option><option value="2" >2</option><option value="3" >3</option></select></th>');
+					document.write('<th>Selecione a Linha<select onchange="selecao();"id="linha" ><option value="0" ></option><option value="2" >2</option><option value="3" >3</option></select></th>');
 				}
 				document.write("<h1><th class='labelMetas' onclick='Metas();'>EDITAR METAS</th></h1>");
 				document.write("<th><button onclick='enviar();' value='Submit'>Acompanhamento</button></th><br><br>");
@@ -584,25 +600,7 @@ function Producao(){
 				document.write('<input type="text" value="'+regulador+'"/>');
 				this.vao = document.getElementById("linha").value;
 	}
-		function selecao(){
-			alert(document.getElementById("linha").value);
-			this.vao = document.getElementById("linha").value;  
-			var preparador = document.getElementById("nomeid").value;
-			// vou modiificar o cookie padrÃ£o colocando sua data no tempo passado
-			var data = new Date(2010, 01, 01);
-			data = data.toGMTString(); 
-			for(var i = 0; i<array.length; i++){
-				document.cookie = array[i]+'; expires='+data+"; path=/";
-			}
-			document.cookie=this.vao+"="+preparador+"; path=/";
-			localStorage.setItem("preparador", preparador);
-			localStorage.setItem("vao", this.vao); 
-			vaoSet = 0;
-			window.location.href = 'index.html';
-			for(var i =0; i<16; i++){
-				sessionStorage.setItem('maquina'+i, buscarPre(this.vao, i));
-			}
-		}
+		
 		function getVao(){
 			this.vao = localStorage.getItem("vao");
 			if(this.vao==null){
