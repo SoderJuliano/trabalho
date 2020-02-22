@@ -97,63 +97,91 @@ label {
 </style>
 </head>
 <script>
+InteligenciaArtificial();
 var paradas = [];
 var paradasHoras = [];
 var NParadas = [];
-function limparParadas(){
-	
-}
-function setParada(){
-	var descricao = document.getElementById("textArea").value;
-	if(NParadas.length>0){ 
-		if(descricao.split("//").length>1){ 
-			var d = descricao.split("//");
-			for(var a=0;a<d.length;a++){
-				var pa = new Parada();
-				pa.maquina = sessionStorage.getItem("parada");
-				pa.descricao = d[a];
-				pa.hora = getHoras();
-				NParadas.push(pa);
+var descricaoTotal ='';
+var horasTotal='';
+var h = '';
+var pars = '';
+function removerUltimaParada(){
+NParadas.pop(); 
+if(NParadas.length>0){
+	for(var i=0;i<NParadas.length;i++){
+			var iteracao = this.NParadas.length;
+			var iteracaoI = parseInt(i+1);
+			if(iteracaoI==iteracao){  
+				this.descricaoTotal +=  this.NParadas[i].descricao;
+			}else if(iteracaoI!=iteracao){
+				this.descricaoTotal +=  this.NParadas[i].descricao+"//"; 
 			}
-		}else{
-			var pa = new Parada();
-			pa.maquina = sessionStorage.getItem("parada");
-			pa.descricao = descricao;
-			pa.hora = getHoras();
-			NParadas.push(pa);
-		}
-		var descricaoTotal = "";
-		var horasTotal = "";
-		for(var i=0;i<NParadas.length;i++){
-			if(this.NParadas[i].descricao!=null){
-				this.descricaoTotal +=  "Motivo: "+this.NParadas[i].descricao+"//";
-			}
-			if(this.NParadas[i].hora!=null){
-				this.horasTotal += "parada registrada as: "+this.NParadas[i].hora+"//";
+			if(iteracaoI==iteracao){
+				this.horasTotal += this.NParadas[i].hora; 
+			}else if(iteracaoI!=iteracao){
+				this.horasTotal += this.NParadas[i].hora+"//"; 
 			}
 		}
 		localStorage.setItem("parada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), this.descricaoTotal);
 		localStorage.setItem("Horaparada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), this.horasTotal); 
-	}else{
-		if(descricao.split("//").length>1){
-		var n = descricao.split("//"); 
-		var h;
-		if(localStorage.getItem("Horaparada:"+sessionStorage.getItem("parada")+";turno:"+getTurno()+";dia:"+getData())!=null){
-			this.h = "parada registrada as: "+getHoras();
-			this.n = "";
+}else{
+	localStorage.removeItem("parada:"+maquina+";turno:"+getTurno()+";dia:"+getData());
+	localStorage.removeItem("Horaparada:"+maquina+";turno:"+getTurno()+";dia:"+getData())
+}
+}
+function setParada(){
+	var descricao = document.getElementById("textArea").value;
+	if(NParadas.length>0){ 
+		var d = descricao.split("//");
+		if(d.length>1){
+			for(var a=0;a<d.length;a++){ 
+				var pa = new Parada(); 
+				pa.maquina = sessionStorage.getItem("parada");
+				pa.descricao = d[a]; 
+				pa.hora = getHoras();
+				NParadas.push(pa); 
+			}
 		}else{
-			var h = localStorage.getItem("Horaparada:"+sessionStorage.getItem("parada")+";turno:"+getTurno()+";dia:"+getData());
+			var pa = new Parada(); 
+			pa.maquina = sessionStorage.getItem("parada");
+			pa.descricao = descricao;
+			pa.hora = getHoras();
+			NParadas.push(pa); 
 		}
-		for(var i=0;i<n.length;i++){
-			this.h = this.h+"//"+"parada registrada as: "+getHoras();   
-			this.n = this.n+"Motivo: "+n[i]+"//"; 
+		for(var i=0;i<NParadas.length;i++){
+			var iteracao = this.NParadas.length;
+			var iteracaoI = parseInt(i+1);
+			if(iteracaoI==iteracao){  
+				this.descricaoTotal +=  this.NParadas[i].descricao;
+			}else if(iteracaoI!=iteracao){
+				this.descricaoTotal +=  this.NParadas[i].descricao+"//"; 
+			}
+			if(iteracaoI==iteracao){
+				this.horasTotal += this.NParadas[i].hora; 
+			}else if(iteracaoI!=iteracao){
+				this.horasTotal += this.NParadas[i].hora+"//"; 
+			}
 		}
-		localStorage.setItem("parada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), this.n);
-		localStorage.setItem("Horaparada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), this.h);
-	}else{
-		localStorage.setItem("Horaparada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), "parada registrada as: "+getHoras()+"//");
-		localStorage.setItem("parada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), "Motivo: "+descricao+"//");
-	}
+		localStorage.setItem("parada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), this.descricaoTotal);
+		localStorage.setItem("Horaparada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), this.horasTotal); 
+	}else{ 
+		if(descricao.split("//").length>1){ 
+			var n = descricao.split("//");  
+			for(var i=0;i<descricao.split("//").length;i++){
+				if(n.length==i+1){
+					this.h += "parada registrada as: "+getHoras();   
+					this.pars += "Motivo: "+n[i];
+				}else{
+					this.h += "parada registrada as: "+getHoras()+"//";   
+					this.pars += "Motivo: "+n[i]+"//";
+				}
+			}
+			localStorage.setItem("parada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), this.pars);
+			localStorage.setItem("Horaparada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), this.h);
+		}else{
+			localStorage.setItem("Horaparada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), getHoras());
+			localStorage.setItem("parada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), descricao);
+		}
 	}
 }
 function getParada(){
@@ -177,7 +205,7 @@ function listarParadas(){
 	}
 	for(var x = 0; x<this.NParadas.length; x++){
 		var n = parseInt(x+1);
-		if((this.NParadas[x].descricao!=null) && this.NParadas[x].hora!=null){
+		if((this.NParadas[x].descricao!=null) && (this.NParadas[x].hora!=null)){
 			document.write("<p>parada:"+n+" "+this.NParadas[x].hora+" "+this.NParadas[x].descricao+"</p>");
 		}
 	}
@@ -192,6 +220,7 @@ var maquina = sessionStorage.getItem("parada");
 </script>		
 		<textarea id="textArea" placeholder="escreva aqui a parada da maquina ou paradas delimitando // entre uma e outra. Se for so 1 parada nao precisa o //" rows="20"></textarea><br><br>
 		<button onclick="setParada()">Salvar Parada</button>
+		<button onclick="removerUltimaParada()">Remover Parada</button>
 </form>
 
 

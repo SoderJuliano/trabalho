@@ -28,7 +28,7 @@ function verificarLS(maquina){
 		sessionStorage.setItem("turno", t);
 	}
 	
-	
+	var ia=new InteligenciaArtificial();
 	function aplicar(){
 		var contMetas = 0;
 		var somasMetas = 0;
@@ -68,7 +68,9 @@ function verificarLS(maquina){
 			var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
 			localStorage.setItem(m.numero+"_metas"+p.turno, mm);
 			var pp = "maquina:"+p.maquina+";producaoTelhas:"+p.producaoTelhas+";producaoPecas:"+p.producaoPecas+";producaoQuilos:"+p.producaoQuilos+";irog:"+p.irog;
-			localStorage.setItem(p.data+"_data"+p.maquina+p.turno+"_producao"+p.turno, pp);
+			localStorage.setItem(p.data+"_data"+p.maquina+"_producao"+p.turno, pp);
+			this.ia.setId(p.data+"_data"+p.maquina+"_producao"+p.turno);
+			this.ia.setUltimaProducao(p.data+"_data"+p.maquina+"_producao"+p.turno, p.turno);
 		}
 		resultado(listaMaquinas, listaProducao, somasTelhas, somasPecas, somasMetas, this.contMetas, somasQuilos);
 	}
@@ -255,11 +257,71 @@ function verificarLS(maquina){
 // IA Inteliencia Artificial
 
 function InteligenciaArtificial(){
-	this.ultimaProducao =[];
-	this.ultimaMeta = [];
+	this.ultimaProducaoT1 =[];
+	this.ultimaProducaoT2 =[];
+	this.ultimaProducaoT3 =[];
+	this.ultimaMetaT1 = [];
+	this.ultimaMetaT3= [];
+	//recuperarObject
 }
-InteligenciaArtificial.prototype.getTeste = function(){
+InteligenciaArtificial.prototype.setId = function(data){ //controla o tamanho do localStorage em produção
+	let id; 	
+	if(localStorage.getItem("controlador")!=null){
+		this.id = localStorage.getItem("controlador"); 
+	}else{
+		this.id=0; 
+	}
+	if(this.id>480){ alert("maior q "+this.id);
+		this.id =this.id-this.id;  
+	}
+	this.id++; alert("o id e  "+this.id);
+	if(localStorage.getItem(this.id)!=null){
+		let apagar = localStorage.getItem(this.id); 
+		localStorage.removeItem(apagar); 
+	}
+	localStorage.setItem("controlador", this.id);
+	localStorage.setItem(this.id, data);
+}
+InteligenciaArtificial.prototype.setUltimaProducao = function(data, turno){ //salva uma string chave
+	localStorage.setItem("ultimaPdr_turno"+turno, data);
+}
+InteligenciaArtificial.prototype.getUltimaProducao = function(turno){ //recupera uma string chave
+	return localStorage.getItem("ultimaPdr_turno"+turno);
+}
+InteligenciaArtificial.prototype.carregarProducao = function(data, turno, vao){
 		//alert("Welcome to IA");
+		let d = data;
+		let t = turno;
+		let v = vao;
+		let todasPdrs = []; // armazena todas as producoes recebidas
+		for(var i=0;i<16;i++){ // percorre uma lista de maquinas. Como ambas as linhas tem a mesma quantidade foi definiodo o var 16
+			var string = localStorage.getItem(data+"_data"+getMaquinas(vao)[i]+"_producao"+turno); 
+			// string contem maquina:variavel;producaoTelhas:variavel;producaoPecas:variavel;producaoQuilos:variavel;irog:variavel
+			var p = new Producao(); //nova instancia da classe Producao
+			let s1 = string.split(";");
+			for(let x=0; x<s1.length; x++){
+				//let s2 = s1.split(":");
+				switch(x) {
+					case 0:
+						p.maquina = s2[1];
+						break;
+					case 1:
+						p.producaoTelhas = s2[1]; 
+						break;
+					case 2:
+						p.producaoPecas = s2[1];
+						break;
+					case 3:
+						p.producaoQuilos = s2[1];
+						break;
+					case 4:
+						p.irog = s2[1];
+						break;
+				// code block
+				}
+			}
+			this.todasPdrs.push(p);
+		}
 	}
 function getMaquinas(va){
 	this.v = va;
@@ -507,22 +569,26 @@ function Producao(){
 				sessionStorage.setItem('maquina'+i, buscarPre(this.vao, i));
 			}
 		}
+		function paginaInicial(){
+			window.location.href = 'index.html';
+		}
 		function pagina(){
 		document.write("<form name='meu_form' method='GET' action='programa.html'>");
 		document.write("<div id='prensas'>");
 		if(this.vao == 4){
 				
 		}else{
-				document.write("<table>");
+				document.write("<li>");
 				document.write("<th colspan='2'>Nome <input type='text' id='nomeid' value='"+preparador+"' name='nome' /></th>");
 				if(vao!=null){
 					document.write('<th colspan="6" >Selecione a Linha<select onchange="selecao();"id="linha" ><option value="'+this.vao+'">'+this.vao+'</option><option value="2" >2</option><option value="3" >3</option></select></th>');
 				}else{
 					document.write('<th>Selecione a Linha<select onchange="selecao();"id="linha" ><option value="0" ></option><option value="2" >2</option><option value="3" >3</option></select></th>');
 				}
-				document.write("<h1><th class='labelMetas' onclick='Metas();'>EDITAR METAS</th></h1>");
-				document.write("<th><button onclick='enviar();' value='Submit'>Acompanhamento</button></th><br><br>");
-				document.write("</table>");
+				document.write("<li><span class='labelMetas' onclick='Metas();'>|| Editar Metas </span>");	
+				document.write("<a href='index.html' >|| Voltar ao Inicio ||</span><br>");
+				document.write("<button onclick='enviar();' value='Submit'>* Acompanhamento</button><br><br>");
+				document.write("</li></li>");
 				
 			for(var n=0;n<16;n++){
 				pegaMatrizLS(buscarMaquina(getVao(), n));
