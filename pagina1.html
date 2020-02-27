@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+<meta charset="ISO-8859-1">
+    <script type="text/javascript" src="classes.js"></script>
+	<title>Controle de Producao</title>
+	<style>
+
+form {
+    font-family: Verdana,Tahoma,sans-serif;
+    font-size: 12px;
+    max-width: 1100px;
+}
+select {
+	border-color: #000066;
+    box-shadow: 5px 0px 9px #FFFF00;
+    font-family: Verdana,Tahoma,sans-serif;
+    font-size: 12px;
+    background-color: #XX9999;
+    max-width: 500px;
+	border-radius:1em;
+}
+h1, nav {
+    margin-bottom: 20px;
+    margin-left: 20px;
+    color: #66FFFF;
+    text-shadow: 5px 5px 5px black;
+}
+ 
+input, text, button {
+	width:90px;
+    color: black;
+    margin-left: 10px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 6px;
+    border: 1px solid;
+    border-radius:1em;
+    text-align: center;
+    
+    display: inline-block;
+    padding: 8px 25px;
+    font-family: "Geometria-Medium";
+    font-size: 14px;
+    color: #fff;
+    border-radius: 30px;
+    background-color: #1680F8;
+    -webkit-box-shadow: 3px 4px 7px rgba(0, 0, 0, 0.21);
+    box-shadow: 3px 4px 7px rgba(0, 0, 0, 0.21);
+}
+ 
+input:hover, textarea :hover, input:focus, textarea:focus {
+    border-color: #000066;
+    box-shadow: 5px 0px 9px #FFFF00;
+    background-color: #66FFFF;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+}
+ 
+.submit input {
+    background-color: #66FFFF;
+    height: 20px;
+    width: 50px;
+    font-weight: bold;
+    font-size:14px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border: 1px solid;
+    color: black;
+}
+input.proximaCinza {
+background-color: #c8c8c8;
+}
+.labelMetas{
+	color: black;
+    font-weight: bold;
+    font-size: 14px;
+}
+</style>
+</head>
+<body>
+<script>
+     var vao;
+		var preparador;
+		var matrizReferencia;
+		var arrayParadas = [];
+		var matrizSet=1;
+		var opSet=1;
+		var qntSet=1;
+		var matSet=1;
+		var peSet=1;
+		var producao1 = [];
+		
+		var listaMaquinas3 = ["1019", "1407", "1408", "1409", "1410", "1552", "1553", "8833",
+			"8888", "8916", "8917", "10178", "11819", "11820", "12342", "12343"];
+		var listaMaquinas2 = ["1548", "1549", "1620","1621","1635","1825","1684","1686","1855", "1857","1877","1878",  "1906","1907",
+			"10552", "11818"];
+		var listaMaquinasNull = ["maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina",
+			"maquina", "maquina", "maquina", "maquina", "maquina"];
+			
+			//conjunto de matrizes da empresa....elas não mudam de numeração
+		var matrizes = [ ffr020479=["02/0479", "FD/87-F"], ffr020573=["02/0573", "4707-G"],
+			ffr020572=["02/0572", "4707-F"], ffr100000013687=["13687", "4711-F"], ffr020428=["02/0428", "4515-G"],
+			ffr020627=["02/0627", "4709"], ffr020427=["02/0427", "4515-F"], ffr020548=["02/0548", "4718-F"],
+			ffr020430=["02/0430", "CA/32-F"], ffr020431=["02/0431","CA/32-G"], ffr020450=["02/0450", "2240"],
+			ffr100000013692=["13692", "4711-G"], ffr020436=["02/0436","BC/37"], ffr020612=["02/0612", "MB/188"],
+			ffr020549=["02/0549", "4718-G"], ffr020466=["02/0466", "MB/185"], ffr020548=["02/0548", "4718-F"], ffr100000013691=["164291", "4719"]
+		];
+		var preVao3 = ["15641", "9562", "1579", "9493", "1580", "10013", "10052", "5039", "5040", "9026", "9082",
+			"10179", "11703", "11748", "9734", "9769"];
+		var preVao2 = ["1587", "1628", "1882", "1588", "11202", "11203", "10094", "1636", "1622", "1599", "1881",
+			"1879", "1660", "1585", "10180", "11519"];
+    setInterval(lookForChange, 1000);
+		function lookForChange(){ 
+			for(var i=0;i<16;i++){
+				var pesoInput = "peso"+i;
+				var maquinaInput = "maquina"+i; 
+				var materialInput = "material"+i;
+				var qntInput = "qnt"+i;
+				var opInput = "op"+i;
+				var referenciaInput = "referencia"+i;
+				var matrizInput = "matriz"+i;
+				
+				var maquina = document.getElementById(maquinaInput).textContent; 
+				var peso = document.getElementById(pesoInput).value;
+				var material = document.getElementById(materialInput).value; 
+				var qnt = document.getElementById(qntInput).value;
+				var op = document.getElementById(opInput).value;
+				var referencia = document.getElementById(referenciaInput).value;
+				var matriz = document.getElementById(matrizInput).value;
+				
+				if (peso != localStorage.getItem(maquina+"_peso")) {
+			    	localStorage.setItem(maquina+"_peso", peso);
+			    }
+				if ((material != localStorage.getItem(maquina+"_material")) && (material != null)) {
+			    	localStorage.setItem(maquina+"_material", material);
+			    }
+				if ((qnt != localStorage.getItem(maquina+"_qnt")) && (qnt != null)) {
+			    	localStorage.setItem(maquina+"_qnt", qnt);
+			    }
+				if ((op != localStorage.getItem(maquina+"_op")) && (op != null)) {
+			    	localStorage.setItem(maquina+"_op", op);
+			    }
+				if ((referencia != localStorage.getItem(maquina+"_referencia")) && (referencia != null)) {
+			    	localStorage.setItem(maquina+"_referencia", referencia);
+			    }
+				if ((matriz != localStorage.getItem(maquina+"_matriz")) && (matrizInput != null)) {
+			    	localStorage.setItem(maquina+"_matriz", matriz);
+			    }
+			}
+        }
+    init1();
+    function init1(){
+			if((vao==null) || (vao=="undefined") || (vao="")){ 
+				this.vao = localStorage.getItem("vao"); 
+			}
+			if(localStorage.getItem("preparador")==null){
+				this.preparador = " ";
+			}else{
+				this.preparador = localStorage.getItem("preparador");
+			}
+			for(var i =0; i<16; i++){
+				sessionStorage.setItem('maquina'+i, buscarPre(this.vao, i));
+			}
+			pagina1();
+		}
+        function pagina1(){
+				document.write("<form name='meu_form' method='GET' action='programa.html'>");
+				document.write("<div id='prensas'>");
+				if(this.vao == 4){
+						
+				}else{
+					header();
+					for(var n=0;n<16;n++){
+						pegaMatrizLS(buscarMaquina(getVao(), n));
+						salvarNumeroDaMaquina(buscarMaquina(getVao(), n), n);
+						if(localStorage.getItem(buscarMaquina(getVao(), n)+"_op")!=null){
+							this.opSet = 0;
+						}
+						if(localStorage.getItem(buscarMaquina(getVao(), n)+"_qnt")!=null){
+							this.qntSet = 0;
+						}
+						if(localStorage.getItem(buscarMaquina(getVao(), n)+"_material")!=null){
+							this.matSet = 0;
+						}
+						if(localStorage.getItem(buscarMaquina(getVao(), n)+"_peso")!=null){
+							this.peSet = 0;
+						}
+						if(localStorage.getItem(buscarMaquina(getVao(), n)+"_matriz")!=null){
+							this.matrizSet = 0;
+						}
+						document.write("<table>");
+						document.write("<th id='maquina"+n+"' onclick='novaJanelaParada("+n+");'>"+buscarMaquina(getVao(), n)+"</th>"); 
+						document.write("<th id='proxima"+n+"'>"+buscarPre(getVao(), n)+"</th>");
+						
+						document.write("<tr>");
+						if(this.matrizSet == 1){
+							document.write("<td><input type='text'id='matriz"+n+"' placeholder='"+this.matrizReferencia[0]+"'></input></td>");
+							document.write("<td><input type='int'  id='referencia"+n+"' placeholder='"+this.matrizReferencia[1]+"'></input></td>");
+						}else{
+							document.write("<td><input type='text'id='matriz"+n+"' placeholder='matriz' value='"+this.matrizReferencia[0]+"'></input></td>");
+							document.write("<td><input type='int'  id='referencia"+n+"' placeholder='referencia' value='"+this.matrizReferencia[1]+"'></input></td>");
+				}
+						if(this.opSet == 1){
+							document.write("<td><input type='int' placeholder='OP' id='op"+n+"' ></input></td>");
+						}else{
+							document.write("<td><input type='int' placeholder='OP' id='op"+n+"' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), n))+"'></input></td>");
+						}
+						if(this.qntSet == 1){
+							document.write("<td><input type='int' placeholder='quantidade' id='qnt"+n+"'></input></td>");
+						}else{
+							document.write("<td><input type='int' placeholder='quantidade' value='"+pegarQuantidade(buscarMaquina(getVao(), n))+"' id='qnt"+n+"'></input></td>");
+						}
+						if(this.matSet == 1){
+							document.write("<td><input type='text' placeholder='material' id='material"+n+"'></input></td>");
+						}else{
+							document.write("<td><input type='text' placeholder='material' id='material"+n+"' value='"+pegarMaterialLocalStorage(buscarMaquina(getVao(), n))+"'></input></td>");
+						}
+						if(this.peSet == 1){
+							document.write("<td><input type='int' placeholder='peso' id='peso"+n+"'></input></td><br>");
+						}else{
+							document.write("<td><input type='int' placeholder='peso' id='peso"+n+"' value='"+pegarPesoLocalStorage(buscarMaquina(getVao(), n))+"'></input></td><br>");
+						}
+						document.write("</tr>");
+				document.write("</table>");	
+			}
+			document.write("<button onclick='enviar();' value='Submit'>Enviar</button>");
+			document.write("</form>");
+		}
+		document.write("</div>");
+				document.write('<input type="text" value="'+regulador+'"/>');
+				this.vao = document.getElementById("linha").value;
+		}
+          
+</script>
+</body>
+</html>

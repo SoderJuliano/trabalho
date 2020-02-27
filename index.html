@@ -26,8 +26,14 @@ http://www.tooplate.com/view/2097-pop
 </head>
 <script>
 	function myFunctionInit() {
-	document.getElementById("pagina").innerHTML = init();
-}
+        if(sessionStorage.getItem('pagina')==1){
+            window.open('pagina1.html', 'janela', 'width=970, height=790, top=100, left=699, scrollbars=no, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
+        }else if(sessionStorage.getItem('pagina')==2){
+            window.open('pagina2.html', 'janela', 'width=970, height=790, top=100, left=699, scrollbars=no, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
+        }else{
+            window.open('pagina.html', 'janela', 'width=970, height=790, top=100, left=699, scrollbars=no, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
+        }
+    }
 </script>
 <body>
     <div id="tm-bg"></div>
@@ -168,9 +174,9 @@ http://www.tooplate.com/view/2097-pop
                 </div>                
             </div>
             <footer>
-                <p class="small tm-copyright-text">Copyright &copy; <span class="tm-current-year">2018</span> Your Company. 
+                <p class="small tm-copyright-text">Copyright &copy; <span class="tm-current-year">2018</span> Fras-le/SA. 
                 
-                Layout: Tooplate</p>
+                Layout: Tooplate, modify by Juliano Soder</p>
             </footer>
         </div> <!-- .tm-main-content -->  
     </div>

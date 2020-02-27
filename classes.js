@@ -1,27 +1,33 @@
-function verificarLS(maquina){
-		var ma = maquina+"_metas"+getTurno();
-		if(localStorage.getItem(maquinas[i]+"_metas")!=null){
-			return true;
-		}else{
-			return false;
-		}
-	}
+var listaMaquinas3 = ["1019", "1407", "1408", "1409", "1410", "1552", "1553", "8833",
+			"8888", "8916", "8917", "10178", "11819", "11820", "12342", "12343"];
+var listaMaquinas2 = ["1548", "1549", "1620","1621","1635","1825","1684","1686","1855", "1857","1877","1878",  "1906","1907",
+			"10552", "11818"];
+var listaMaquinasNull = ["maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina",
+			"maquina", "maquina", "maquina", "maquina", "maquina"];
+
 	function novaJanelaProducao(){
 		window.open('producao.html', 'janela', 'width=795, height=590, top=100, left=699, scrollbars=no, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
 	}
 	function verificarPeca(numero){
-		var ref = localStorage.getItem(numero+"_referencia");
-		var lista4 = ['2240', '4707', '4515', '4709'];
-		var retorno;
-		var arrey = ref.split("-");
-		for(var i=0;i<lista4.length;i++){
-			if(lista4[i]==arrey[0]){
-				retorno = 4;
-			}else{
-				retorno = 3;
+		let ref = localStorage.getItem(numero+"_referencia");
+		if(ref==null || ref==''){
+			return 3.75;
+		}else{
+			let lista4 = ['2240', '4707', '4515', '4709'];
+			let retorno;
+			var arrey = ref.split("-");
+			for(var i=0;i<lista4.length;i++){
+				if(array[0]=='4702'){
+					retorno = 6;
+				}
+				if(lista4[i]==arrey[0]){
+					retorno = 4;
+				}else{
+					retorno = 3;
+				}
 			}
-		}
 		return retorno;
+		}
 	}
 	function turno(){
 		var t = document.getElementById("turno").value;
@@ -29,27 +35,33 @@ function verificarLS(maquina){
 	}
 	
 	var ia=new InteligenciaArtificial();
-	function aplicar(){
-		var contMetas = 0;
+	function aplicar(){ 
+		var contMetas = 0; 
 		var somasMetas = 0;
-		for(var i = 0; i<maquinas.length; i++){
-			var nM = maquinas[i]; // nM= numero Maquina
+		let lista;
+		if(getVao()==2){
+			lista = this.listaMaquinas2; 
+		}else if(getVao()==3){
+			lista = this.listaMaquinas2;
+		}
+		for(var i = 0; i<lista.length; i++){ 
+			var nM = lista[i]; // nM= numero Maquina
 			var m = new Maquina(nM); // objeto Maquina
 			
-			m.meta = document.getElementById("meta"+[i]).value;  
+			m.meta = document.getElementById("meta"+[i]).value;   
 			m.telhaPorCiclo = document.getElementById("tc"+[i]).value; 
-			m.realizadaOP = document.getElementById("cOp"+[i]).value; 
-			m.realizadaTurno = document.getElementById("cT"+[i]).value; 
-			m.pecaPorTelha = verificarPeca(m.numero);
+			m.realizadaOP = document.getElementById("cOp"+[i]).value;  
+			m.realizadaTurno = document.getElementById("cT"+[i]).value;  
+			m.pecaPorTelha = verificarPeca(m.numero); 
 			var p = new Producao();
 			p.maquina = m.numero;
-			p.producaoTelhas = m.getProducaoTelhas();
+			p.producaoTelhas = m.getProducaoTelhas(); 
 			p.producaoPecas = m.getProducaoEmPeca();
 			p.data = getData(); 
-			p.turno = getTurno();
+			p.turno = getTurno(); 
 			p.calculaQuilos();
 			p.calculaIrog(m.meta); 
-			quantidadeOp(m.numero, m.realizadaOP, m.telhaPorCiclo);
+			quantidadeOp(m.numero, m.realizadaOP, m.telhaPorCiclo); 
 			listaMaquinas.push(m);
 			listaProducao.push(p);
 			if(p.producaoTelhas>0){ 
@@ -64,7 +76,7 @@ function verificarLS(maquina){
 			}
 			if(p.producaoQuilos>0){
 				somasQuilos += p.producaoQuilos;
-			} 
+			}  
 			var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
 			localStorage.setItem(m.numero+"_metas"+p.turno, mm);
 			var pp = "maquina:"+p.maquina+";producaoTelhas:"+p.producaoTelhas+";producaoPecas:"+p.producaoPecas+";producaoQuilos:"+p.producaoQuilos+";irog:"+p.irog;
@@ -72,6 +84,7 @@ function verificarLS(maquina){
 			this.ia.setId(p.data+"_data"+p.maquina+"_producao"+p.turno);
 			this.ia.setUltimaProducao(p.data+"_data"+p.maquina+"_producao"+p.turno, p.turno);
 		}
+		ia.setUltimaProducao(p.data, p.turno);
 		resultado(listaMaquinas, listaProducao, somasTelhas, somasPecas, somasMetas, this.contMetas, somasQuilos);
 	}
 	function quantidadeOp(maquina, ciclos, telhaPorCiclo){
@@ -107,10 +120,10 @@ function verificarLS(maquina){
 		return m;
 	}
 	function getTurno(){
-		var t;
+		let t;
 		now = new Date();
 		horas = now.getHours();
-		if(getDiaDaSemana()=="Sabado"){
+		if(getDiaDaSemana()=="Sabado"){ 
 			if((horas=>10) && (horas<15)){
 				sessionStorage.setItem("turno", 1);
 				t = 1;
@@ -122,10 +135,10 @@ function verificarLS(maquina){
 				sessionStorage.setItem("turno", t);
 			}
 		}else{
-			if((horas=>6) && (horas<15)){
+			if((horas>6) && (horas<=15)){ 
 				sessionStorage.setItem("turno", 1);
 				t = 1;
-			}else if((horas=>15) && (horas<24)){
+			}else if((horas>15) && (horas<=00)){
 				t = 2;
 				sessionStorage.setItem("turno", t);
 			}else{
@@ -263,6 +276,34 @@ function InteligenciaArtificial(){
 	this.ultimaMetaT1 = [];
 	this.ultimaMetaT3= [];
 	//recuperarObject
+	
+}
+InteligenciaArtificial.prototype.setIdParada = function(data, dataHora){ 
+	let id;
+	let id_hora;
+	if(localStorage.getItem('controladorParada')!=null){
+		this.id = localStorage.getItem('controladorParada');
+		this.id_hora = localStorage.getItem('controladorParadaHora');
+	}else{
+		this.id = 0;
+		this.id_hora = 0;
+	}
+	if(this.id>480){
+		this.id = 0;
+		this.id_hora = 0;
+	}
+	this.id++;
+	this.id_hora++;
+	if(localStorage.getItem(this.id)!=null){
+		let apagar = localStorage.getItem(this.id); 
+		localStorage.removeItem(apagar);
+		let apagarh = localStorage.getItem(this.id_hora); 
+		localStorage.removeItem(apagarh); 
+	}
+	localStorage.setItem("controladorParada", this.id);
+	localStorage.setItem(this.id, data);
+	localStorage.setItem("controladorParadaHora", this.id_hora);
+	localStorage.setItem(this.id_hora, dataHora);
 }
 InteligenciaArtificial.prototype.setId = function(data){ //controla o tamanho do localStorage em produção
 	let id; 	
@@ -271,10 +312,10 @@ InteligenciaArtificial.prototype.setId = function(data){ //controla o tamanho do
 	}else{
 		this.id=0; 
 	}
-	if(this.id>480){ alert("maior q "+this.id);
+	if(this.id>480){ //diminui o id por ele mesmo e começa do zero
 		this.id =this.id-this.id;  
 	}
-	this.id++; alert("o id e  "+this.id);
+	this.id++; //alert("o id e  "+this.id);
 	if(localStorage.getItem(this.id)!=null){
 		let apagar = localStorage.getItem(this.id); 
 		localStorage.removeItem(apagar); 
@@ -285,9 +326,51 @@ InteligenciaArtificial.prototype.setId = function(data){ //controla o tamanho do
 InteligenciaArtificial.prototype.setUltimaProducao = function(data, turno){ //salva uma string chave
 	localStorage.setItem("ultimaPdr_turno"+turno, data);
 }
-InteligenciaArtificial.prototype.getUltimaProducao = function(turno){ //recupera uma string chave
-	return localStorage.getItem("ultimaPdr_turno"+turno);
+InteligenciaArtificial.prototype.setIdultimaParada = function(data, turno){ //salva uma string chave
+	localStorage.setItem("ultimaParada_turno"+turno, data);
 }
+InteligenciaArtificial.prototype.teste = function(){ //salva uma string chave
+	alert("setIdUltimaParada");
+}
+InteligenciaArtificial.prototype.carregarMeta = function(turno, vao){
+	if(localStorage.getItem("ultimaPdr_turno"+turno)!=null){ 
+		let d = localStorage.getItem("ultimaPdr_turno"+turno); 
+		let t = turno; 
+		let v = vao;
+		let todasMetas = []; 
+		//let lista = buscarMaquina(v, t);
+		for(let i=0; i<16; i++){ 
+			let string = localStorage.getItem(buscarMaquina(v, i)+"_metas"+t);  
+				var m = new Maquina(getMaquinas(v)[i]);
+				let s1 = string.split(";"); 
+				for(let s=0;s<s1.length;s++){ 
+					let s2 = s1[s].split(":"); 
+					switch(s){
+						case 0:
+							m.telhaPorCiclo = s2[1];
+							break;
+						case 1:
+							m.meta = s2[1];
+							break;
+						case 2:
+							m.pecaPorTelha = s2[1];
+							break;
+						case 3:
+							m.realizadaOP = s2[1];
+							break;
+							case 4:
+							m.realizadaTurno = s2[1]; 
+							break;
+					} //switch
+		} //fecha o for	
+		todasMetas.push(m); // ainda dentro do for vai adicionando metas ao array	
+	} //for
+	alert("IA: metas do turno "+t+" carregadas");
+	return todasMetas; // se o array for preenchido sem nenhuma falha retorna ele mesmo
+	}else{
+		return null;
+	}
+} //fecha a funcao
 InteligenciaArtificial.prototype.carregarProducao = function(data, turno, vao){
 		//alert("Welcome to IA");
 		let d = data;
@@ -300,7 +383,7 @@ InteligenciaArtificial.prototype.carregarProducao = function(data, turno, vao){
 			var p = new Producao(); //nova instancia da classe Producao
 			let s1 = string.split(";");
 			for(let x=0; x<s1.length; x++){
-				//let s2 = s1.split(":");
+				let s2 = s1.split(":");
 				switch(x) {
 					case 0:
 						p.maquina = s2[1];
@@ -322,122 +405,25 @@ InteligenciaArtificial.prototype.carregarProducao = function(data, turno, vao){
 			}
 			this.todasPdrs.push(p);
 		}
+		if(t==1){
+			this.ultimaProducaoT1 = this.todasPdrs;
+		}else if(t==2){
+			this.ultimaProducaoT2 = this.todasPdrs;
+		}else if(t==3){
+			this.ultimaProducaoT3 = this.todasPdrs;
+		}
 	}
 function getMaquinas(va){
 	this.v = va;
-	if(v==2){
+	if(v==2){ 
 		return listaMaquinas2;
-	}else if(v==3){
-		return listaMaquinas3;
+	}else if(v==3){ 
+		return listaMaquinas3; 
 	}
 }
 function Producao(){
 			window.open('producao.html', 'janela', 'width=600, height=900, top=100, left=699, scrollbars=yes, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
 }
-
-		var vao;
-		var preparador;
-		var matrizReferencia;
-		var arrayParadas = [];
-		var matrizSet;
-		var opSet;
-		var qntSet;
-		var matSet;
-		var peSet;
-		var producao1 = [];
-		
-		var listaMaquinas3 = ["1019", "1407", "1408", "1409", "1410", "1552", "1553", "8833",
-			"8888", "8916", "8917", "10178", "11819", "11820", "12342", "12343"];
-		var listaMaquinas2 = ["1548", "1549", "1620","1621","1635","1825","1684","1686","1855", "1857","1877","1878",  "1906","1907",
-			"10552", "11818"];
-		var listaMaquinasNull = ["maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina",
-			"maquina", "maquina", "maquina", "maquina", "maquina"];
-			
-			//conjunto de matrizes da empresa....elas não mudam de numeração
-		var matrizes = [ ffr020479=["02/0479", "FD/87-F"], ffr020573=["02/0573", "4707-G"],
-			ffr020572=["02/0572", "4707-F"], ffr100000013687=["13687", "4711-F"], ffr020428=["02/0428", "4515-G"],
-			ffr020627=["02/0627", "4709"], ffr020427=["02/0427", "4515-F"], ffr020548=["02/0548", "4718-F"],
-			ffr020430=["02/0430", "CA/32-F"], ffr020431=["02/0431","CA/32-G"], ffr020450=["02/0450", "2240"],
-			ffr100000013692=["13692", "4711-G"], ffr020436=["02/0436","BC/37"], ffr020612=["02/0612", "MB/188"],
-			ffr020549=["02/0549", "4718-G"], ffr020466=["02/0466", "MB/185"], ffr020548=["02/0548", "4718-F"], ffr100000013691=["164291", "4719"]
-		];
-		var preVao3 = ["15641", "9562", "1579", "9493", "1580", "10013", "10052", "5039", "5040", "9026", "9082",
-			"10179", "11703", "11748", "9734", "9769"];
-		var preVao2 = ["1587", "1628", "1882", "1588", "11202", "11203", "10094", "1636", "1622", "1599", "1881",
-			"1879", "1660", "1585", "10180", "11519"];
-		
-		setInterval(lookForChange, 1000);
-		
-		function lookForChange(){
-			for(var i=0;i<16;i++){
-				var pesoInput = "peso"+i;
-				var maquinaInput = "maquina"+i; 
-				var materialInput = "material"+i;
-				var qntInput = "qnt"+i;
-				var opInput = "op"+i;
-				var referenciaInput = "referencia"+i;
-				var matrizInput = "matriz"+i;
-				
-				var maquina = document.getElementById(maquinaInput).textContent; 
-				var peso = document.getElementById(pesoInput).value;
-				var material = document.getElementById(materialInput).value; 
-				var qnt = document.getElementById(qntInput).value;
-				var op = document.getElementById(opInput).value;
-				var referencia = document.getElementById(referenciaInput).value;
-				var matriz = document.getElementById(matrizInput).value;
-				
-				if (peso != localStorage.getItem(maquina+"_peso")) {
-			    	localStorage.setItem(maquina+"_peso", peso);
-			    }
-				if ((material != localStorage.getItem(maquina+"_material")) && (material != null)) {
-			    	localStorage.setItem(maquina+"_material", material);
-			    }
-				if ((qnt != localStorage.getItem(maquina+"_qnt")) && (qnt != null)) {
-			    	localStorage.setItem(maquina+"_qnt", qnt);
-			    }
-				if ((op != localStorage.getItem(maquina+"_op")) && (op != null)) {
-			    	localStorage.setItem(maquina+"_op", op);
-			    }
-				if ((referencia != localStorage.getItem(maquina+"_referencia")) && (referencia != null)) {
-			    	localStorage.setItem(maquina+"_referencia", referencia);
-			    }
-				if ((matriz != localStorage.getItem(maquina+"_matriz")) && (matrizInput != null)) {
-			    	localStorage.setItem(maquina+"_matriz", matriz);
-			    }
-			}
-			for(var i=0;i<16;i++){
-				var proxima = "proxima"+i;
-				var proximaPesoInput = "proximaPeso"+i;
-				var proximaMaterialInput = "proximaMaterial"+i;
-				var poximaQntInput = "proximaQnt"+i;
-				var poximaOpInput = "proximaOp"+i;
-				var poximaReferenciaInput = "proximaReferencia"+i;
-				var poximaMatrizInput = "proximaMatriz"+i;
-				
-				var proximaPeso = document.getElementById(proximaPesoInput).value;
-				var proximaMaterial = document.getElementById(proximaMaterialInput).value; 
-				var proximaQnt = document.getElementById(poximaQntInput).value;
-				var proximaOp = document.getElementById(poximaOpInput).value; 
-				var proximaReferencia = document.getElementById(poximaReferenciaInput).value; 
-				var proximaMatriz = document.getElementById(poximaMatrizInput).value;  
-				
-				if((proximaPeso != localStorage.getItem(proximaPesoInput)) && (proximaPeso!= "")){
-					localStorage.setItem(proxima+"_peso", proximaPeso);
-				}
-				if((proximaMaterial != localStorage.getItem(proximaMaterialInput)) && (proximaMaterial!= "")){
-					localStorage.setItem(proxima+"_material", proximaMaterial);
-				}
-				if((proximaOp != localStorage.getItem(proxima+"_op")) && (proximaOp!= "")){
-					localStorage.setItem(proxima+"_op", proximaOp);
-				}
-				if(proximaReferencia != localStorage.getItem(poximaReferenciaInput)){
-					localStorage.setItem(proxima+"_referencia", proximaReferencia);
-				}
-				if(proximaMatriz != localStorage.getItem(poximaMatrizInput)){
-					localStorage.setItem(proxima+"_matriz", proximaMatriz);
-				}
-			}
-		}
 		function buscarIndice(maquina, vao){
 			if(vao == 2){
 				for(var i = 0; i<listaMaquinas2; i++){
@@ -468,7 +454,7 @@ function Producao(){
 		function pegarQuantidade(maquina){
 			var m = maquina+"_qnt";
 			var qnt = localStorage.getItem(m);
-			if(qnt==null){
+			if(qnt==null  || qnt==""){
 				this.qntSet=1;
 			}else{
 				this.qntSet=0;
@@ -478,21 +464,21 @@ function Producao(){
 		function pegarOpLocaLStorage(maquina){
 			var m0 = maquina+"_op";
 			var numero = localStorage.getItem(m0);
-			if(numero==null){
-				this.opSet = 1
+			if(numero==null || numero==""){
+				this.opSet = 1;
 			}else{
 				this.opSet = 0;	
 			}
 			return numero;
 		}
-		function pegaMatrizLS(maquina){
+		function pegaMatrizLS(maquina){ 
 			var m0 = maquina+"_matriz";
-			var numero = localStorage.getItem(m0);
+			var numero = localStorage.getItem(m0); 
 			if((numero==null)|| (numero=="")){
-				this.matrizReferencia = ["matriz "+maquina, placeholder='referencia'];
-				this.matrizSet = 1;
-			}else{
+				this.matrizReferencia = ['', ''];
 				this.matrizSet = 0;
+			}else{
+				this.matrizSet = 1;
 				var n = numero.split('');
 				var test = n[0]+n[1]+n[2]+n[3]+n[4]+n[5]+n[6];
 				for(var i = 0; i< this.matrizes.length; i++){
@@ -509,15 +495,6 @@ function Producao(){
 						}
 					}
 				}
-			}
-		}
-		function retornaTamanhoLista(linha){
-			if(vao==3){
-				return listaMaquinas3;
-			}else if(vao==2){
-				return listaMaquinas2;
-			}else if((vao=="") || (vao==null) || (vao="undefined") ){
-				return listaMaquinasNull;
 			}
 		}
 		function buscarPre(linha, indice){
@@ -539,26 +516,32 @@ function Producao(){
 				return listaMaquinasNull[maq];
 			}
 		}
-		function init(){
-			/*arrayParadas = [paradasMaq0, paradasMaq1,paradasMaq2,paradasMaq3,paradasMaq4,paradasMaq5,paradasMaq6,paradasMaq7,paradasMaq8,paradasMaq9,paradasMaq10,paradasMaq11,
-			paradasMaq12,paradasMaq13,paradasMaq14,paradasMaq15];*/
-			//alert("Bem vindo "+localStorage.getItem("preparador")+" do vão "+localStorage.getItem("vao"));
-			if((vao==null) || (vao=="undefined") || (vao="")){ 
-				this.vao = localStorage.getItem("vao"); 
+		function selectPrograma(){
+			let x = document.getElementById('programa').value; 
+			sessionStorage.setItem("pagina", x);
+			if(x==1){
+				window.location.href='pagina1.html';	
+			}else if(x==2){
+				window.location.href='pagina2.html';
 			}
-			if(localStorage.getItem("preparador")==null){
-				this.preparador = " ";
-			}else{
-				this.preparador = localStorage.getItem("preparador");
+			else{
+				window.location.href='pagina.html';
 			}
-			for(var i =0; i<16; i++){
-				sessionStorage.setItem('maquina'+i, buscarPre(this.vao, i));
-			}
-// aqui carrega toda a página
-			pagina();
+			
+		}
+		function header(){
+				document.write("<p><li><th colspan='2'>Nome <input type='text' id='nomeid' value='"+preparador+"' name='nome' /></th>");
+				if(vao!=null){
+					document.write('<th colspan="6" >Selecione a Linha<select onchange="selecao();"id="linha" ><option value="'+this.vao+'">'+this.vao+'</option><option value="2" >2</option><option value="3" >3</option></select></th></li></p>');
+				}else{
+					document.write('<th>|| Selecione a Linha<select onchange="selecao();"id="linha" ><option value="0" ></option><option value="2" >2</option><option value="3" >3</option></select></th></li></p>');
+				}
+				document.write("<li><span onclick='Metas();'>|| Editar Metas </span></li>");	
+				document.write("<li><span><a href='index.html' >|| Voltar ao Inicio ||</a></span></li><br>");
+			document.write("<p>Parte do programa <select id='programa' onchange='selectPrograma();'><option value='0'></option><option value='3'>ambas partes</option><option value='1'>primeira parte</option><option value='2'>segunda parte</option></select>");
+			document.write("<button onclick='enviar();' value='Submit'>Acompanhamento</button></p><br><br>");
 		}
 		function selecao(){
-			alert(document.getElementById("linha").value);
 			this.vao = document.getElementById("linha").value;  
 			var preparador = document.getElementById("nomeid").value;
 			localStorage.setItem("preparador", preparador);
@@ -572,102 +555,7 @@ function Producao(){
 		function paginaInicial(){
 			window.location.href = 'index.html';
 		}
-		function pagina(){
-		document.write("<form name='meu_form' method='GET' action='programa.html'>");
-		document.write("<div id='prensas'>");
-		if(this.vao == 4){
-				
-		}else{
-				document.write("<li>");
-				document.write("<th colspan='2'>Nome <input type='text' id='nomeid' value='"+preparador+"' name='nome' /></th>");
-				if(vao!=null){
-					document.write('<th colspan="6" >Selecione a Linha<select onchange="selecao();"id="linha" ><option value="'+this.vao+'">'+this.vao+'</option><option value="2" >2</option><option value="3" >3</option></select></th>');
-				}else{
-					document.write('<th>Selecione a Linha<select onchange="selecao();"id="linha" ><option value="0" ></option><option value="2" >2</option><option value="3" >3</option></select></th>');
-				}
-				document.write("<li><span class='labelMetas' onclick='Metas();'>|| Editar Metas </span>");	
-				document.write("<a href='index.html' >|| Voltar ao Inicio ||</span><br>");
-				document.write("<button onclick='enviar();' value='Submit'>* Acompanhamento</button><br><br>");
-				document.write("</li></li>");
-				
-			for(var n=0;n<16;n++){
-				pegaMatrizLS(buscarMaquina(getVao(), n));
-				salvarNumeroDaMaquina(buscarMaquina(getVao(), n), n);
-				document.write("<table>");
-				document.write("<th id='maquina"+n+"' onclick='novaJanelaParada("+n+");'>"+buscarMaquina(getVao(), n)+"</th>"); 
-				document.write("<th id='proxima"+n+"'>"+buscarPre(getVao(), n)+"</th>");
-				
-				document.write("<tr>");
-				if(this.matrizSet == 1){
-					document.write("<td><input type='text'id='matriz"+n+"' placeholder='"+this.matrizReferencia[0]+"'></input></td>");
-					document.write("<td><input type='int'  id='referencia"+n+"' placeholder='"+this.matrizReferencia[1]+"'></input></td>");
-				}else{
-					document.write("<td><input type='text'id='matriz"+n+"' value='"+this.matrizReferencia[0]+"'></input></td>");
-					document.write("<td><input type='int'  id='referencia"+n+"' value='"+this.matrizReferencia[1]+"'></input></td>");
-				}
-				if(this.opSet == 1){
-					document.write("<td><input type='int' placeholder='OP' id='op"+n+"' ></input></td>");
-				}else{
-					document.write("<td><input type='int' placeholder='OP' id='op"+n+"' value='"+pegarOpLocaLStorage(buscarMaquina(getVao(), n))+"'></input></td>");
-				}
-				if(this.qntSet == 1){
-					document.write("<td><input type='int' placeholder='quantidade' id='qnt"+n+"'></input></td>");
-				}else{
-					document.write("<td><input type='int' placeholder='quantidade' value='"+pegarQuantidade(buscarMaquina(getVao(), n))+"' id='qnt"+n+"'></input></td>");
-				}
-				if(this.matSet == 1){
-					document.write("<td><input type='text' placeholder='material' id='material"+n+"'></input></td>");
-				}else{
-					document.write("<td><input type='text' placeholder='material' id='material"+n+"' value='"+pegarMaterialLocalStorage(buscarMaquina(getVao(), n))+"'></input></td>");
-				}
-				if(this.peSet == 1){
-					document.write("<td><input type='int' placeholder='peso' id='peso"+n+"'></input></td><br>");
-				}else{
-					document.write("<td><input type='int' placeholder='peso' id='peso"+n+"' value='"+pegarPesoLocalStorage(buscarMaquina(getVao(), n))+"'></input></td><br>");
-				}
-				document.write("</tr>");
-				document.write("<tr>");
-				// próxima ordem
-				pegaMatrizLS('proxima'+n, n);
-				localStorage.setItem('proxima'+n,'proxima'+n);
-				if(this.matrizSet == 1){
-					document.write("<td><input class='proximaCinza' type='text' id='proximaMatriz"+n+"' placeholder='"+this.matrizReferencia[0]+"'</input></td>");
-					document.write("<td><input class='proximaCinza' type='int' id='proximaReferencia"+n+"' placeholder='"+this.matrizReferencia[1]+"'></input></td>");
-				}else{
-					document.write("<td><input class='proximaCinza' type='text'id='proximaMatriz"+n+"' value='"+this.matrizReferencia[0]+"'</input></td>");
-					document.write("<td><input class='proximaCinza' type='int'  id='proximaReferencia"+n+"' value='"+this.matrizReferencia[1]+"'></input></td>");
-				}
-				if(this.opSet == 1){
-					document.write("<td><input  class='proximaCinza' type='int' placeholder='OP' id='proximaOp"+n+"'></input></td>");
-				}else{
-					document.write("<td><input  class='proximaCinza' type='int' placeholder='OP' id='proximaOp"+n+"' value='"+pegarOpLocaLStorage('proxima'+n)+"'></input></td>");
-				}if(this.qntSet == 1){
-					document.write("<td><input  class='proximaCinza' type='int' placeholder='quantidade' id='proximaQnt"+n+"'></input></td>");
-				}else{
-					document.write("<td><input  class='proximaCinza' type='int' placeholder='quantidade' value='"+pegarQuantidade('proxima'+n)+"' id='proximaQnt"+n+"'></input></td>");
-				}
-				if(this.matSet == 1){
-					document.write("<td><input class='proximaCinza' type='text' placeholder='material' id='proximaMaterial"+n+"'></input></td>");
-				}else{
-					document.write("<td><input class='proximaCinza' type='text' placeholder='material' id='proximaMaterial"+n+"' value='"+pegarMaterialLocalStorage('proxima'+n)+"'></input></td>");
-				}
-				if(this.peSet == 1){
-					document.write("<td><input class='proximaCinza' type='int' placeholder='peso' id='proximaPeso"+n+"'></input></td>");
-				}else{
-					document.write("<td><input class='proximaCinza' type='int' placeholder='peso' id='proximaPeso"+n+"' value='"+pegarPesoLocalStorage('proxima'+n)+"'></input></td>");
-				}
-				document.write("</tr>");
-				document.write("</table>");	
-			}
-			document.write("<button onclick='enviar();' value='Submit'>Enviar</button>");
-			document.write("</form>");
-		}
-		document.write("</div>");
-				document.write('<input type="text" value="'+regulador+'"/>');
-				this.vao = document.getElementById("linha").value;
-	}
-		
-		function getVao(){
+			function getVao(){
 			this.vao = localStorage.getItem("vao");
 			if(this.vao==null){
 				this.vao = 0;
@@ -681,7 +569,7 @@ function Producao(){
 			window.open('paradas.html', 'janela', 'width=595, height=490, top=100, left=699, scrollbars=no, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
 		}
 		function Metas(){
-			window.open('metas_versao01.html', 'janela', 'width=595, height=750, top=100, left=699, scrollbars=yes, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
+			window.open('metas_versao01.html', 'janela', 'width=795, height=750, top=100, left=699, scrollbars=yes, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
 		}
 		function salvarMatrizLS(matriz, ref){
 			localStorage.setItem(matriz, ref);
@@ -904,3 +792,7 @@ function Producao(){
 				salvarPeso(maquina, peso);
 			}
 		}
+function salvarProducaoTxt(string, data, turno){
+	var blob = new Blob([string], {type: "application/json;utf - 8"});
+	saveAs(blob, data+":_producao_turno:"+turno+".txt");
+}

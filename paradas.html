@@ -97,14 +97,14 @@ label {
 </style>
 </head>
 <script>
-InteligenciaArtificial();
+var ia = new InteligenciaArtificial();
 var paradas = [];
 var paradasHoras = [];
 var NParadas = [];
 var descricaoTotal ='';
 var horasTotal='';
 var h = '';
-var pars = '';
+var pars = ''; 
 function removerUltimaParada(){
 NParadas.pop(); 
 if(NParadas.length>0){
@@ -182,6 +182,14 @@ function setParada(){
 			localStorage.setItem("Horaparada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), getHoras());
 			localStorage.setItem("parada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), descricao);
 		}
+	}
+	if(sessionStorage.getItem('setadoParada')!=maquina){ 
+		let d = getData();
+		let t = getTurno();	
+		ia.setIdultimaParada(d, t); 
+		ia.setIdParada("parada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), "Horaparada:"+maquina+";turno:"+getTurno()+";dia:"+getData());
+		sessionStorage.setItem("setadoParada", maquina); 
+		sessionStorage.setItem("setadoParadaTurno", t);  
 	}
 }
 function getParada(){
