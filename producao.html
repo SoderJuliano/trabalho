@@ -59,7 +59,7 @@
         <div class="row align-items-center">
           
           <div class="col-6 col-md-3 col-xl-4  d-block">
-            <h1 class="mb-0 site-logo"><a href="index.html" class="text-black h2 mb-0">Relatorio<span class="text-primary">.</span> </a></h1>
+            <h1 class="mb-0 site-logo"><a href="index.html" class="text-black h2 mb-0">Dados referente ao turno atual<span class="text-primary">.</span> </a></h1>
           </div>
 
           <div class="col-12 col-md-9 col-xl-8 main-menu">
@@ -110,38 +110,55 @@
             <div class="row mb-4" data-aos="fade-up" data-aos-delay="200">
               <div class="col-lg-6 mr-auto">
                 <!-- primeiro gráfico -->
-                <p class="mb-5">Grafico de producao do dia:</p>
+                <p class="mb-5">Grafico da ultima producao</p>
                 <div>
                   <canvas id="myChart" width="400" height="400"></canvas>
                   <script>
                     var ia = new InteligenciaArtificial();
-                    let lista = ia.carregarMeta(getTurno(), getVao()); alert(lista[0]);
+                    let lista = ia.carregarMeta(getTurno(), getVao()); 
+                    let datv = [];
+                    let datm = [];
+                    let cores = [];
+                    let cores2 = [];
+                    var totalTelhas = 0;
+                    var totalMeta = 0;
+                    for(let i =0;i<lista.length; i++){
+                      datv.push(lista[i].realizadaTurno*lista[i].telhaPorCiclo);
+                      datm.push(lista[i].meta);
+                      let m = lista[i].meta-lista[i].meta*0.1;
+                      let r = lista[i].realizadaTurno*lista[i].telhaPorCiclo; 
+                      totalTelhas += r; 
+                      if(lista[i].meta==''){
+						totalMeta += 0;
+					  }else{
+						totalMeta += parseInt(lista[i].meta);
+                      }
+					  if(m<=r){ 
+                        cores2.push('rgba(0, 255, 127)'); 
+                        cores.push('rgba(0, 255, 127)'); // verde
+                      }else{ 
+                        cores2.push('rgba(139, 0, 0)'); 
+                        cores.push('rgba(255, 99, 132, 0.2)'); //vermelho
+                      }
+                    }
+                    
                     var ctx = document.getElementById('myChart');
                     var myChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                            labels: [lista[0].numero, lista[1].numero, lista[2].numero, lista[3].numero, lista[4].numero, lista[5].numero,lista[6].numero,
+                            lista[7].numero,lista[8].numero,lista[9].numero,lista[10].numero,lista[11].numero,lista[12].numero,lista[13].numero,lista[14].numero,lista[15].numero],
                             datasets: [{
-                                label: '# of Votes',
-                                data: [12, 19, 3, 5, 2, 3],
-                                backgroundColor: [
-                                    'rgba(255, 99, 132, 0.2)',
-                                    'rgba(54, 162, 235, 0.2)',
-                                    'rgba(255, 206, 86, 0.2)',
-                                    'rgba(75, 192, 192, 0.2)',
-                                    'rgba(153, 102, 255, 0.2)',
-                                    'rgba(255, 159, 64, 0.2)'
-                                ],
-                                borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
-                                ],
+                                label: '# of Production',
+                                data: datv,
+                                backgroundColor: cores,
+                                borderColor: cores2,
                                 borderWidth: 1
-                            }]
+                            },{
+                                label: 'Line Goal',
+                                data: datm,
+                                type: 'line'
+                              }],
                         },
                         options: {
                             scales: {
@@ -170,8 +187,11 @@
       <div class="container">
         <div class="row mb-5 justify-content-center text-center"  data-aos="fade-up">
           <div class="col-7 text-center  mb-5">
-            <h2 class="section-title">Imagine Features</h2>
-            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga quos quaerat sapiente nam, id vero.</p>
+            <h2 class="section-title">legenda</h2>
+            <p class="lead"> <script>if(lista[0].numero==1019){document.write('Vao 3');}else{document.write("Vao 2");}</script></p>
+            <p class="lead"> <script>document.write('Meta total de: '+this.totalMeta);</script></p>
+            <p class="lead"> <script>document.write('Telhas produzidas: '+this.totalTelhas);</script></p>
+            <p class="lead"> <script>document.write('Pecas produzidas: '+this.totalTelhas*3.5);</script></p>
           </div>
         </div>
         <div class="row align-items-stretch">
@@ -182,9 +202,72 @@
                 <span class="icon-wrap"><span class="text-primary icon-autorenew"></span></span>
               </div>
               <div>
-                <h3>Marketing Consulting</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis quis molestiae vitae eligendi at.</p>
-                <p><a href="#">Learn More</a></p>
+                <script>//alert(localStorage.getItem("ultimaParada_turno1_vao3"));
+                // alert(lista[0].numero);
+                 let u = localStorage.getItem("ultimaParada_turno1_vao3");
+                 let a = [];
+                 let mais = [];
+                 let cont=0;
+                 for(let i =0; i<16; i++){ 
+                    if(localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u)!=null){
+                      a.push(localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u));// alert("mandou para re"+a[i]);
+                    }
+                 }
+                 let re = repeticoes(a);
+                 let r = [];
+                 let x = []; //todos os valores
+                 for(var j=0;j<re.length;j++){ 
+                  r.push(re[j][0]); // todas as paradas
+                  if(re[j][1]==0 || re[j][1]=='' || re[j][1]==null){
+                    re[j][1] = 1;
+                  }
+                  x.push(re[j][1]);
+                }
+                </script>
+                <h3>Parada mais frequente do Turno 1<script>document.write(re[maiorValor(x)][0]);</script></h3>
+                <p>As paradas que aparecem com mais frequencia T1</p>
+                <canvas id="myChart2" width="400" height="400"></canvas>
+                <script>
+var ctx = document.getElementById('myChart2').getContext('2d');
+var myChart = new Chart(ctx, {
+  type:  'pie',
+    data: {
+        labels: r,
+        datasets: [{
+            label: '# de paradas',
+            data: x,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+
+                </script>
               </div>
             </div>
 

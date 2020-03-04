@@ -34,6 +34,53 @@ var listaMaquinasNull = ["maquina", "maquina", "maquina", "maquina", "maquina", 
 		sessionStorage.setItem("turno", t);
 	}
 	
+	function mudar(){ 
+	document.write('<link href="css/style.css" rel="stylesheet">');
+	document.write("<table id='tabela' class='tbl' style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>");
+	document.write("<tr><th colspan='3'><p id='hora' class='primeiroP'></p></th></tr>");
+	//document.write("<th><button  type='button' id='ocultar_detalhes' onclick='Mudarestado()'>Ocultar Detalhes/Mostrar Detalhes</button></th></tr>");
+	document.write("<tr><th>prensas</th><th>cargas feita OP</th><th>cargas feita turno</th></tr>");
+	let maqs;
+	if(getVao()==2){
+		this.maqs = listaMaquinas2;
+	}else{
+		this.maqs = listaMaquinas3;
+	}
+	for(let i=0;i<16;i++){  
+		document.write("<tr>");
+		document.write("<td><label>"+this.maqs[i]+"</label></td>");
+			//document.write("<td>"+this.metas[i]+"</td>");
+			//document.write("<td>"+this.telhaCiclo[i]+"</td>");
+			document.write("<td>"+this.cargasOP[i]+"</td>");
+			document.write("<td>"+this.cargasTurno[i]+"</td>");
+			document.write("</tr>");
+		document.write("<br>");
+	}
+	document.write("<tr><td><ul id='menutt'><li><a heref='#'><button id='btn' type='button' onclick='salvar()' >Relatorio de producao</button><span>Fecha a pagina atual salvado os dados que foram inseridos. Para gerar o relatorio precisa abrir metas novamente.</span></a></ul></td></tr>");
+	document.write("</table>");
+	
+}
+function salvar(){ 
+		let i =0; 
+		localStorage.setItem('salva', getData()+getTurno());
+		for(let i =0; i<16;i++){ 
+			localStorage.setItem("cOp"+i, document.getElementById('cOp'+i).value); 
+			localStorage.setItem("cT"+i, document.getElementById('cT'+i).value); 
+		}
+		window.close();
+}
+function carregaCargas(){
+	let cto =[]; 
+	let ct = [];
+	if(localStorage.getItem('salva')==getData()+getTurno()){
+		for(var i=0;i<16;i++){
+			cto.push(localStorage.getItem('cOp'+i));
+			ct.push(localStorage.getItem('cT'+i));
+		}
+	}
+	let array = [cto, ct];
+	return array;
+}
 	var ia=new InteligenciaArtificial();
 	function aplicar(){ 
 		var contMetas = 0; 
@@ -42,7 +89,7 @@ var listaMaquinasNull = ["maquina", "maquina", "maquina", "maquina", "maquina", 
 		if(getVao()==2){
 			lista = this.listaMaquinas2; 
 		}else if(getVao()==3){
-			lista = this.listaMaquinas2;
+			lista = this.listaMaquinas3;
 		}
 		for(var i = 0; i<lista.length; i++){ 
 			var nM = lista[i]; // nM= numero Maquina
@@ -85,7 +132,7 @@ var listaMaquinasNull = ["maquina", "maquina", "maquina", "maquina", "maquina", 
 			this.ia.setUltimaProducao(p.data+"_data"+p.maquina+"_producao"+p.turno, p.turno);
 		}
 		ia.setUltimaProducao(p.data, p.turno);
-		resultado(listaMaquinas, listaProducao, somasTelhas, somasPecas, somasMetas, this.contMetas, somasQuilos);
+		resultado(listaMaquinas, listaProducao, somasTelhas, somasPecas, somasMetas, this.contMetas, somasQuilos); 
 	}
 	function quantidadeOp(maquina, ciclos, telhaPorCiclo){
 			var produzido = ciclos*telhaPorCiclo;
@@ -135,10 +182,10 @@ var listaMaquinasNull = ["maquina", "maquina", "maquina", "maquina", "maquina", 
 				sessionStorage.setItem("turno", t);
 			}
 		}else{
-			if((horas>6) && (horas<=15)){ 
+			if((horas>6) && (horas<15)){ 
 				sessionStorage.setItem("turno", 1);
 				t = 1;
-			}else if((horas>15) && (horas<=00)){
+			}else if((horas>15) && (horas<24)){
 				t = 2;
 				sessionStorage.setItem("turno", t);
 			}else{
@@ -176,19 +223,20 @@ var listaMaquinasNull = ["maquina", "maquina", "maquina", "maquina", "maquina", 
 			return dt;
 	}
 	function getHours(){
-		var now = new Date();
-		var h = now.getHours();
-		var m = now.getMinutes();
-		var s = now.getSeconds();
-		var ht = "Agora sao: "+h+":"+m+":"+s+"s";
+		let now = new Date();
+		let h = now.getHours();
+		let m = now.getMinutes();
+		let s = now.getSeconds();
+		let ht = "Agora sao: "+h+":"+m+":"+s+"s";
 		return ht;
 	}
+	
 	function getHoras(){
-		var now = new Date();
-		var h = now.getHours();
-		var m = now.getMinutes();
-		var s = now.getSeconds();
-		var ht = h+":"+m+":"+s+"s";
+		let now = new Date();
+		let h = now.getHours();
+		let m = now.getMinutes();
+		let s = now.getSeconds();
+		let ht = h+":"+m+":"+s;
 		return ht;
 	}
 	function getDiaDaSemana(){
@@ -324,17 +372,14 @@ InteligenciaArtificial.prototype.setId = function(data){ //controla o tamanho do
 	localStorage.setItem(this.id, data);
 }
 InteligenciaArtificial.prototype.setUltimaProducao = function(data, turno){ //salva uma string chave
-	localStorage.setItem("ultimaPdr_turno"+turno, data);
+	localStorage.setItem("ultimaPdr_turno"+turno+"_vao"+getVao(), data);
 }
 InteligenciaArtificial.prototype.setIdultimaParada = function(data, turno){ //salva uma string chave
-	localStorage.setItem("ultimaParada_turno"+turno, data);
-}
-InteligenciaArtificial.prototype.teste = function(){ //salva uma string chave
-	alert("setIdUltimaParada");
+	localStorage.setItem("ultimaParada_turno"+turno+"_vao"+getVao(), data);
 }
 InteligenciaArtificial.prototype.carregarMeta = function(turno, vao){
-	if(localStorage.getItem("ultimaPdr_turno"+turno)!=null){ 
-		let d = localStorage.getItem("ultimaPdr_turno"+turno); 
+	if(localStorage.getItem("ultimaPdr_turno"+turno+"_vao"+getVao())!=null){ 
+		let d = localStorage.getItem("ultimaPdr_turno"+turno+"_vao"+getVao()); 
 		let t = turno; 
 		let v = vao;
 		let todasMetas = []; 
@@ -497,6 +542,49 @@ function Producao(){
 				}
 			}
 		}
+		function maiorValor(vetor){
+			let maior = 0;
+			for (let i = 0; i < vetor.length; i++) {
+   				if ( vetor[i] > maior ) {
+    	 		 	maior = i;
+   				}
+			}
+			return maior;
+		}
+		function repeticoes(vetor){
+			let array = [];
+			for(let i=0;i<vetor.length; i++){ //alert("iteracao "+i+vetor[i]);
+				let cont=0;
+				let aux = 0;
+				let array3 = vetor[i].split("//"); // alert(array3.length);
+				if(array3.length<2){ //alert("entrrei for");
+					if(array.length!=0){
+						let v = array.length;
+						array[v] = array3;
+					}else{
+						array[0] = array3;
+					}	
+				}else{// alert("indexof");
+					var cont2 =0;
+					for(let x=0;x<array3.length; x++){
+						for(let j=0;j<array3.length; j++){
+							if(array3[x]==array3[j+1]){ 
+								cont2++;
+								let array2 = [array3[x], cont2]; 
+								if(array.length!=0){
+									let v =array.length;
+									array[v] = array2;//alert("valor duplicado adicionado "+x+" "+array[x]); //continuar 3/3/20
+								}else{
+									array[0] = array2;
+								}
+							}
+						}
+					}
+				}
+				}
+				return array;
+		}	
+		
 		function buscarPre(linha, indice){
 			var retorno = "";
 			if(linha==3){
@@ -598,7 +686,7 @@ function Producao(){
 		function salvarReferencia(maquina, referencia){
 			localStorage.setItem(maquina+"_referencia", referencia);
 		}
-		function enviar(){
+		function enviar(){ 
 		//maquina 0
 			salvarMatrizLS(document.getElementById('matriz0').value,document.getElementById('referencia0').value);
 			salvarMaquina(document.getElementById('maquina0').textContent ,document.getElementById('matriz0').value);
@@ -778,7 +866,7 @@ function Producao(){
 				var referencia = document.getElementById('proximaReferencia'+x).value;
 				var matriz = document.getElementById('proximaMatriz'+x).value;
 				var maquina = "proxima"+x;
-				var op = document.getElementById('proximaOp'+x).value;
+				var op = document.getElementById('proximaOp'+x).value; 
 				var referencia = document.getElementById('proximaReferencia'+x).value;
 				var material = document.getElementById('proximaMaterial'+x).value;
 				var quantidade = document.getElementById('proximaQnt'+x).value;

@@ -208,7 +208,7 @@ setInterval(lookForChange, 1000);
 	}
      			// pagina completa 
 	function pagina(){
-		document.write("<form name='meu_form' method='GET' action='programa.html'>");
+		document.write("<form name='meu_form' method='GET' action='acompanhamento.html'>");
 		document.write("<div id='prensas'>");
 		if(this.vao == 4){
 				
@@ -290,11 +290,11 @@ setInterval(lookForChange, 1000);
 					this.matrizSet = 0;
 				}
 				if(this.matrizSet == 1){
-					document.write("<td><input type='text'id='matriz"+n+"' placeholder='"+this.matrizReferencia[0]+"'></input></td>");
-					document.write("<td><input type='int'  id='referencia"+n+"' placeholder='"+this.matrizReferencia[1]+"'></input></td>");
+					document.write("<td><input type='text'id='proximaMatriz"+n+"' placeholder='"+this.matrizReferencia[0]+"'></input></td>");
+					document.write("<td><input type='int'  id='proximaReferencia"+n+"' placeholder='"+this.matrizReferencia[1]+"'></input></td>");
 				}else{
-					document.write("<td><input type='text'id='matriz"+n+"' placeholder='matriz' value='"+this.matrizReferencia[0]+"'></input></td>");
-					document.write("<td><input type='int'  id='referencia"+n+"' placeholder='referencia' value='"+this.matrizReferencia[1]+"'></input></td>");
+					document.write("<td><input type='text'id='proximaMatriz"+n+"' placeholder='matriz' value='"+this.matrizReferencia[0]+"'></input></td>");
+					document.write("<td><input type='int'  id='proximaReferencia"+n+"' placeholder='referencia' value='"+this.matrizReferencia[1]+"'></input></td>");
 				}
 				if(this.opSet == 1){ 
 					document.write("<td><input  class='proximaCinza' type='int' placeholder='OP' id='proximaOp"+n+"'></input></td>");
