@@ -170,10 +170,10 @@ function setParada(){
 			for(var i=0;i<descricao.split("//").length;i++){
 				if(n.length==i+1){
 					this.h += "parada registrada as: "+getHoras();   
-					this.pars += "Motivo: "+n[i];
+					this.pars += ""+n[i];
 				}else{
 					this.h += "parada registrada as: "+getHoras()+"//";   
-					this.pars += "Motivo: "+n[i]+"//";
+					this.pars += ""+n[i]+"//";
 				}
 			}
 			localStorage.setItem("parada:"+maquina+";turno:"+getTurno()+";dia:"+getData(), this.pars);

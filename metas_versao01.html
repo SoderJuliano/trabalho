@@ -81,8 +81,16 @@ if(lista==null){
 				maquinas.push(maq);
 			} // se ja a dados salvos deste turno e nao ha dados salvos do ultimo turno
 		if(localStorage.getItem("salva")==getData()+getTurno() && localStorage.getItem(maquinas[i]+"_metas"+getTurno())==null){ 
-			metas.push("<input type='int' id='meta"+i+"' placeholder='meta'></input>"); 
-			telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo'></input>");
+			if(document.getElementById("meta"+[i]).value!=null){
+				metas.push("<input type='int' id='meta"+i+"' placeholder='"+document.getElementById("meta"+[i]).value+"'></input>");	
+			}else{
+				metas.push("<input type='int' id='meta"+i+"' placeholder='meta'></input>");
+			}
+			 if(document.getElementById("tc"+[i]).value!=null){
+				telhaCiclo.push("<input id='tc"+i+"' placeholder='"+document.getElementById("tc"+[i]).value+"'></input>");
+			 }else{
+				telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo'></input>");
+			 }
 			// carrrega as informações da outra pagina
 			if(cargas[0][i]!=null && cargas[0]!=''){ 
 				cargasOP.push("<input type='int' placeholder='cargas/OP' id='cOp"+i+"' value='"+cargas[0][i]+"'></input>");		

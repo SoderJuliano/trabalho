@@ -202,15 +202,15 @@
                 <span class="icon-wrap"><span class="text-primary icon-autorenew"></span></span>
               </div>
               <div>
-                <script>//alert(localStorage.getItem("ultimaParada_turno1_vao3"));
+                <script>alert(localStorage.getItem("ultimaParada_turno1_vao"+getVao()));
                 // alert(lista[0].numero);
-                 let u = localStorage.getItem("ultimaParada_turno1_vao3");
+                 let u = localStorage.getItem("ultimaParada_turno1_vao"+getVao());
                  let a = [];
                  let mais = [];
                  let cont=0;
                  for(let i =0; i<16; i++){ 
-                    if(localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u)!=null){
-                      a.push(localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u));// alert("mandou para re"+a[i]);
+                    if(localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u)!=null && localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u)!=''){
+                      a.push(localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u)); alert("mandou para re T1 "+a[0]);
                     }
                  }
                  let re = repeticoes(a);
@@ -224,7 +224,7 @@
                   x.push(re[j][1]);
                 }
                 </script>
-                <h3>Parada mais frequente do Turno 1<script>document.write(re[maiorValor(x)][0]);</script></h3>
+                <h3>Parada mais frequente do Turno 1 = <script>document.write(re[maiorValor(x)][0]);</script></h3>
                 <p>As paradas que aparecem com mais frequencia T1</p>
                 <canvas id="myChart2" width="400" height="400"></canvas>
                 <script>
@@ -236,6 +236,69 @@ var myChart = new Chart(ctx, {
         datasets: [{
             label: '# de paradas',
             data: x,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+                  alert(localStorage.getItem("ultimaParada_turno2_vao3"));
+                // alert(lista[0].numero);
+                 let u2 = localStorage.getItem("ultimaParada_turno2_vao"+getVao());
+                 let a2 = [];
+                 let mais2 = [];
+                 let cont2=0;
+                 for(let i =0; i<16; i++){ 
+                    if(localStorage.getItem("parada:"+lista[i].numero+";turno:2;dia:"+u2)!=null){
+                      a2.push(localStorage.getItem("parada:"+lista[i].numero+";turno:2;dia:"+u2)); alert("mandou 2 para re T2 "+a2[i]);
+                    }
+                 }
+                 let re2 = repeticoes(a2);
+                 let r2 = [];
+                 let x2 = []; //todos os valores
+                 for(var j=0;j<re2.length;j++){ 
+                  r2.push(re2[j][0]); // todas as paradas
+                  if(re2[j][1]==0 || re2[j][1]=='' || re2[j][1]==null){
+                    re2[j][1] = 1;
+                  }
+                  x2.push(re2[j][1]);
+                }
+                </script>
+				 <h3>Parada mais frequente do Turno 2 = <script>document.write(re2[maiorValor(x2)][0]);</script></h3>
+               <p>As paradas que aparecem com mais frequencia T2</p>
+                <canvas id="myChart3" width="400" height="400"></canvas>
+                <script>
+var ctx = document.getElementById('myChart3').getContext('2d');
+var myChart = new Chart(ctx, {
+  type:  'pie',
+    data: {
+        labels: r2,
+        datasets: [{
+            label: '# de paradas',
+            data: x2,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

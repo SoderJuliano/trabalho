@@ -557,12 +557,13 @@ function Producao(){
 				let cont=0;
 				let aux = 0;
 				let array3 = vetor[i].split("//"); // alert(array3.length);
-				if(array3.length<2){ //alert("entrrei for");
+				if(array3.length<2){ alert("entrrei for");
+					let array2 = [vetor[i], cont2]; 
 					if(array.length!=0){
 						let v = array.length;
-						array[v] = array3;
+						array[v] = array2; 
 					}else{
-						array[0] = array3;
+						array[0] = array2; alert("adicionando "+array[0]);
 					}	
 				}else{// alert("indexof");
 					var cont2 =0;
