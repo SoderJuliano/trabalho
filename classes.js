@@ -171,7 +171,7 @@ function carregaCargas(){
 		now = new Date();
 		horas = now.getHours();
 		if(getDiaDaSemana()=="Sabado"){ 
-			if((horas=>10) && (horas<15)){
+			if((horas>10) && (horas<15)){
 				sessionStorage.setItem("turno", 1);
 				t = 1;
 			}else if((horas>15) && (horas<24)){
@@ -185,10 +185,10 @@ function carregaCargas(){
 			if((horas>6) && (horas<15)){ 
 				sessionStorage.setItem("turno", 1);
 				t = 1;
-			}else if((horas>15) && (horas<24)){
+			}else if((horas=>15) && (horas<24)){
 				t = 2;
 				sessionStorage.setItem("turno", t);
-			}else{
+			}else if(horas=>1 && horas<6){
 				t = 3;
 				sessionStorage.setItem("turno", t);
 			}
@@ -326,6 +326,19 @@ function InteligenciaArtificial(){
 	//recuperarObject
 	
 }
+InteligenciaArtificial.prototype.checarOrdem = function(maquina, proxima , meta){
+	let qnt =  localStorage.getItem(maquina+"_qnt");
+	let produzido = localStorage.getItem(maquina+"_qntFeita");
+	let pd = qnt-produzido;
+	let metaMenor = meta-meta*0.2; 
+	if(metaMenor>pd){
+		let px = localStorage.getItem("proxima");
+		localStorage.setItem(listaMaquinas2[i]+"_op", px); 
+		return 1;
+	}else{
+		return 0;
+	}
+}
 InteligenciaArtificial.prototype.setIdParada = function(data, dataHora){ 
 	let id;
 	let id_hora;
@@ -410,7 +423,7 @@ InteligenciaArtificial.prototype.carregarMeta = function(turno, vao){
 		} //fecha o for	
 		todasMetas.push(m); // ainda dentro do for vai adicionando metas ao array	
 	} //for
-	alert("IA: metas do turno "+t+" carregadas");
+	//alert("IA: metas do turno "+t+" carregadas");
 	return todasMetas; // se o array for preenchido sem nenhuma falha retorna ele mesmo
 	}else{
 		return null;
@@ -554,38 +567,79 @@ function Producao(){
 		function repeticoes(vetor){
 			let array = [];
 			for(let i=0;i<vetor.length; i++){ //alert("iteracao "+i+vetor[i]);
-				let cont=0;
-				let aux = 0;
 				let array3 = vetor[i].split("//"); // alert(array3.length);
-				if(array3.length<2){ alert("entrrei for");
-					let array2 = [vetor[i], cont2]; 
+				if(array3.length<2){
 					if(array.length!=0){
-						let v = array.length;
-						array[v] = array2; 
+						let v = array.length+1;
+						let val = duplicado(array, vetor[i]);
+						let array5 = [vetor[i], val+1]
+						if(posicaoDuplicado(array, vetor[i])!=null){
+							array[posicaoDuplicado(array, vetor[i])] = array5;
+						}else{
+							array[v] = array5;
+						}
 					}else{
-						array[0] = array2; alert("adicionando "+array[0]);
+						let array2 = [vetor[i], cont2+1];
+						array[0] = array2; 
 					}	
 				}else{// alert("indexof");
-					var cont2 =0;
-					for(let x=0;x<array3.length; x++){
-						for(let j=0;j<array3.length; j++){
-							if(array3[x]==array3[j+1]){ 
-								cont2++;
-								let array2 = [array3[x], cont2]; 
-								if(array.length!=0){
-									let v =array.length;
-									array[v] = array2;//alert("valor duplicado adicionado "+x+" "+array[x]); //continuar 3/3/20
-								}else{
-									array[0] = array2;
+					let a = ordernar(array3);
+						if(array.length==0 || array.length==null){// alert("tamanho arei "+array.length);
+							array = a;// alert("nao tinha nada entao "+array);
+						}else{
+							let v =array.length;
+								for(let z=0;z<a.length; z++){// alert("tamanho de a "+a.length);
+										let p = posicaoDuplicado(array, a[z][0]); //alert("posicao duplicado "+ p);
+										let p2 = duplicado(array, a[z][0]);
+									if(p==null || p=='' || p==0){
+										array[v] = a[z]; //alert("p = 0 entao v "+v+" arr adicionado	"+array);
+									}else{
+										let a2 = [a[z][0], p2+1];// alert("A2 "+a2);
+										array[p] = a2;
+									}
 								}
-							}
 						}
+				}
+			}// alert("fim "+array);
+			return array;
+		}
+		function ordernar(vetor){
+			let a = [];
+			for(let i=0;i<vetor.length;i++){ 
+				let z = 0; 
+				let a2 = [vetor[i], 1]; 
+				a[i] = a2; 
+				let posicao;
+				for(let x = 0 ; x< vetor.length; x++){ 
+					if(vetor[i]==vetor[x]){ 
+						z++; 
+						posicao = x;
+						a[i] = [vetor[i], z]; 	
 					}
 				}
+				vetor.splice(posicao, 1);
+			}// alert("retornando o array a "+a);
+			return a;
+		}
+		function posicaoDuplicado(vetor, valor){
+			let x = 0;
+			for(let i=0;i<vetor.length;i++){
+				if(valor==vetor[i][0]){
+					x = i;
 				}
-				return array;
-		}	
-		
+			}
+			return x;
+		}
+		function duplicado(vetor, valor){
+			let x=0;
+			for(let i=0;i<vetor.length;i++){
+				//alert("valor "+ valor+" vetor[] "+ vetor[i][0]);
+				if(valor.trim()==vetor[i][0].trim()){
+					x = x+1; 
+				}
+			}// alert("retornando "+x);
+			return x;
+		}
 		function buscarPre(linha, indice){
 			var retorno = "";
 			if(linha==3){
@@ -625,8 +679,8 @@ function Producao(){
 				}else{
 					document.write('<th>|| Selecione a Linha<select onchange="selecao();"id="linha" ><option value="0" ></option><option value="2" >2</option><option value="3" >3</option></select></th></li></p>');
 				}
-				document.write("<li><span onclick='Metas();'>|| Editar Metas </span></li>");	
-				document.write("<li><span><a href='index.html' >|| Voltar ao Inicio ||</a></span></li><br>");
+				document.write("<li><ul id='menutt'><li><a heref='#'><p onclick='Metas();'>|| Editar Metas </p><span>abre o campo de edicao de metas e producao</span></a></ul></li>");	
+				//document.write("<li><span><a href='index.html' >|| Voltar ao Inicio ||</a></span></li><br>");
 			document.write("<p>Parte do programa <select id='programa' onchange='selectPrograma();'><option value='0'></option><option value='3'>ambas partes</option><option value='1'>primeira parte</option><option value='2'>segunda parte</option></select>");
 			document.write("<button onclick='enviar();' value='Submit'>Acompanhamento</button></p><br><br>");
 		}
@@ -636,7 +690,7 @@ function Producao(){
 			localStorage.setItem("preparador", preparador);
 			localStorage.setItem("vao", this.vao); 
 			vaoSet = 0;
-			window.location.href = 'index.html';
+			window.location.href = 'pagina.html';
 			for(var i =0; i<16; i++){
 				sessionStorage.setItem('maquina'+i, buscarPre(this.vao, i));
 			}

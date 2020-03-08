@@ -4,6 +4,12 @@
 <meta charset="ISO-8859-1">
 	<script type="text/javascript" src="classes.js"></script>
 	<link href="css/style.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	<script src="sweetalert2.all.min.js"></script>
+<!-- Optional: include a polyfill for ES6 Promises for IE11 -->
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+<script src="sweetalert2.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
 	<title>Controle de Producao</title>
 	
 </head>
@@ -62,10 +68,17 @@ function atualizar(){
 var ia = new InteligenciaArtificial();
 let t = getTurno();
 let v = getVao(); 
-let lista = ia.carregarMeta(t, v);  
+let lista = ia.carregarMeta(t, v);
+
 if(lista==null){  
 	if(sessionStorage.getItem("ia_metas")==null){
-		alert("AI: nao foi encontrada metas anteriores para serem reutilizadas, assim utilizaremos a ultima disponivel");
+		Swal.fire({
+  		icon: 'error',
+  		title: 'Oops...',
+  		text: 'AI: nao foi encontrada metas anteriores para serem reutilizadas, assim utilizaremos a ultima disponivel!',
+  		footer: '<a href>Porque este problema?</a>'
+		});
+		//alert("AI: nao foi encontrada metas anteriores para serem reutilizadas, assim utilizaremos a ultima disponivel");
 		sessionStorage.setItem("ia_metas", 1);
 	}
 	document.write("<table id='tabela' style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>");
@@ -75,7 +88,13 @@ if(lista==null){
 	document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas feita OP</th><th>cargas feita turno</th>");
 	for(var i = 0; i <16; i++){ 
 		if(!localStorage.getItem(maquina+i)){
-				alert("Erro - Primeiramente selecione, ao lado, o vao de maquinas");
+			Swal.fire({
+  		icon: 'error',
+  		title: 'Oops...',
+  		text: 'Primeiramente selecione, em acompanhamento, o vao de maquinas!',
+  		footer: '<a href="pagina.html">Selecione o vao de maquinas AQUI!?</a>'
+		});
+				//alert("Erro - Primeiramente selecione, ao lado, o vao de maquinas");
 			}else{
 				let maq = localStorage.getItem(maquina+i);  
 				maquinas.push(maq);
@@ -102,7 +121,7 @@ if(lista==null){
 			}else{
 				cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"'></input>");
 			} // agora se ha dados salvos da ultima meta mas nao deste turno
-		}else if(localStorage.getItem(maquinas[i]+"_metas"+getTurno())!=null && localStorage.getItem("salva")==getData()+getTurno()){
+		}else if(localStorage.getItem(maquinas[i]+"_metas"+getTurno())!=null){
 			var ob = recuperarObject(maquinas[i]); 
 			metas.push("<input type='int' id='meta"+i+"' placeholder='meta' value='"+ob.meta+"'></input>");
 			if(cargas[0][i]!=null && cargas[0]!=''){ 
@@ -143,11 +162,32 @@ if(lista==null){
 	for(let i=0;i<lista.length;i++){ 
 		var ob = lista[i]; // cria o objeto com todos os atributos de Meta
 		if(!localStorage.getItem(maquina+i)){ 
-				alert("Erro - Primeiramente selecione, ao lado, o vao de maquinas");
+			Swal.fire({
+  				icon: 'error',
+  				title: 'Oops...',
+  				text: 'Primeiramente selecione, em acompanhamento, o vão de maquinas!',
+  				footer: '<a href>Porque este problema?</a>'
+			});
+			//	alert("Erro - Primeiramente selecione, ao lado, o vao de maquinas");
 		}else{  
 			let maq = localStorage.getItem(maquina+i);  
 			maquinas.push(maq);
 		}  
+		const Toast = Swal.mixin({
+  			toast: true,
+ 			position: 'top-end',
+  			showConfirmButton: false,
+  			timer: 2000,
+  			timerProgressBar: true,
+  			onOpen: (toast) => {
+    		toast.addEventListener('mouseenter', Swal.stopTimer)
+    		toast.addEventListener('mouseleave', Swal.resumeTimer)
+  		}
+		});
+		Toast.fire({
+		icon: 'success',
+  		title: 'Carregando as metas mais recentes deste turno....'
+		});
 		if(localStorage.getItem(maquinas[i]+"_metas"+getTurno())!=null){ // aproveita o for para ter uma segunda opcao de insercao
 			var ob2 = recuperarObject(maquinas[i]); 
 		}  
@@ -207,6 +247,8 @@ lista =[];
 		document.write("<div id='tabela' style='margin-left: 20px; color: #191970; font-family:sans-serif;font-weight: bold;'>");
 		document.write("<table style='border: solid 1px #DDD; text-align: center; color: #191970; display: block; margin-block-start: 1em;margin-block-end: 1em; margin-inline-start: 0px; margin-inline-end: 0px;'>");
 		document.write("<th>maquina</th><th>telhas</th><th>Irog</th><th>pesas</th><th>quilos</th>");
+		let paradas= [];
+		let HoraParadas = [];
 		for(var i = 0; i< maquinas.length; i++){
 			document.write("<tr style='border: solid 1px #DDD; border-collapse: collapse; text-align: center; color: #191970;'>");
 			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; text-align: center; color: #191970;'>"+maquinas[i].numero+"</td>");
@@ -216,12 +258,17 @@ lista =[];
 			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; text-align: center; color: #191970;'>"+p[i].producaoQuilos+" kg.</td>");
 			document.write("</tr>");
 			this.corpoDoEmail.push(+maquinas[i].numero+" --------- "+p[i].producaoTelhas+"T ---------"+p[i].irog+"% ---------"+p[i].producaoPecas+"pcs ------ "+p[i].producaoQuilos+"kg.\n");
+			
+			/*if(getParadasEmail(maquinas[i].numero, getTurno(), getData())!=''){
+				paradas.push(getParadasEmail(maquinas[i], getTurno(), getData())); alert(paradas);
+			}*/
 		}
 		this.corpoDoEmail[0] = "MAQUINAS\t TELLHAS\t IROG\t\t PECAS\t KG\n"+this.corpoDoEmail[0];
 		this.corpoDoEmail.push("\nSoma telhas: "+somas);
 		this.corpoDoEmail.push("\nIrog da linha: "+calculaIrogTotal(somas,somasMetas)+"%");
 		this.corpoDoEmail.push("\nSoma pecas: "+pecas);
 		this.corpoDoEmail.push("\nKG: "+quilos);
+		//this.corpoDoEmail.push("\n paradas: "+paradas);
 		document.write("<h3>Meta: "+somasMetas+" telhas</h3>");
 		document.write("<h3>Realizado: "+somas+" telhas</h3>"); 
 		document.write("<h3>Soma pensas: "+pecas+" pcs</h3>");
@@ -238,10 +285,18 @@ lista =[];
 		for(var y=0;y<contatos.length;y++){
 			document.write("<option id='c2"+y+"' value='"+contatos[y][1]+"'> "+contatos[y][0]+": "+contatos[y][2]+"</option>");
 		}document.write("</select>");
-		document.write("Em c�pia: <select id='conn'></p>");
+		document.write("Em copia: <select id='conn'></p>");
 		for(var y=0;y<contatos.length;y++){
 			document.write("<option id='c2"+y+"' value='"+contatos[y][1]+"'> "+contatos[y][0]+": "+contatos[y][2]+"</option>");
 		}document.write("</select>");
+	}
+	function getParadasEmail(maquina, turno, dia){
+		let string = localStorage.getItem("parada:"+maquina+";turno:"+turno+";dia:"+dia);
+		let string2 = localStorage.getItem("Horaparada:"+maquina+";turno:"+turno+";dia:"+dia);
+		let string3 = string+" hora: "+string2; alert(string3);
+		if(string3!=null){
+			return string3;
+		}
 	}
 </script>
 
