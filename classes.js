@@ -566,59 +566,39 @@ function Producao(){
 		}
 		function repeticoes(vetor){
 			let array = [];
-			for(let i=0;i<vetor.length; i++){ //alert("iteracao "+i+vetor[i]);
-				let array3 = vetor[i].split("//"); // alert(array3.length);
-				if(array3.length<2){
-					if(array.length!=0){
-						let v = array.length+1;
-						let val = duplicado(array, vetor[i]);
-						let array5 = [vetor[i], val+1]
-						if(posicaoDuplicado(array, vetor[i])!=null){
-							array[posicaoDuplicado(array, vetor[i])] = array5;
-						}else{
-							array[v] = array5;
+			if(vetor.length>0){
+				for(let i=0;i<vetor.length; i++){
+					let array3 = vetor[i].split("//");  
+					if(array3.length<2){ 
+					 	array.push(array3);
+					}else{ 
+						for(let y=0;y<array3.length;y++){
+							array.push(array3[y]);
 						}
-					}else{
-						let array2 = [vetor[i], cont2+1];
-						array[0] = array2; 
-					}	
-				}else{// alert("indexof");
-					let a = ordernar(array3);
-						if(array.length==0 || array.length==null){// alert("tamanho arei "+array.length);
-							array = a;// alert("nao tinha nada entao "+array);
-						}else{
-							let v =array.length;
-								for(let z=0;z<a.length; z++){// alert("tamanho de a "+a.length);
-										let p = posicaoDuplicado(array, a[z][0]); //alert("posicao duplicado "+ p);
-										let p2 = duplicado(array, a[z][0]);
-									if(p==null || p=='' || p==0){
-										array[v] = a[z]; //alert("p = 0 entao v "+v+" arr adicionado	"+array);
-									}else{
-										let a2 = [a[z][0], p2+1];// alert("A2 "+a2);
-										array[p] = a2;
-									}
-								}
-						}
+					}
 				}
-			}// alert("fim "+array);
+			}
 			return array;
 		}
 		function ordernar(vetor){
-			let a = [];
+			let a = []; 
+			let repetido = [];
+			let posicao = [];
 			for(let i=0;i<vetor.length;i++){ 
-				let z = 0; 
-				let a2 = [vetor[i], 1]; 
-				a[i] = a2; 
-				let posicao;
-				for(let x = 0 ; x< vetor.length; x++){ 
-					if(vetor[i]==vetor[x]){ 
-						z++; 
-						posicao = x;
-						a[i] = [vetor[i], z]; 	
+				repetido = [];
+				for(let y =0;y<vetor.length;y++){
+					if(vetor[i]==vetor[y]){
+						repetido.push(vetor[y]);
+						vetor.splice(y,1);
 					}
+					
 				}
-				vetor.splice(posicao, 1);
-			}// alert("retornando o array a "+a);
+				if(repetido.length<1){
+					a.push(vetor[i]);
+				}else{
+					a.push(repetido);
+				}
+			}//retorna um array de arrays
 			return a;
 		}
 		function posicaoDuplicado(vetor, valor){

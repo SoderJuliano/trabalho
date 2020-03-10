@@ -104,10 +104,10 @@ function setParada(){
 			var n = descricao.split("//");  
 			for(var i=0;i<descricao.split("//").length;i++){
 				if(n.length==i+1){
-					this.h += "parada registrada as: "+getHoras();   
+					this.h += " "+getHoras();   
 					this.pars += ""+n[i];
 				}else{
-					this.h += "parada registrada as: "+getHoras()+"//";   
+					this.h += " "+getHoras()+"//";   
 					this.pars += ""+n[i]+"//";
 				}
 			}

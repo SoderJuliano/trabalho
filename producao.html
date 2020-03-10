@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script type="text/javascript" src="classes.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <script src="Chart.bundle.js"></script>
+    <script src="Chart.bundle.min.js"></script>
+    <script src="Chart.js"></script>
+    <script src="Chart.min.js"></script>
     
     <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700" rel="stylesheet">
     <link rel="stylesheet" href="fonts/icomoon/style.css">
@@ -185,22 +185,25 @@
                  let mais = [];
                  let cont=0;
                  for(let i =0; i<16; i++){ 
-                    if(localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u)!=null && localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u)!=''){
-                      a.push(localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u)); 
-                    }
-                 }
-                 let re = repeticoes(a);
-                 let r = [];
-                 let x = []; //todos os valores
-                 for(var j=0;j<re.length;j++){ 
+                   if(localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u)!=null){
+                     a.push(localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u));
+                   }
+                }
+                let e = repeticoes(a);
+                let re = ordernar(e);
+                let r = [];
+                let x = []; //todos os valores
+                for(let j=0;j<re2.length;j++){ 
+                 /*for(let z=0;z< re[j].length;z++){
+                   if(re[j][0]!=re[z][0]){
+
+                   }
+                 }*/
                   r.push(re[j][0]); // todas as paradas
-                  if(re[j][1]==0 || re[j][1]=='' || re[j][1]==null){
-                    re[j][1] = 1;
-                  }
-                  x.push(re[j][1]); 
-                } 
+                 x.push(re[j].length);
+               }
                 </script>
-                <h3>Parada mais frequente do Turno 1 = <script>document.write(re[maiorValor(x)][0]);</script></h3>
+                <h3>Parada mais frequente do Turno 1 = <script>document.write(re[maiorValor(x)]);</script></h3>
                 <p>As paradas que aparecem com mais frequencia T1</p>
                 <canvas id="myChart2" width="400" height="400"></canvas>
                 <script>
@@ -258,22 +261,20 @@ var myChart = new Chart(ctx, {
                 let mais2 = [];
                 let cont2=0;
                 for(let i =0; i<16; i++){ 
-                   if(localStorage.getItem("parada:"+lista[i].numero+";turno:2;dia:"+u2)!=null){
+                   if(localStorage.getItem("parada:"+lista[i].numero+";turno:2;dia:"+u2)!=null && localStorage.getItem("parada:"+lista[i].numero+";turno:2;dia:"+u2)!='' ){
                      a2.push(localStorage.getItem("parada:"+lista[i].numero+";turno:2;dia:"+u2));
                    }
                 }
-                let re2 = repeticoes(a2);
+                let e2 = repeticoes(a2); 
+                let re2 = ordernar(e2); alert("producao ordenar e2 "+re2);
                 let r2 = [];
                 let x2 = []; //todos os valores
                 for(var j=0;j<re2.length;j++){ 
                  r2.push(re2[j][0]); // todas as paradas
-                 if(re2[j][1]==0 || re2[j][1]=='' || re2[j][1]==null){
-                   re2[j][1] = 1;
-                 }
-                 x2.push(re2[j][1]);
+                 x2.push(re2[j].length);
                }
                </script>
-        <h3>Parada mais frequente do Turno 2 = <script>document.write(re2[maiorValor(x2)][0]);</script></h3>
+        <h3>Parada mais frequente do Turno 2 = <script>document.write(re2[maiorValor(x2)]);</script></h3>
               <p>As paradas que aparecem com mais frequencia T2</p>
                <canvas id="myChart3" width="400" height="400"></canvas>
                <script>
