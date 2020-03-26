@@ -4,13 +4,14 @@
     <title>Producao &mdash; Fras-le</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/dist/css/coreui.min.css" crossorigin="anonymous">
+    <script src="/dist/js/coreui.min.js"></script>
     <script type="text/javascript" src="classes.js"></script>
     <script src="Chart.bundle.js"></script>
     <script src="Chart.bundle.min.js"></script>
     <script src="Chart.js"></script>
     <script src="Chart.min.js"></script>
     
-    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700" rel="stylesheet">
     <link rel="stylesheet" href="fonts/icomoon/style.css">
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -179,71 +180,40 @@
                 <span class="icon-wrap"><span class="text-primary icon-autorenew"></span></span>
               </div>
               <div>
+                <h3>Detalhes T1</h3>
                 <script>
-                 let u = localStorage.getItem("ultimaParada_turno1_vao"+getVao());
-                 let a = [];
-                 let mais = [];
-                 let cont=0;
-                 for(let i =0; i<16; i++){ 
-                   if(localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u)!=null){
-                     a.push(localStorage.getItem("parada:"+lista[i].numero+";turno:1;dia:"+u));
-                   }
-                }
-                let e = repeticoes(a);
-                let re = ordernar(e);
-                let r = [];
-                let x = []; //todos os valores
-                for(let j=0;j<re2.length;j++){ 
-                 /*for(let z=0;z< re[j].length;z++){
-                   if(re[j][0]!=re[z][0]){
-
-                   }
-                 }*/
-                  r.push(re[j][0]); // todas as paradas
-                 x.push(re[j].length);
-               }
-                </script>
-                <h3>Parada mais frequente do Turno 1 = <script>document.write(re[maiorValor(x)]);</script></h3>
-                <p>As paradas que aparecem com mais frequencia T1</p>
-                <canvas id="myChart2" width="400" height="400"></canvas>
-                <script>
-var ctx = document.getElementById('myChart2').getContext('2d');
-var myChart = new Chart(ctx, {
-  type:  'pie',
-    data: {
-        labels: r,
-        datasets: [{
-            label: '# de paradas',
-            data: x,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});  </script>
+                  let u1 = localStorage.getItem("ultimaParada_turno1_vao"+getVao());
+                  let paradas1 = [];
+                  let listap1 = ia.carregarMeta(1, getVao());
+                  for(let i1 =0; i1<16; i1++){ 
+                    let m = recuperarObject(lista[i1].numero);
+                    if(localStorage.getItem("parada:"+lista[i1].numero+";turno:1;dia:"+u1)!=null){
+                     paradas1[i1] = recuperarParada1(lista[i1].numero);
+                     
+                    }
+                    document.write('<div class="card card-accent-primary mb-3" style="max-width: 18rem;">');
+                    document.write('<div class="card-header">'+lista[i1].numero+'</div>');
+                    document.write('<div class="card-body text-primary">');
+                    document.write('<h5 class="card-title">Paradas</h5>');
+                    if(paradas1[i1]!=null && paradas1[i1].data!=null){
+                      document.write('<p class="card-text">'+paradas1[i1].data+'</p>');  
+                    }else{
+                      document.write('<p class="card-text">Sem data</p>');
+                    }
+                    document.write('<h5 class="card-title">Descricao</h5>');
+                    if(paradas1[i1]!=null && paradas1[i1].descricao!=null){
+                      document.write('<p class="card-text">'+paradas1[i1].hora+'</p>');
+                      document.write('<p class="card-text">'+paradas1[i1].descricao+'</p>');  
+                    }else{
+                      document.write('<p class="card-text">Sem paradas</p>');
+                    }
+                    document.write('<h6 class="card-subtitle mb-2 text-muted">detalhes</h6>');
+                    document.write('Meta '+m.meta);
+                    document.write('Realizado '+m.getProducaoTelhas());
+                    document.write(' </div>');
+                    document.write('</div>');
+                } 
+              </script>
               </div>
             </div>
 
@@ -255,67 +225,39 @@ var myChart = new Chart(ctx, {
                 <span class="icon-wrap"><span class="text-primary icon-store_mall_directory"></span></span>
               </div>
               <div>
-                <script>
-                let u2 = localStorage.getItem("ultimaParada_turno2_vao"+getVao());
-                let a2 = [];
-                let mais2 = [];
-                let cont2=0;
-                for(let i =0; i<16; i++){ 
-                   if(localStorage.getItem("parada:"+lista[i].numero+";turno:2;dia:"+u2)!=null && localStorage.getItem("parada:"+lista[i].numero+";turno:2;dia:"+u2)!='' ){
-                     a2.push(localStorage.getItem("parada:"+lista[i].numero+";turno:2;dia:"+u2));
-                   }
-                }
-                let e2 = repeticoes(a2); 
-                let re2 = ordernar(e2); alert("producao ordenar e2 "+re2);
-                let r2 = [];
-                let x2 = []; //todos os valores
-                for(var j=0;j<re2.length;j++){ 
-                 r2.push(re2[j][0]); // todas as paradas
-                 x2.push(re2[j].length);
-               }
-               </script>
-        <h3>Parada mais frequente do Turno 2 = <script>document.write(re2[maiorValor(x2)]);</script></h3>
-              <p>As paradas que aparecem com mais frequencia T2</p>
-               <canvas id="myChart3" width="400" height="400"></canvas>
-               <script>
-var ctx = document.getElementById('myChart3').getContext('2d');
-var myChart = new Chart(ctx, {
- type:  'pie',
-   data: {
-       labels: r2,
-       datasets: [{
-           label: '# de paradas',
-           data: x2,
-           backgroundColor: [
-               'rgba(255, 99, 132, 0.2)',
-               'rgba(54, 162, 235, 0.2)',
-               'rgba(255, 206, 86, 0.2)',
-               'rgba(75, 192, 192, 0.2)',
-               'rgba(153, 102, 255, 0.2)',
-               'rgba(255, 159, 64, 0.2)'
-           ],
-           borderColor: [
-               'rgba(255, 99, 132, 1)',
-               'rgba(54, 162, 235, 1)',
-               'rgba(255, 206, 86, 1)',
-               'rgba(75, 192, 192, 1)',
-               'rgba(153, 102, 255, 1)',
-               'rgba(255, 159, 64, 1)'
-           ],
-           borderWidth: 1
-       }]
-   },
-   options: {
-       scales: {
-           yAxes: [{
-               ticks: {
-                   beginAtZero: true
-               }
-           }]
-       }
-   }
-});
-</script>         
+                <h3>Detalhes T2</h3>
+               <script> 
+                    let u2 = localStorage.getItem("ultimaParada_turno2_vao"+getVao());
+                    let paradas = [];
+                    let listap2 = ia.carregarMeta(2, getVao());
+                    for(let i =0; i<16; i++){ 
+                      let m2 = recuperarObject(lista[i].numero);
+                      if(localStorage.getItem("parada:"+lista[i].numero+";turno:2;dia:"+u2)!=null){
+                      paradas[i] = recuperarParada2(lista[i].numero);
+                      
+                      }
+                      document.write('<div class="card" style="width: 18rem;">');
+                      document.write('<div class="card-body">');
+                      document.write('<h5 class="card-title">'+lista[i].numero+'</h5>');  
+                      document.write('<h6 class="card-subtitle mb-2 text-muted">Paradas</h6>');
+                        if(paradas[i]!=null && paradas[i].data!=''){
+                        document.write('<p class="card-text">'+paradas[i].data+'</p>');
+                        }else{
+                          document.write('<p class="card-text">Sem data</p>');
+                        }
+                        document.write('<h6 class="card-subtitle mb-2 text-muted">descricao</h6>');
+                        if(paradas[i]!=null && paradas[i].descricao!=''){
+                        document.write('<p class="card-text">'+paradas[i].descricao+'</p>');
+                        }else{
+                          document.write('<p class="card-text">Sem paradas</p>');
+                        }
+                        document.write('<h6 class="card-subtitle mb-2 text-muted">detalhes</h6>');
+                        document.write('Meta '+m2.meta);
+                      document.write('Realizado '+m2.getProducaoTelhas());
+                      document.write('</div>');
+                      document.write('</div>');
+                  } 
+                </script>
               </div>
             </div>
           </div>
@@ -325,69 +267,39 @@ var myChart = new Chart(ctx, {
                 <span class="icon-wrap"><span class="text-primary icon-shopping_basket"></span></span>
               </div>
               <div>
-                <script>
-                  let u3 = localStorage.getItem("ultimaParada_turno3_vao"+getVao());
-                  let a3 = [];
-                  let mais3 = [];
-                  let cont3=0;
-                  for(let i =0; i<16; i++){ 
-                     if(localStorage.getItem("parada:"+lista[i].numero+";turno:3;dia:"+u2)!=null){
-                       a3.push(localStorage.getItem("parada:"+lista[i].numero+";turno:3;dia:"+u3));// alert("mandou 2 para re T2 "+a2[i]);
-                     }
+          <h3>Detalhes T3</script></h3>
+          <script>
+                let u3 = localStorage.getItem("ultimaParada_turno3_vao"+getVao());
+                let paradas3 = [];
+                let listap3 = ia.carregarMeta(3, getVao()); 
+                for(let i3 =0; i3<16; i3++){ 
+                  let m3 = recuperarObject(lista[i3].numero);
+                  if(localStorage.getItem("parada:"+lista[i3].numero+";turno:3;dia:"+u3)!=null){ 
+                  paradas3[i3] = recuperarParada3(lista[i3].numero);
+                  
+                  } 
+                  document.write('<div class="card border-info mb-3" style="max-width: 18rem;">');
+                  document.write(' <div class="card-header">'+lista[i3].numero+'</div>');
+                  document.write('<div class="card-body text-info">');
+                  document.write('<h5 class="card-title">Paradas</h5>');
+                  if(paradas3[i3]!=null && paradas3[i3].data!=null){
+                    document.write('<p class="card-text">'+paradas3[i3].data+'</p>');  
+                  }else{
+                    document.write('<p class="card-text">Sem data</p>');
                   }
-                  let re3 = repeticoes(a3);
-                  let r3 = [];
-                  let x3 = []; //todos os valores
-                  for(var j=0;j<re3.length;j++){ 
-                   r2.push(re3[j][0]); // todas as paradas
-                   if(re3[j][1]==0 || re3[j][1]=='' || re3[j][1]==null){
-                     re3[j][1] = 1;
-                   }
-                   x3.push(re3[j][1]);
-                 }
-                 </script>
-          <h3>Parada mais frequente do Turno 3 = <script>document.write(re3[maiorValor(x3)][0]);</script></h3>
-                <p>As paradas que aparecem com mais frequencia T3</p>
-                 <canvas id="myChart4" width="400" height="400"></canvas>
-                 <script>
-  var ctx = document.getElementById('myChart4').getContext('2d');
-  var myChart = new Chart(ctx, {
-   type:  'pie',
-     data: {
-         labels: r3,
-         datasets: [{
-             label: '# de paradas',
-             data: x3,
-             backgroundColor: [
-                 'rgba(255, 99, 132, 0.2)',
-                 'rgba(54, 162, 235, 0.2)',
-                 'rgba(255, 206, 86, 0.2)',
-                 'rgba(75, 192, 192, 0.2)',
-                 'rgba(153, 102, 255, 0.2)',
-                 'rgba(255, 159, 64, 0.2)'
-             ],
-             borderColor: [
-                 'rgba(255, 99, 132, 1)',
-                 'rgba(54, 162, 235, 1)',
-                 'rgba(255, 206, 86, 1)',
-                 'rgba(75, 192, 192, 1)',
-                 'rgba(153, 102, 255, 1)',
-                 'rgba(255, 159, 64, 1)'
-             ],
-             borderWidth: 1
-         }]
-     },
-     options: {
-         scales: {
-             yAxes: [{
-                 ticks: {
-                     beginAtZero: true
-                 }
-             }]
-         }
-     }
-  });
-  </script>
+                  document.write('<h5 class="card-title">Descricao</h5>');
+                  if(paradas3[i3]!=null && paradas[i3].descricao!=null){
+                    document.write('<p class="card-text">'+paradas[i].descricao+'</p>');
+                  }else{
+                    document.write('<p class="card-text">Sem paradas</p>');
+                  }
+                  document.write('<p class="card-text">Detalhes</p>');
+                  document.write('Meta '+m3.meta);
+                  document.write('Realizado '+m3.getProducaoTelhas());
+                  document.write(' </div>');
+                  document.write('</div>');
+              } 
+          </script>
                </div>
              </div>
  

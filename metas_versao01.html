@@ -1,13 +1,11 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 <html>
 <head>
 <meta charset="ISO-8859-1">
-	<script type="text/javascript" src="classes.js"></script>
+<meta http-equiv="Content-Language" content="pt-br">
+	<script type="text/javascript" src="classes.js" charset="utf-8"></script>
 	<link href="css/style.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-	<script src="sweetalert2.all.min.js"></script>
+	<script src="sweetalert2.all.min.js" charset="utf-8"></script>
 <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
-<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
 <script src="sweetalert2.min.js"></script>
 <link rel="stylesheet" href="sweetalert2.min.css">
 	<title>Controle de Producao</title>
@@ -16,7 +14,8 @@
 <body style="height:100%; width:100%;"> 
 <form id='metas_form' >
 <script>
-var bt = ["<button><p id='relatorio'>Relatorio de producao</p></button>"];
+var bt = ["<button><p id='relatorio' onclick='aplicar()'>Relatorio de producao</p></button>"];
+let btApaga = ["<button><p id='apagar' onclick='apagar()'>Apagar cargas</p></button>"];
 var maquina = "maquina";
 var maquinas = [];
 var metas = [];
@@ -31,27 +30,26 @@ var contMetas=0;
 var somasQuilos=0;
 var listaMaquinas = [];
 let cargas =[];
+var ia = new InteligenciaArtificial();
 cargas = carregaCargas();
 //recupera da producao
-
-setInterval(atualizar, 1000);
+window.resizeTo(780, 1000);
+setInterval(atualizar, 500);
 setInterval(diaHoraTurno, 1000);
 function diaHoraTurno(){
   document.getElementById("hora").innerHTML = getDiaDaSemana()+". "+getHours()+" turno: "+getTurno();
  return getDiaDaSemana()+". "+getHours()+" turno: "+getTurno();
 }
-function atualizar(){
-	if(this.somasMetas>0){
-		this.somasMetas = 0;
-		this.contMetas = 0;
-	}
-		for(var i=0;i<maquinas.length;i++){
-			var nM = maquinas[i]; 
+function apagar(){
+	clearInterval(diaHoraTurno);
+	clearInterval(atualizar);
+	for(let i=0;i<16;i++){
+		var nM = maquinas[i]; 
 			var m = new Maquina(nM);
 			m.meta = document.getElementById("meta"+[i]).value;   
 			m.telhaPorCiclo = document.getElementById("tc"+[i]).value; 
-			m.realizadaOP = document.getElementById("cOp"+[i]).value; 
-			m.realizadaTurno = document.getElementById("cT"+[i]).value; 
+			m.realizadaOP = ''; 
+			m.realizadaTurno = ''; 
 			m.pecaPorTelha = verificarPeca(m.numero);  
 			quantidadeOp(m.numero, m.realizadaOP, m.telhaPorCiclo);
 			
@@ -59,13 +57,60 @@ function atualizar(){
 			localStorage.setItem("cOp"+i,m.realizadaOP );
 			var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
 			localStorage.setItem(m.numero+"_metas"+getTurno(), mm);
+	}
+}
+function atualizar(){
+	clearInterval(diaHoraTurno);
+	if(this.somasMetas>0){
+		this.somasMetas = 0;
+		//this.contMetas = 0;
+	}
+		for(var i=0;i<maquinas.length;i++){ //alert("maquinas legenth "+maquinas.length);
+			var nM = maquinas[i]; 
+			var m = new Maquina(nM);
+			
+			m.meta = document.getElementById("meta"+[i]).value;  // alert("meta "+document.getElementById("meta"+[i]).value);
+			m.telhaPorCiclo = document.getElementById("tc"+[i]).value; 
+			m.realizadaOP = document.getElementById("cOp"+[i]).value; 
+			m.realizadaTurno = document.getElementById("cT"+[i]).value; 
+			m.pecaPorTelha = verificarPeca(m.numero);  
+			quantidadeOp(m.numero, m.realizadaOP, m.telhaPorCiclo);
+			//alert("telha ciclo"+document.getElementById("tc"+[i]).value);
+			localStorage.setItem("cT"+i, m.realizadaTurno);
+			localStorage.setItem("cOp"+i,m.realizadaOP );
+			var mm = "telhaPorCiclo:"+m.telhaPorCiclo+";meta:"+m.meta+";pecaPorTelha:"+m.pecaPorTelha+";realizadaOP:"+m.realizadaOP+";realizadaTurno:"+m.realizadaTurno;
+			let mm2 = localStorage.getItem(m.numero+"_metas"+getTurno());
+			if(mm2!=mm){
+				localStorage.setItem(m.numero+"_metas"+getTurno(), mm);
+				if(ia.checarOrdem(m.numero, m.meta, getVao())==1){ 
+					localStorage.setItem("trocarMaq", m.numero);
+					localStorage.setItem("trocarMet", m.meta);
+					Swal.fire({
+						title: 'Trocar a ordem do programa?',
+						text: "A próxima ordem será colocada na linha de execução do programa",
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Sim, mudar o programa!'
+						}).then((result) => { ia.trocarOrdem(localStorage.getItem("trocarMaq"), localStorage.getItem("trocarMet"), getVao());
+							if (result.value) { 
+								Swal.fire(
+									'Feito!',
+									'Subimos a ordem que estava aguardando',
+									'success'
+								)
+							}
+						})
+				}
+				// maquina, proxima , meta, vao
+			}
 			if(m.meta>0){
-			this.contMetas++;
-			this.somasMetas += parseFloat(m.meta);// alert(this.somasMetas);
+			//this.contMetas++;
+			this.somasMetas += parseInt(m.meta);// alert(this.somasMetas);
 			}
 		}
 }
-var ia = new InteligenciaArtificial();
 let t = getTurno();
 let v = getVao(); 
 let lista = ia.carregarMeta(t, v);
@@ -83,7 +128,7 @@ if(lista==null){
 	}
 	document.write("<table id='tabela' style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>");
 	document.write("<tr><th colspan='3'><p id='hora' class='primeiroP'></p></th>");
-	document.write("<th><ul id='menutt'><li><a heref='#'><button  type='button' id='ocultar_detalhes' onclick='Mudarestado()'>Ocultar Detalhes/Mostrar Detalhes</button><span>Oculta os campos de metas e telhas por ciclo, facilitando a insercao de dados nos outros campos.</span></a></ul></th></tr>");
+	document.write("<th><ul id='menutt'><li><a href='#'><button  type='button' id='ocultar_detalhes' onclick='Mudarestado()'>Ocultar Detalhes/Mostrar Detalhes</button><span>Oculta os campos de metas e telhas por ciclo, facilitando a insercao de dados nos outros campos.</span></a></ul></th></tr>");
 	
 	document.write("<th>prensas</th><th>metas</th><th>telha/ciclo</th><th>cargas feita OP</th><th>cargas feita turno</th>");
 	for(var i = 0; i <16; i++){ 
@@ -100,7 +145,7 @@ if(lista==null){
 				maquinas.push(maq);
 			} // se ja a dados salvos deste turno e nao ha dados salvos do ultimo turno
 		if(localStorage.getItem("salva")==getData()+getTurno() && localStorage.getItem(maquinas[i]+"_metas"+getTurno())==null){  
-			metas.push("<input type='int' id='meta"+i+"' placeholder='meta'></input>");
+			metas.push("<input type='int' id='meta"+i+"' placeholder='meta' onfocus='focusFunction("+i+")' onblur='blurFunction("+i+")'></input>");
 			telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo'></input>");
 			
 			// carrrega as informações da outra pagina
@@ -116,7 +161,7 @@ if(lista==null){
 			} // agora se ha dados salvos da ultima meta mas nao deste turno
 		}else if(localStorage.getItem(maquinas[i]+"_metas"+getTurno())!=null){
 			var ob = recuperarObject(maquinas[i]); 
-			metas.push("<input type='int' id='meta"+i+"' placeholder='meta' value='"+ob.meta+"'></input>");
+			metas.push("<input type='int' id='meta"+i+"' placeholder='meta' value='"+ob.meta+"' onfocus='focusFunction()' onblur='blurFunction()'></input>");
 			if(cargas[0][i]!=null && cargas[0]!=''){ 
 				cargasOP.push("<input type='int' placeholder='cargas/OP' id='cOp"+i+"' value='"+cargas[0][i]+"'></input>");		
 			}else{ 
@@ -125,11 +170,11 @@ if(lista==null){
 			if(cargas[1][i]!=null && cargas[1][i]!=''){ 
 				cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"' value='"+cargas[1][i]+"'></input>");		
 			}else{
-				cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"' value='"+ob.realizadaTurno+"'></input>");
+				cargasTurno.push("<input  type='int' placeholder='cargas/turno' id='cT"+i+"' value='"+ob.realizadaTurno+"'></input>");
 			}	
 				telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo' value='"+ob.telhaPorCiclo+"'></input>");
 		}else{ 
-				metas.push("<input type='int' id='meta"+i+"' placeholder='meta'></input>"); 
+				metas.push("<input type='int' id='meta"+i+"' placeholder='meta' onfocus='focusFunction()' onblur='blurFunction()'></input>"); 
 				cargasOP.push("<input type='int' placeholder='cargas/OP' id='cOp"+i+"'></input>");
 				cargasTurno.push("<input type='int' placeholder='cargas/turno' id='cT"+i+"'></input>");
 				telhaCiclo.push("<input id='tc"+i+"' placeholder='Telha p/Ciclo'></input>");
@@ -185,9 +230,9 @@ if(lista==null){
 			var ob2 = recuperarObject(maquinas[i]); 
 		}  
 		if(ob.meta==null || ob.meta==''){ 
-			metas.push("<input type='int' id='meta"+i+"' placeholder='meta' value='"+ob2.meta+"'></input>");
+			metas.push("<input type='int' id='meta"+i+"' placeholder='meta' value='"+ob2.meta+"' onfocus='focusFunction("+i+")' onblur='blurFunction()'></input>");
 		}else{
-			metas.push("<input type='int' id='meta"+i+"' placeholder='meta' value='"+ob.meta+"'></input>"); 
+			metas.push("<input type='int' id='meta"+i+"' placeholder='meta' value='"+ob.meta+"' onfocus='focusFunction("+i+")' onblur='blurFunction()'></input>"); 
 		}  
 		if(cargas[0][i]!=null && cargas[0]!=''){ 
 			cargasOP.push("<input type='int' placeholder='cargas/OP' id='cOp"+i+"' value='"+cargas[0][i]+"'></input>");		
@@ -212,6 +257,7 @@ if(lista==null){
 	}
 	
 	document.write("<tr><td><ul id='menutt'><li><a heref='#'>"+bt+"<span>salva a producao no navegador e carrega o relatorio, se o relatorio nao aparecer e porque algum campo nao foi preenchido corretamente.</span></a></ul></td></tr>");
+	document.write("<tr><td><ul id='menutt'><li><a heref='#'>"+btApaga+"<span>Limpa o conteudo das colunas da direita.</span></a></ul></td></tr>");
 	document.write("</table>");
 }
 lista =[];
@@ -222,6 +268,7 @@ lista =[];
 	document.getElementById("ocultar_detalhes").onclick = function() {Mudarestado()};
 	function Mudarestado() {
         document.getElementById("tabela").innerHTML = mudar();
+		window.resizeTo(400, 800);
 	}
 
 	function resultado(maquinas, p, somas, pecas, metas, cont, quilos){
@@ -236,11 +283,11 @@ lista =[];
 				setContatos(2, array, copia);
 		}
 		// variavel contatos 
-		var contatos = [c0=['','',''], c1=['William', 'william.daros@fras-le.com', 'l�der'], c2=['Rose', 'roselaine.silva@fras-le.com', 'assistente adiministrativo'], c3=['Marcio', 'marcio.branco@fras-le.com', 'analista']];
+		var contatos = [c0=['','',''], c1=['William', 'william.daros@fras-le.com', 'lider'], c2=['Rose', 'roselaine.silva@fras-le.com', 'assistente adiministrativo'], c3=['Marcio', 'marcio.branco@fras-le.com', 'analista'], c4=['Regis', 'reges.macedo@fras-le.com', 'lider'], c5=['Edelar', 'edelar.desouza@fras-le.com', 'lider']];
 		document.write("<div id='tabela' style='margin-left: 20px; color: #191970; font-family:sans-serif;font-weight: bold;'>");
 		document.write("<table style='border: solid 1px #DDD; text-align: center; color: #191970; display: block; margin-block-start: 1em;margin-block-end: 1em; margin-inline-start: 0px; margin-inline-end: 0px;'>");
-		document.write("<th>maquina</th><th>telhas</th><th>Irog</th><th>pesas</th><th>quilos</th>");
-		let paradas= [];
+		document.write("<th>maquina</th><th>telhas</th><th>Irog</th><th>pecas</th><th>quilos</th>");
+		let paradas= getParadasEmail(maquinas); 
 		let HoraParadas = [];
 		for(var i = 0; i< maquinas.length; i++){
 			document.write("<tr style='border: solid 1px #DDD; border-collapse: collapse; text-align: center; color: #191970;'>");
@@ -250,17 +297,14 @@ lista =[];
 			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; text-align: center; color: #191970;'>"+p[i].producaoPecas+" Pcs</td>");
 			document.write("<td style='border: solid 1px #DDD; border-collapse: collapse; text-align: center; color: #191970;'>"+p[i].producaoQuilos+" kg.</td>");
 			document.write("</tr>");
-			this.corpoDoEmail.push(+maquinas[i].numero+" --------- "+p[i].producaoTelhas+"T ---------"+p[i].irog+"% ---------"+p[i].producaoPecas+"pcs ------ "+p[i].producaoQuilos+"kg.\n");
-			
-			/*if(getParadasEmail(maquinas[i].numero, getTurno(), getData())!=''){
-				paradas.push(getParadasEmail(maquinas[i], getTurno(), getData())); alert(paradas);
-			}*/
+			this.corpoDoEmail.push(maquinas[i].numero+" | "+p[i].irog+"%");
+			this.corpoDoEmail.push("paradas: "+paradas[i]+"\n");
 		}
-		this.corpoDoEmail[0] = "MAQUINAS\t TELLHAS\t IROG\t\t PECAS\t KG\n"+this.corpoDoEmail[0];
-		this.corpoDoEmail.push("\nSoma telhas: "+somas);
-		this.corpoDoEmail.push("\nIrog da linha: "+calculaIrogTotal(somas,somasMetas)+"%");
-		this.corpoDoEmail.push("\nSoma pecas: "+pecas);
-		this.corpoDoEmail.push("\nKG: "+quilos);
+		//this.corpoDoEmail[0] = "MAQUINAS\t TELLHAS\t IROG\t\t PECAS\t KG\n";
+		this.corpoDoEmail.push("Telhas: "+somas);
+		this.corpoDoEmail.push("\n Irog: "+calculaIrogTotal(somas,somasMetas)+"%");
+		this.corpoDoEmail.push("\n Pecas: "+pecas);
+		this.corpoDoEmail.push("\n KG: "+quilos);
 		//this.corpoDoEmail.push("\n paradas: "+paradas);
 		document.write("<h3>Meta: "+somasMetas+" telhas</h3>");
 		document.write("<h3>Realizado: "+somas+" telhas</h3>"); 
@@ -283,14 +327,50 @@ lista =[];
 			document.write("<option id='c2"+y+"' value='"+contatos[y][1]+"'> "+contatos[y][0]+": "+contatos[y][2]+"</option>");
 		}document.write("</select>");
 	}
-	function getParadasEmail(maquina, turno, dia){
-		let string = localStorage.getItem("parada:"+maquina+";turno:"+turno+";dia:"+dia);
-		let string2 = localStorage.getItem("Horaparada:"+maquina+";turno:"+turno+";dia:"+dia);
-		let string3 = string+" hora: "+string2; alert(string3);
-		if(string3!=null){
-			return string3;
+	function getParadasEmail(maquinas){
+		let array = [];
+		for(var i = 0; i< maquinas.length; i++){
+			let string = localStorage.getItem("parada:"+maquinas[i].numero+";turno:"+getTurno()+";dia:"+getData());
+			if(string==null || string==''){ 
+				string = '';
+			}
+			array.push(string);
 		}
+		return array;
 	}
+	function mandarArquivo(c){
+		 let conteudo = c;
+		 var blob = new Blob(conteudo, {type: "text/plain;charset=utf-8"});
+		    saveAs(blob, "producao.txt");
+	}
+	function alertOutlook(){
+		const Toast = Swal.mixin({
+  			toast: true,
+ 			position: 'top-end',
+  			showConfirmButton: false,
+  			timer: 6000,
+  			timerProgressBar: true,
+  			onOpen: (toast) => {
+    		toast.addEventListener('mouseenter', Swal.stopTimer)
+    		toast.addEventListener('mouseleave', Swal.resumeTimer)
+  		}
+		});
+		Toast.fire({
+		icon: 'success',
+  		title: 'Iniciando o Outlook, aguarde ....'
+		});
+	}
+
+	function focusFunction(i) {
+  // Focus = Changes the background color of input to yellow
+  document.getElementById("meta"+i).style.background = "yellow";
+  clearInterval(atualizar());
+}
+
+function blurFunction(i) {
+  // No focus = Changes the background color of input to red
+  document.getElementById("meta"+i).style.background = "red";
+}
 </script>
 
 </form>

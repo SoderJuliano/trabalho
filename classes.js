@@ -1,7 +1,7 @@
-var listaMaquinas3 = ["1019", "1407", "1408", "1409", "1410", "1552", "1553", "8833",
-			"8888", "8916", "8917", "10178", "11819", "11820", "12342", "12343"];
-var listaMaquinas2 = ["1548", "1549", "1620","1621","1635","1825","1684","1686","1855", "1857","1877","1878",  "1906","1907",
-			"10552", "11818"];
+var listaMaquinas3 = ["maquina31", "maquina32", "maquina33", "maquina34", "maquina35", "maquina36", "maquina37", "maquina38", "maquina39", "maquina310", "maquina311",
+			"maquina312", "maquina313", "maquina314", "maquina315", "maquina316"];
+var listaMaquinas2 = ["maquina21", "maquina22", "maquina23", "maquina24", "maquina25", "maquina26", "maquina27", "maquina28", "maquina29", "maquina210", "maquina211",
+			"maquina212", "maquina213", "maquina214", "maquina215", "maquina216"];
 var listaMaquinasNull = ["maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina",
 			"maquina", "maquina", "maquina", "maquina", "maquina"];
 
@@ -17,14 +17,17 @@ var listaMaquinasNull = ["maquina", "maquina", "maquina", "maquina", "maquina", 
 			let retorno;
 			var arrey = ref.split("-");
 			for(var i=0;i<lista4.length;i++){
-				if(array[0]=='4702'){
-					retorno = 6;
-				}
 				if(lista4[i]==arrey[0]){
 					retorno = 4;
 				}else{
 					retorno = 3;
 				}
+			}
+			if(arrey[0]=='4719'){
+				retorno = 5;
+			}
+			if(arrey[0]=='4702'){
+				retorno = 6;
 			}
 		return retorno;
 		}
@@ -35,6 +38,7 @@ var listaMaquinasNull = ["maquina", "maquina", "maquina", "maquina", "maquina", 
 	}
 	
 	function mudar(){ 
+		window.resizeTo(500, 600);
 	document.write('<link href="css/style.css" rel="stylesheet">');
 	document.write("<table id='tabela' class='tbl' style='border: solid 1px #DDD; border-collapse: collapse; padding: 3px 6px; text-align: center; color: #191970;'>");
 	document.write("<tr><th colspan='3'><p id='hora' class='primeiroP'></p></th></tr>");
@@ -81,6 +85,16 @@ function carregaCargas(){
 	let array = [cto, ct];
 	return array;
 }
+function pontoVirgula(meta){
+	let nm;
+	let m = meta.split(",");
+	if(m.length>1){
+		nm = m[0]+"."+m[1];
+	}else{
+		nm = meta;
+	}
+	return parseFloat(nm);
+}
 	var ia=new InteligenciaArtificial();
 	function aplicar(){ 
 		var contMetas = 0; 
@@ -94,8 +108,11 @@ function carregaCargas(){
 		for(var i = 0; i<lista.length; i++){ 
 			var nM = lista[i]; // nM= numero Maquina
 			var m = new Maquina(nM); // objeto Maquina
-			
-			m.meta = document.getElementById("meta"+[i]).value;   
+			if(document.getElementById("meta"+[i]).value!=null && document.getElementById("meta"+[i]).value!=''){
+				m.meta = pontoVirgula(document.getElementById("meta"+[i]).value);
+			}else{
+				m.meta = document.getElementById("meta"+[i]).value;
+			}
 			m.telhaPorCiclo = document.getElementById("tc"+[i]).value; 
 			m.realizadaOP = document.getElementById("cOp"+[i]).value;  
 			m.realizadaTurno = document.getElementById("cT"+[i]).value;  
@@ -135,15 +152,20 @@ function carregaCargas(){
 		resultado(listaMaquinas, listaProducao, somasTelhas, somasPecas, somasMetas, this.contMetas, somasQuilos); 
 	}
 	function quantidadeOp(maquina, ciclos, telhaPorCiclo){
-			var produzido = ciclos*telhaPorCiclo;
+		if(telhaPorCiclo!=null && ciclos!=null){
+			let produzido = ciclos*telhaPorCiclo;
 			localStorage.setItem(maquina+"_qntFeita", produzido);
 			//window.location.reload();
+		}else{
+			localStorage.setItem(maquina+"_qntFeita", '0');
+		}	
+		
 	}
 	function recuperarObject(numero){
 		var m = new Maquina(numero); 
 		var t = getTurno();
 		
-		var n = numero+"_metas"+t;
+		var n = numero+"_metas"+t; 
 		var objeto = localStorage.getItem(n); 
 		var array1 = objeto.split(";"); 
 		for(var i = 0; i< array1.length;i++){
@@ -169,7 +191,7 @@ function carregaCargas(){
 	function getTurno(){
 		let t;
 		now = new Date();
-		horas = now.getHours();
+		horas = now.getHours(); 
 		if(getDiaDaSemana()=="Sabado"){ 
 			if((horas>10) && (horas<15)){
 				sessionStorage.setItem("turno", 1);
@@ -182,13 +204,13 @@ function carregaCargas(){
 				sessionStorage.setItem("turno", t);
 			}
 		}else{
-			if((horas>6) && (horas<15)){ 
+			if((horas=>6) && (horas<15) && (horas!=0)){ 
 				sessionStorage.setItem("turno", 1);
 				t = 1;
-			}else if((horas=>15) && (horas<24)){
+			}else if((horas=>15) && (horas<=24)){
 				t = 2;
 				sessionStorage.setItem("turno", t);
-			}else if(horas=>1 && horas<6){
+			}else if(horas=>0 && horas<6){
 				t = 3;
 				sessionStorage.setItem("turno", t);
 			}
@@ -199,10 +221,71 @@ function carregaCargas(){
 	function Parada(){
 	this.maquina;
 	this.data;
-	this.descicao;
+	this.descricao=[];
 	this.turno;
 	this.hora;
 }
+
+function recuperarParada2(maquina){
+	//parada:1019;turno:2;dia:11/3/2020 ultimaParada_turno2_vao3 exemplo
+	let dia = localStorage.getItem("ultimaParada_turno2_vao"+getVao());
+	let string = localStorage.getItem("parada:"+maquina+";turno:2;dia:"+dia);
+	let stringHora = localStorage.getItem("Horaparada:"+maquina+";turno:2;dia:"+dia);
+	let p = new Parada();
+	p.maquina = maquina; 
+	p.data = dia;
+	p.turno = 2;
+	let s = string.split("//"); //se a descrição tiver mais que uma parada então ela e dividida 
+	if(s.length>1){
+		for(let i = 0;i<s.length; i++){
+			p.descricao.push(s[i]);
+		}
+	}else{
+		p.descricao.push(string);
+	}
+	p.hora = stringHora;
+	return p;
+}
+	function recuperarParada1(maquina){
+		//parada:1019;turno:2;dia:11/3/2020 ultimaParada_turno2_vao3 exemplo
+		let dia = localStorage.getItem("ultimaParada_turno1_vao"+getVao());
+		let string = localStorage.getItem("parada:"+maquina+";turno:1;dia:"+dia);
+		let stringHora = localStorage.getItem("Horaparada:"+maquina+";turno:1;dia:"+dia);
+		let p = new Parada();
+		p.maquina = maquina; 
+		p.data = dia;
+		p.turno = 1;
+		let s = string.split("//"); //se a descrição tiver mais que uma parada então ela e dividida 
+		if(s.length>1){
+			for(let i = 0;i<s.length; i++){
+				p.descricao.push(s[i]);
+			}
+		}else{
+			p.descricao.push(string);
+		}
+		p.hora = stringHora;
+		return p;
+	}
+	function recuperarParada3(maquina){
+		//parada:1019;turno:2;dia:11/3/2020 ultimaParada_turno2_vao3 exemplo
+		let dia = localStorage.getItem("ultimaParada_turno3_vao"+getVao());
+		let string = localStorage.getItem("parada:"+maquina+";turno:3;dia:"+dia);
+		let stringHora = localStorage.getItem("Horaparada:"+maquina+";turno:3;dia:"+dia);
+		let p = new Parada();
+		p.maquina = maquina; 
+		p.data = dia;
+		p.turno = 3;
+		let s = string.split("//"); //se a descrição tiver mais que uma parada então ela e dividida 
+		if(s.length>1){
+			for(let i = 0;i<s.length; i++){
+				p.descricao.push(s[i]);
+			}
+		}else{
+			p.descricao.push(string);
+		}
+		p.hora = stringHora;
+		return p;
+	}
 	function Producao(){
 		this.maquina;
 		this.producaoTelhas;
@@ -212,6 +295,27 @@ function carregaCargas(){
 		this.turno; 
 		this.data;
 		this.parada;
+	}
+	function LSProducao(dia, maquina, turno){ 
+		//20/3/2020_data1019_producao1 
+		//maquina:1410;producaoTelhas:600;producaoPecas:1800;producaoQuilos:2520;irog:94.6
+		if(localStorage.getItem(dia+"_data"+maquina+"_producao"+turno)!=null){
+			let string = localStorage.getItem(dia+"_data"+maquina+"_producao"+turno); 
+			let string2 = string.split(";"); 
+			let t = string2[1].split(":"); 
+			let pcs = string2[2].split(":"); 
+			let kg = string2[3].split(":"); 
+			let p = new Producao();
+			p.maquina = maquina; 
+			p.producaoTelhas = t[1];
+			p.producaoPecas = pcs[1];
+			p.producaoQuilos = kg[1];
+			p.turno = turno;
+			p.data = dia; 
+			return p;
+		}else{
+			return null;
+		}
 	}
 	function getData(){
 			now = new Date();
@@ -248,7 +352,7 @@ function carregaCargas(){
 	Producao.prototype.calculaQuilos = function(){
 		var qlos = this.maquina+"_peso";
 		var peso = localStorage.getItem(qlos);
-		return this.producaoQuilos = ((peso*this.producaoTelhas)/1000);
+		return this.producaoQuilos = parseInt((peso*this.producaoTelhas)/1000);
 	}
 	function Maquina(n){ // recebe o número da máquina
 		this.numero = n; 
@@ -272,11 +376,11 @@ function carregaCargas(){
 		return peca;
 	}
 	function calculaIrogTotal(telhas, meta){
-		var irg;// alert(telhas);
+		let irg;// alert(telhas);
 		if(meta!=null){
 			irg = ((telhas/meta)*100);
 		}
-		var arredondado = parseFloat(irg.toFixed(2));
+		var arredondado = parseInt(irg.toFixed(2));
 		return arredondado;
 	}
 	Producao.prototype.calculaIrog = function(meta){
@@ -308,13 +412,18 @@ function carregaCargas(){
 	var contato3;
 	var contatoCon;
 	var corpoDoEmail= [];
-	function sendMail() {
-    var link = "mailto:"+contato1
+	var corpoDoEmail2= [];
+	function sendMail() { alertOutlook();
+    var link = "mailto:"+contato1 
              + "?cc="+contatoCon+" "
              + "&subject=" + escape("producao")
-             + "&body=" + escape(corpoDoEmail);
-    window.location.href = link;
+             + "&body=" + escape(this.corpoDoEmail);
+    window.location.href = link; 
+    //x=window.open(link);
+   // x.close();
+    //window.open('mailto:'+contato1+'?cc='+contatoCon+'&subject='+"producao"+'&body='+this.corpoDoEmail, '_self');
 }
+	
 // IA Inteliencia Artificial
 
 function InteligenciaArtificial(){
@@ -326,14 +435,58 @@ function InteligenciaArtificial(){
 	//recuperarObject
 	
 }
-InteligenciaArtificial.prototype.checarOrdem = function(maquina, proxima , meta){
-	let qnt =  localStorage.getItem(maquina+"_qnt");
-	let produzido = localStorage.getItem(maquina+"_qntFeita");
+InteligenciaArtificial.prototype.trocarOrdem = function(maquina, meta, vao){
+	let numero;
+	for(let i = 0;i<16;i++){
+		if(vao==2){
+			if(listaMaquinas2[i]==maquina){
+				numero=i; 
+			}
+		}else{
+			if(listaMaquinas3[i]==maquina){
+				numero=i;
+			}
+		}
+	}
+		let px = localStorage.getItem("proxima"+numero+"_op");     alert(numero);
+		let peso = localStorage.getItem("proxima"+numero+"_peso");
+		let qnt = localStorage.getItem("proxima"+numero+"_qnt");
+		let material = localStorage.getItem("proxima"+numero+"_material"); 
+		if(px!=null && px!=''){
+			localStorage.setItem(maquina+"_op", px);
+			localStorage.setItem("proxima"+numero+"_op", "");
+		} 
+		if(peso != null && peso != ""){
+			localStorage.setItem(maquina+"_peso", peso);
+			localStorage.setItem("proxima"+numero+"_peso", "");
+		}
+		if(qnt != null && qnt != ""){
+			localStorage.setItem(maquina+"_qnt", qnt);
+			localStorage.setItem("proxima"+numero+"_qnt", "");
+		}
+		if(material != null && material != ""){
+			localStorage.setItem(maquina+"_material", material);
+			localStorage.setItem("proxima"+numero+"_material", "");
+		}
+}
+InteligenciaArtificial.prototype.checarOrdem = function(maquina, meta, vao){
+	let numero;
+	for(let i = 0;i<16;i++){
+		if(vao==2){
+			if(listaMaquinas2[i]==maquina){
+				numero=i;
+			}
+		}else{
+			if(listaMaquinas3[i]==maquina){
+				numero=i;
+			}
+		}
+	} 
+	let qnt =  parseInt(localStorage.getItem(maquina+"_qnt")); 
+	let produzido = parseInt(localStorage.getItem(maquina+"_qntFeita"));
 	let pd = qnt-produzido;
 	let metaMenor = meta-meta*0.2; 
 	if(metaMenor>pd){
-		let px = localStorage.getItem("proxima");
-		localStorage.setItem(listaMaquinas2[i]+"_op", px); 
 		return 1;
 	}else{
 		return 0;
@@ -479,7 +632,7 @@ function getMaquinas(va){
 		return listaMaquinas3; 
 	}
 }
-function Producao(){
+function paginaProducao(){
 			window.open('producao.html', 'janela', 'width=600, height=900, top=100, left=699, scrollbars=yes, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
 }
 		function buscarIndice(maquina, vao){
@@ -589,7 +742,7 @@ function Producao(){
 				for(let y =0;y<vetor.length;y++){
 					if(vetor[i]==vetor[y]){
 						repetido.push(vetor[y]);
-						vetor.splice(y,1);
+						//vetor.splice(y,1);
 					}
 					
 				}
@@ -657,7 +810,7 @@ function Producao(){
 				if(vao!=null){
 					document.write('<th colspan="6" >Selecione a Linha<select onchange="selecao();"id="linha" ><option value="'+this.vao+'">'+this.vao+'</option><option value="2" >2</option><option value="3" >3</option></select></th></li></p>');
 				}else{
-					document.write('<th>|| Selecione a Linha<select onchange="selecao();"id="linha" ><option value="0" ></option><option value="2" >2</option><option value="3" >3</option></select></th></li></p>');
+					document.write('<th>Selecione a Linha<select onchange="selecao();"id="linha" ><option value="0" ></option><option value="2" >2</option><option value="3" >3</option></select></th></li></p>');
 				}
 				document.write("<li><ul id='menutt'><li><a heref='#'><p onclick='Metas();'>|| Editar Metas </p><span>abre o campo de edicao de metas e producao</span></a></ul></li>");	
 				//document.write("<li><span><a href='index.html' >|| Voltar ao Inicio ||</a></span></li><br>");
@@ -690,9 +843,10 @@ function Producao(){
 			var m = localStorage.getItem("maquina"+maquina);
 			sessionStorage.setItem("parada", m);
 			window.open('paradas.html', 'janela', 'width=595, height=490, top=100, left=699, scrollbars=no, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
+			window.resizeTo(400, 600);
 		}
 		function Metas(){
-			window.open('metas_versao01.html', 'janela', 'width=795, height=750, top=100, left=699, scrollbars=yes, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
+			window.open('metas_versao01.html', 'janela', 'width=895, height=750, top=100, left=699, scrollbars=yes, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
 		}
 		function salvarMatrizLS(matriz, ref){
 			localStorage.setItem(matriz, ref);
@@ -918,4 +1072,7 @@ function Producao(){
 function salvarProducaoTxt(string, data, turno){
 	var blob = new Blob([string], {type: "application/json;utf - 8"});
 	saveAs(blob, data+":_producao_turno:"+turno+".txt");
+}
+function LinkSalvarProducao(){
+	window.open('resultado.html', 'janela', 'width=970, height=790, top=100, left=699, scrollbars=no, status=no, toolbar=no, location=no, menubar=no, resizable=no, fullscreen=no' );
 }

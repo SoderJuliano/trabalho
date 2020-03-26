@@ -1,2 +1,6 @@
 [0305/173725.238:WARNING:minidump_to_upload_parameters.cc(36)] duplicate key guid, discarding value dd934921-c66e-47c3-9f87-ca1c7c99d5bc
 [0305/173840.853:WARNING:minidump_to_upload_parameters.cc(36)] duplicate key guid, discarding value dd934921-c66e-47c3-9f87-ca1c7c99d5bc
+[0322/002618.768:ERROR:process_info.cc(329)] VirtualQueryEx: Acesso negado. (0x5)
+[0322/002618.770:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[0322/002618.770:ERROR:process_memory_win.cc(39)] Failed to initialize ProcessInfo.
+[0322/002618.770:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: Tentou-se acessar um processo de saída. (0xc000010a)

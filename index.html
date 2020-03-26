@@ -96,7 +96,7 @@ http://www.tooplate.com/view/2097-pop
                                 </div>
 
                                 <div class="grid__item">
-                                    <div class="product" onclick="Producao();">
+                                    <div class="product" onclick="paginaProducao();">
                                         <div class="tm-nav-link">
                                             <i class="fas fa-handshake fa-3x tm-nav-icon"></i>
                                             <span class="tm-nav-text">Resultado</span>
@@ -133,7 +133,28 @@ http://www.tooplate.com/view/2097-pop
                                 </div>
 
                                 <div class="grid__item">
-                                    <div class="product">
+                                    <div class="product" onclick="lancador()">
+                                        <script>
+                                            function lancador(){
+                                                Swal.fire({
+                                                    title: 'Voce tem certeza?',
+                                                    text: "Voce salvara uma copia da producao!",
+                                                    icon: 'warning',
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: '#3085d6',
+                                                    cancelButtonColor: '#d33',
+                                                    confirmButtonText: 'Sim, Com certeza!'
+                                                }).then((result) => {
+                                                    if (result.value) { LinkSalvarProducao();
+                                                    Swal.fire(
+                                                        'Salvo!',
+                                                        'Seu arquivo foi salvo (Your file has been saved).',
+                                                        'Saved'
+                                                    )
+                                                    }
+                                                })
+                                            }
+                                          </script>
                                         <div class="tm-nav-link">
                                             <i class="fas fa-comments fa-3x tm-nav-icon"></i>
                                             <span class="tm-nav-text">E-mail</span>

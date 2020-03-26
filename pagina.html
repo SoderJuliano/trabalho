@@ -25,7 +25,7 @@ ul#menutt a {
     voice-family:inherit;
     width:125px;
 }
->#pagebody>ul#menutt a {
+#pagebody>ul#menutt a {
     width:125px;
 }
 /* Fix IE. Hide from IE Mac \*/
@@ -64,7 +64,7 @@ select {
     box-shadow: 5px 0px 9px #FFFF00;
     font-family: Verdana,Tahoma,sans-serif;
     font-size: 12px;
-    background-color: #XX9999;
+    background-color: #9999;
     max-width: 500px;
 	border-radius:1em;
 }
@@ -86,7 +86,7 @@ input, text, button {
     text-align: center;
     
     display: inline-block;
-    padding: 8px 25px;
+    padding: 10px 22px;
     font-family: "Geometria-Medium";
     font-size: 12px;
     color: #fff;
@@ -125,10 +125,12 @@ background-color: #c8c8c8;
     font-weight: bold;
     font-size: 14px;
 }
+
 </style>
 </head>
 <body>
 <script>
+window.resizeTo(970, 800);
 		var vao;
 		var preparador;
 		var matrizReferencia;
@@ -140,25 +142,25 @@ background-color: #c8c8c8;
 		var peSet=1;
 		var producao1 = [];
 		
-		var listaMaquinas3 = ["1019", "1407", "1408", "1409", "1410", "1552", "1553", "8833",
-			"8888", "8916", "8917", "10178", "11819", "11820", "12342", "12343"];
-		var listaMaquinas2 = ["1548", "1549", "1620","1621","1635","1825","1684","1686","1855", "1857","1877","1878",  "1906","1907",
-			"10552", "11818"];
-		var listaMaquinasNull = ["maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina",
+		var listaMaquinas3 = ["maquina31", "maquina32", "maquina33", "maquina34", "maquina35", "maquina36", "maquina37", "maquina38", "maquina39", "maquina310", "maquina311",
+			"maquina312", "maquina313", "maquina314", "maquina315", "maquina316"];
+var listaMaquinas2 = ["maquina21", "maquina22", "maquina23", "maquina24", "maquina25", "maquina26", "maquina27", "maquina28", "maquina29", "maquina210", "maquina211",
+			"maquina212", "maquina213", "maquina214", "maquina215", "maquina216"];
+var listaMaquinasNull = ["maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina", "maquina",
 			"maquina", "maquina", "maquina", "maquina", "maquina"];
 			
-			//conjunto de matrizes da empresa....elas não mudam de numeração
-		var matrizes = [ ffr020479=["02/0479", "FD/87-F"], ffr020573=["02/0573", "4707-G"],
-			ffr020572=["02/0572", "4707-F"], ffr100000013687=["13687", "4711-F"], ffr020428=["02/0428", "4515-G"],
-			ffr020627=["02/0627", "4709"], ffr020427=["02/0427", "4515-F"], ffr020548=["02/0548", "4718-F"],
-			ffr020430=["02/0430", "CA/32-F"], ffr020431=["02/0431","CA/32-G"], ffr020450=["02/0450", "2240"],
-			ffr100000013692=["13692", "4711-G"], ffr020436=["02/0436","BC/37"], ffr020612=["02/0612", "MB/188"],
-			ffr020549=["02/0549", "4718-G"], ffr020466=["02/0466", "MB/185"], ffr020548=["02/0548", "4718-F"], ffr100000013691=["164291", "4719"]
+			//conjunto de matrizes 
+		var matrizes = [ gererico=[" 5555", "5555"], gererico1=[" 5555", "5555"],
+			gererico2=[" 5555", "5555"], gererico3=[" 5555", "5555"], gererico4=[" 5555", "5555"],
+			gererico5=[" 5555", "5555"], gererico6=[" 5555", "5555"], gererico7=[" 5555", "5555"],
+			gererico8=[" 5555", "5555"], gererico9=[" 5555", "5555"], gererico10=[" 5555", "5555"],
+			gererico11=[" 5555", "5555"], gererico12=[" 5555", "5555"], gererico13=[" 5555", "5555"],
+			gererico14=[" 5555", "5555"], gererico15=[" 5555", "5555"], gererico16=[" 5555", "5555"], gererico17=[" 5555", "5555"]
 		];
-		var preVao3 = ["15641", "9562", "1579", "9493", "1580", "10013", "10052", "5039", "5040", "9026", "9082",
-			"10179", "11703", "11748", "9734", "9769"];
-		var preVao2 = ["1587", "1628", "1882", "1588", "11202", "11203", "10094", "1636", "1622", "1599", "1881",
-			"1879", "1660", "1585", "10180", "11519"];
+		var preVao3 = ["1111", "111", "111", "111", "11", "11", "111", "111", "111", "111", "111",
+			"111", "1111", "1111", "1111", "1111"];
+		var preVao2 = ["1111", "111", "111", "111", "111", "111", "111", "111", "111", "1111", "1111",
+			"111", "1111", "111", "111", "11"];
 setInterval(lookForChange, 1000);
 		
 		function lookForChange(){ 
@@ -213,7 +215,10 @@ setInterval(lookForChange, 1000);
 				var proximaOp = document.getElementById(poximaOpInput).value; 
 				var proximaReferencia = document.getElementById(poximaReferenciaInput).value; 
 				var proximaMatriz = document.getElementById(poximaMatrizInput).value;  
-				
+				let preparador = document.getElementById("nomeid").value;
+				if((preparador != localStorage.getItem('preparador'))){
+					localStorage.setItem('preparador', preparador);
+				}
 				if((proximaPeso != localStorage.getItem(proximaPesoInput)) && (proximaPeso!= "")){
 					localStorage.setItem(proxima+"_peso", proximaPeso);
 				}
@@ -281,7 +286,7 @@ setInterval(lookForChange, 1000);
 					this.matrizSet = 0;
 				}
 				document.write("<table>");
-				document.write("<th id='maquina"+n+"' onclick='novaJanelaParada("+n+");'>"+buscarMaquina(getVao(), n)+"</th>"); 
+				document.write("<th id='maquina"+n+"' onclick='novaJanelaParada("+n+");'><a href='#'><span>"+buscarMaquina(getVao(), n)+"</span></a></th>"); 
 				document.write("<th id='proxima"+n+"'>"+buscarPre(getVao(), n)+"</th>");
 				
 				document.write("<tr>");
@@ -366,8 +371,9 @@ setInterval(lookForChange, 1000);
 				document.write("</tr>");
 				document.write("</table>");	
 			}
-			document.write("<button onclick='enviar();' value='Submit'>Enviar</button>");
+			document.write("<button onclick='enviar();' value='Submit'>Enviar</button>"); 
 			document.write("</form>");
+			
 		}
 		document.write("</div>");
 				document.write('<input type="text" value="'+regulador+'"/>');
